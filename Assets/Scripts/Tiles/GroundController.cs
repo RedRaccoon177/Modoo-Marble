@@ -6,7 +6,6 @@ public class GroundController : Tile
 {
     List<GameObject> buildings;
 
-
     void Start()
     {
     }
