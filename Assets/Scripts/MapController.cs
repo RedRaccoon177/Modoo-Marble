@@ -61,7 +61,6 @@ public class MapController: MonoBehaviour
                 temp = Instantiate(tileTravel);
             }
             temp.transform.position = dates[i].tilePos;
-            temp.GetComponent<Tile>().tileNameKr = dates[i].tileName;
             grounds[i] = temp;
         }
     }
