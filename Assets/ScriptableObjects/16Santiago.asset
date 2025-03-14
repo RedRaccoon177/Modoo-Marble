@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 16Santiago
   m_EditorClassIdentifier: 
-  tileName: "\uC0B0\uD2F0\uC544\uACE0"
-  tilePos: {x: 10, y: 0, z: -6}
-  tileType: 0
+  _tileKey: 16
+  _tileName: "\uC0B0\uD2F0\uC544\uACE0"
+  _tilePos: {x: 10, y: 0, z: -6}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

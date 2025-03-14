@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 3Beijing
   m_EditorClassIdentifier: 
-  tileName: "\uBCA0\uC774\uC9D5"
-  tilePos: {x: 3, y: 0, z: 0}
-  tileType: 0
+  _tileKey: 3
+  _tileName: "\uBCA0\uC774\uC9D5"
+  _tilePos: {x: 3, y: 0, z: 0}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

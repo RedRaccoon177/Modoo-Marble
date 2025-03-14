@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 37NewYork
   m_EditorClassIdentifier: 
-  tileName: "\uB274\uC695"
-  tilePos: {x: 0, y: 0, z: -3}
-  tileType: 0
+  _tileKey: 37
+  _tileName: "\uB274\uC695"
+  _tilePos: {x: 0, y: 0, z: -3}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

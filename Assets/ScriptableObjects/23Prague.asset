@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 23Prague
   m_EditorClassIdentifier: 
-  tileName: "\uD504\uB77C\uD558"
-  tilePos: {x: 7, y: 0, z: -10}
-  tileType: 0
+  _tileKey: 23
+  _tileName: "\uD504\uB77C\uD558"
+  _tilePos: {x: 7, y: 0, z: -10}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

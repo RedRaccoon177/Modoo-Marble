@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 38NationalTaxService
   m_EditorClassIdentifier: 
-  tileName: "\uAD6D\uC138\uCCAD"
-  tilePos: {x: 0, y: 0, z: -2}
-  tileType: 7
+  _tileKey: 38
+  _tileName: "\uAD6D\uC138\uCCAD"
+  _tilePos: {x: 0, y: 0, z: -2}
+  _tileType: 7
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

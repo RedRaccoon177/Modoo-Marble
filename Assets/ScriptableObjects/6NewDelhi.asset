@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 6NewDelhi
   m_EditorClassIdentifier: 
-  tileName: "\uB274\uB378\uB9AC"
-  tilePos: {x: 6, y: 0, z: 0}
-  tileType: 0
+  _tileKey: 6
+  _tileName: "\uB274\uB378\uB9AC"
+  _tilePos: {x: 6, y: 0, z: 0}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

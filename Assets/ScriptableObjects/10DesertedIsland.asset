@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 10DesertedIsland
   m_EditorClassIdentifier: 
-  tileName: "\uBB34\uC778\uB3C4"
-  tilePos: {x: 10, y: 0, z: 0}
-  tileType: 4
+  _tileKey: 10
+  _tileName: "\uBB34\uC778\uB3C4"
+  _tilePos: {x: 10, y: 0, z: 0}
+  _tileType: 4
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0
