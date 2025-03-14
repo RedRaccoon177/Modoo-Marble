@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 6568463063726196185}
   - component: {fileID: 1730761404957211102}
   - component: {fileID: 639228740601717160}
-  - component: {fileID: 2468089402777933667}
   m_Layer: 0
-  m_Name: Travel
+  m_Name: 6Travel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,15 +105,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2468089402777933667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8971007007442977174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e1af06dd4fcb3448d46ebbfd8eb6b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
