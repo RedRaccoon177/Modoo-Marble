@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    double _money;
-    List<GameObject> _playerGroundLists;
-
-
+    bool isLoan; // 대출여부
+    double _money; // 게임 안에서 사용되는 돈
+    int _mapTurn; // 맵을 몇 바퀴 돌앗는지
+    List<GameObject> _playerGroundLists; // 가지고 있는 건물 리스트
     public void IncreaseMoney(double money)
     {
         _money += money;
