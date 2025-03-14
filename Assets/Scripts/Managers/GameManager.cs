@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
                 _playerPosIndex -= 32;
             }
             count++;
-            _playerManager.transform.position = _mapInfo._grounds[_playerPosIndex + count].transform.position;
+            _playerManager.transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
             yield return new WaitForSeconds(1f);
         }
         _playerPosIndex += count;
