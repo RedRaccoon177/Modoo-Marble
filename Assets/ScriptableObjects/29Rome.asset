@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
-  m_Name: 3Beijing
+  m_Name: 29Rome
   m_EditorClassIdentifier: 
-  tileName: "\uBCA0\uC774\uC9D5"
-  tilePos: {x: 3, y: 0, z: 0}
+  tileName: "\uB85C\uB9C8"
+  tilePos: {x: 1, y: 0, z: -10}
   tileType: 0
