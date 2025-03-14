@@ -1,18 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Player player;
+    [SerializeField] Text moneyText;
+    [SerializeField] Text totalMoneyText;
+    [SerializeField] Text rankText;
+
+    private void Awake()
     {
-        
+        if (player != null)
+            player.OnDataChanged += UpdateUI;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        if (player != null)
+            player.OnDataChanged -= UpdateUI; 
+    }
+
+    private void Start()
+    {
+        UpdateUI(); 
+
+    }
+
+    private void UpdateUI()
+    {
+        if (player == null) return;
+
+        moneyText.text = $"현금: {player.Money}원";
+        totalMoneyText.text = $"총자산: {player.TotalMoney}원";
+        rankText.text = $"{player.Rank}위";
     }
 }
