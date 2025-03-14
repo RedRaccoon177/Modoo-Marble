@@ -272,17 +272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8359f90acfbbf8f42af710e7e8c062cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilesType:
-  - {fileID: 3699882789391996105, guid: 22d25cf25389a3a408fd3bbdc89f3cfb, type: 3}
-  - {fileID: 5422592398237620355, guid: 807a6f61dd122a6419ae8348f521a854, type: 3}
-  - {fileID: 2353002728239199573, guid: 765b1d57e98ecd24aa567d74014f70fe, type: 3}
-  - {fileID: 465541226245315126, guid: 9fbc55581faff3149bd1129bc83c6637, type: 3}
-  - {fileID: 624745044870649536, guid: dbc46af957f9c224e8e18a3c2c22b496, type: 3}
-  - {fileID: 8015617257969873935, guid: 3e78de0799c191a41b291cfb87c7601b, type: 3}
-  - {fileID: 8971007007442977174, guid: b2ccd302965d61245a18d237357c6ae9, type: 3}
-  - {fileID: 8971007007442977174, guid: cc8195fee9506c842923e2d7339558d8, type: 3}
-  - {fileID: 8971007007442977174, guid: e59ab0401e5104c4fb14b130776f2dfc, type: 3}
-  _grounds:
+  _tilePrefab: {fileID: 3699882789391996105, guid: 22d25cf25389a3a408fd3bbdc89f3cfb, type: 3}
+  _tiles:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -323,7 +314,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _dates:
+  _tiledates:
   - {fileID: 11400000, guid: 68af65fa65d34c944aa08d63031a6a04, type: 2}
   - {fileID: 11400000, guid: ad39df72de7c5804bae1d90d303aef60, type: 2}
   - {fileID: 11400000, guid: 5883f62a561d2e440b2523b6c866cc38, type: 2}
