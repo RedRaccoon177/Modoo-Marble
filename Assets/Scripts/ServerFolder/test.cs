@@ -6,7 +6,7 @@ using Photon;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PhotonRoomMgr : MonoBehaviourPunCallbacks
+public class test : MonoBehaviourPunCallbacks
 {
     public InputField createRoomInput;
     public InputField joinRoomInput;
@@ -15,23 +15,23 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
     public GameObject roomPanels;
     public GameObject serverPanel;
 
-    //애 있으면 왜안대?
-    //public override void OnEnable()
-    //{
-    //    Debug.Log("비 =>활성화댐");
-    //    //로비 생성
-    //    //PhotonNetwork.JoinLobby();
-    //}
+
 
     //서버연결
     public void isServer()
     {
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
+        //StartCoroutine(wait());
+        //roomPanels.SetActive(true);
+        //serverPanel.SetActive(false);
+    }
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(5);
         roomPanels.SetActive(true);
         serverPanel.SetActive(false);
     }
-    
 
     public void CreateRoom()
     {
