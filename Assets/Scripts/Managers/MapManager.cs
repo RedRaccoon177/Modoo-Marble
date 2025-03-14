@@ -12,7 +12,7 @@ public class MapManager : MonoBehaviour
 
     // 생성된 타일 오브젝트를 저장하는 배열
     [Header("실제 땅")]
-    [SerializeField] GameObject[] _grounds = new GameObject[32];
+    [SerializeField] public GameObject[] _grounds = new GameObject[32];
 
     // 타일의 초기 데이터 (위치, 타입 등)
     [Header("타일 초기 데이터")]

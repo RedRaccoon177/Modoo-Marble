@@ -5,13 +5,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     int _playerPosIndex;
+    // 플레이어 move 2번 실행 방지하기 위해 코루틴 담아두는 변수 
     Coroutine _playerMoveCor;
-    MapController _mapInfo;
+    // 맵 정보 가져오기
+    MapManager _mapInfo;
     TurnBasedManager _turnBasedManager;
+    PlayerManager _playerManager;
 
     private void Start()
     {
-        _mapInfo = FindObjectOfType<MapController>();
+        _playerManager = FindObjectOfType<PlayerManager>();
+        _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
     }
     private void Update()
@@ -20,7 +24,9 @@ public class GameManager : MonoBehaviour
         {
             if (_playerMoveCor == null)
             {
+                Debug.Log("실행");
                 StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
+                Debug.Log("실행 완료");
             }
         }
     }
@@ -40,11 +46,10 @@ public class GameManager : MonoBehaviour
                 _playerPosIndex -= 32;
             }
             count++;
-            transform.position = _mapInfo.grounds[_playerPosIndex + count].transform.position;
+            _playerManager.transform.position = _mapInfo._grounds[_playerPosIndex + count].transform.position;
             yield return new WaitForSeconds(1f);
         }
         _playerPosIndex += count;
-        _mapInfo.GroudInfo(_playerPosIndex);
         _playerMoveCor = null;
     }
 }
