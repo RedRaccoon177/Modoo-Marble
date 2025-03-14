@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 2BonusGame
   m_EditorClassIdentifier: 
   tileName: "\uBCF4\uB108\uC2A4 \uAC8C\uC784"
-  tilePos: {x: 3, y: 0, z: 0}
+  tilePos: {x: 2, y: 0, z: 0}
   tileType: 2

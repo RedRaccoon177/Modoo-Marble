@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 
 //이원형, 함승윤
@@ -8,15 +9,15 @@ public class MapManager : MonoBehaviour
 {
     // 타일 종류를 저장하는 배열 (각 타일 타입에 해당하는 프리팹을 할당)
     [Header("타일 타입")]
-    [SerializeField] GameObject[] _tilesType = new GameObject[7];
+    [SerializeField] GameObject[] _tilesType = new GameObject[9];
 
     // 생성된 타일 오브젝트를 저장하는 배열
     [Header("실제 땅")]
-    [SerializeField] public GameObject[] _grounds = new GameObject[32];
+    [SerializeField] public GameObject[] _grounds = new GameObject[40];
 
     // 타일의 초기 데이터 (위치, 타입 등)
     [Header("타일 초기 데이터")]
-    [SerializeField] TileInfoData[] _dates = new TileInfoData[32];
+    [SerializeField] TileInfoData[] _dates = new TileInfoData[40];
 
     // 타일 타입과 프리팹을 연결하는 자료 구조
     private Dictionary<TileType, GameObject> _tilePrefabs;
@@ -32,7 +33,9 @@ public class MapManager : MonoBehaviour
             { TileType.Island, _tilesType[3] },   // 섬 타일
             { TileType.Start, _tilesType[4] },    // 시작 지점 타일
             { TileType.Olympics, _tilesType[5] }, // 올림픽 타일
-            { TileType.Travel, _tilesType[6] }    // 여행 타일
+            { TileType.Travel, _tilesType[6] },   // 여행 타일
+            { TileType.revenue, _tilesType[7] },  // 국세청 타일
+            { TileType.casino, _tilesType[8] }    // 카지노 타일
         };
 
         CreatMap();
