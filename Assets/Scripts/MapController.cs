@@ -21,7 +21,7 @@ public class MapController: MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            CreatMap();
+            //CreatMap();
         }
         if (Input.GetKeyDown(KeyCode.A))
         {

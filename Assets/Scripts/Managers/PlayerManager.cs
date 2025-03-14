@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    double _money;
+    List<GameObject> _playerGroundLists;
+
+
+    public void IncreaseMoney(double money)
     {
-        
+        _money += money;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DecreaseMoney(double money)
     {
-        
+        _money -= money;
+    }
+    public double GetMoney()
+    {
+        return _money;
+    }
+    public void PrintPlayerGroundLists()
+    {
+        foreach (var item in _playerGroundLists)
+        {
+            Debug.Log(item);
+        }
     }
 }

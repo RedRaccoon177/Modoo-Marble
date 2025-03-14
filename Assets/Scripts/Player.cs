@@ -13,11 +13,11 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Dice();
-            StartCoroutine(MovePlayer(diceNum));
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Dice();
+        //    StartCoroutine(MovePlayer(diceNum));
+        //}
     }
     public int Dice()
     {
