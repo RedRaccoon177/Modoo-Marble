@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 20Olympics
   m_EditorClassIdentifier: 
-  tileName: "\uC62C\uB9BC\uD53D"
-  tilePos: {x: 10, y: 0, z: -10}
-  tileType: 5
+  _tileKey: 20
+  _tileName: "\uC62C\uB9BC\uD53D"
+  _tilePos: {x: 10, y: 0, z: -10}
+  _tileType: 5
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

@@ -17,26 +17,37 @@ public class MapManager : MonoBehaviour
     [Header("타일 초기 데이터")]
     [SerializeField] TileInfoData[] _tiledates = new TileInfoData[40];
 
-    // 타일 타입과 프리팹을 연결하는 자료 구조
-    private Dictionary<TileType, GameObject> _tilePrefabs;
 
     void Start()
     {
         CreatMap();
     }
 
-    // 맵을 생성하는 함수
+    /// <summary>
+    /// 맵을 생성하는 함수
+    /// </summary>
     public void CreatMap()
     {
-        // 타일 데이터를 기반으로 맵을 구성
         for (int i = 0; i < _tiledates.Length; i++)
         {
             // 프리팹을 생성하고 위치를 설정
             GameObject _temp = Instantiate(_tilePrefab);
-            _temp.transform.position = _tiledates[i].tilePos;
+            _temp.transform.position = _tiledates[i]._tilePos;
+
+            // TileController를 가져와서 데이터 적용
+            TileController tileScript = _temp.GetComponent<TileController>();
+            if (tileScript != null)
+            {
+                tileScript.SetTileData(_tiledates[i]); // 데이터 적용
+            }
+            else
+            {
+                Debug.LogError($"TileController가 프리팹 {_tilePrefab.name} 안에 없습니다! 프리팹 확인 필요.");
+            }
 
             // 생성된 타일을 배열에 저장
             _tiles[i] = _temp;
         }
     }
+
 }

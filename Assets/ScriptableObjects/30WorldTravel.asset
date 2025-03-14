@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 30WorldTravel
   m_EditorClassIdentifier: 
-  tileName: "\uC138\uACC4\uC5EC\uD589"
-  tilePos: {x: 0, y: 0, z: -10}
-  tileType: 6
+  _tileKey: 30
+  _tileName: "\uC138\uACC4\uC5EC\uD589"
+  _tilePos: {x: 0, y: 0, z: -10}
+  _tileType: 6
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

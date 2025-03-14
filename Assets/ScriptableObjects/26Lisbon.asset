@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 26Lisbon
   m_EditorClassIdentifier: 
-  tileName: "\uB9AC\uC2A4\uBCF8"
-  tilePos: {x: 4, y: 0, z: -10}
-  tileType: 0
+  _tileKey: 26
+  _tileName: "\uB9AC\uC2A4\uBCF8"
+  _tilePos: {x: 4, y: 0, z: -10}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 8Dubai
   m_EditorClassIdentifier: 
-  tileName: "\uB450\uBC14\uC774"
-  tilePos: {x: 8, y: 0, z: 0}
-  tileType: 0
+  _tileKey: 8
+  _tileName: "\uB450\uBC14\uC774"
+  _tilePos: {x: 8, y: 0, z: 0}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0
