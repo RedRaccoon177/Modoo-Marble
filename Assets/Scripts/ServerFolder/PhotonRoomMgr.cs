@@ -15,13 +15,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
     public GameObject roomPanels;
     public GameObject serverPanel;
 
-    //애 있으면 왜안대?
-    //public override void OnEnable()
-    //{
-    //    Debug.Log("비 =>활성화댐");
-    //    //로비 생성
-    //    //PhotonNetwork.JoinLobby();
-    //}
+  
 
     //서버연결
     public void isServer()
@@ -96,6 +90,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("리스트들어옴");
         foreach (RoomInfo roomInfo in roomList)
         {
             var roomBtn = Instantiate(roomPrefab, roomListPanel); //룸 리스트 패널 하에 버튼 하나 생성

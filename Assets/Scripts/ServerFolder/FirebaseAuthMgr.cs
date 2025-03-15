@@ -13,8 +13,9 @@ using WebSocketSharp;
 //임시 나중에 리스트로 담아서 해야될듯 지금은 기능 구현 우선
 public class FirebaseAuthMgr : MonoBehaviour
 {
-    public FirebaseUser user;
-    public FirebaseAuth auth;
+    //임시 
+    static public FirebaseUser user;
+    static public FirebaseAuth auth;
 
     //임시
     //로그인용
@@ -101,6 +102,7 @@ public class FirebaseAuthMgr : MonoBehaviour
     public void Login()
     {
         StartCoroutine(LoginCor(LoginIdInputField.text, LoginPasswordInputField.text));
+        ServerPanel.gameObject.SetActive(true);
     }
 
     //로그아웃
@@ -113,6 +115,8 @@ public class FirebaseAuthMgr : MonoBehaviour
     public void CreateNickName()
     {
         StartCoroutine(CreateNickNameCor(NickNameInputField.text));
+        ServerPanel.gameObject.SetActive(true);
+
     }
     IEnumerator CreateNickNameCor(string NickName)
     {
@@ -227,7 +231,6 @@ public class FirebaseAuthMgr : MonoBehaviour
             LoginwarningText.text = "";
             LoginUiPanel.gameObject.SetActive(false);
             Debug.Log(user.DisplayName);
-            ServerPanel.gameObject.SetActive(true);    
 
 
             //닉네임이 없을경우 닉네임 생성
@@ -236,6 +239,12 @@ public class FirebaseAuthMgr : MonoBehaviour
                 Debug.Log("닉네임이 없습니다");
                 NickNamePanel();
                 CreateNickName();
+                //ServerPanel.gameObject.SetActive(true);
+            }
+            else
+            {
+                ServerPanel.gameObject.SetActive(true);
+
             }
         }
 

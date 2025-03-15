@@ -5,103 +5,169 @@ using UnityEngine.UI;
 using Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using Firebase;
+using Firebase.Database;
+using Firebase.Extensions;
+using System.Threading.Tasks;
+using System;
 
+
+//궁금한게 내가원하는씬에서 부터 생성하면 그때부터 계속 생성되게는 안돼나
 public class test : MonoBehaviourPunCallbacks
 {
-    public InputField createRoomInput;
-    public InputField joinRoomInput;
-    public GameObject roomPrefab;
-    public Transform roomListPanel;
-    public GameObject roomPanels;
-    public GameObject serverPanel;
+    public static test Instance { get; private set; }
+    private DatabaseReference dbReference;
+    public int userMoney = 0;
 
 
-
-    //서버연결
-    public void isServer()
+    private void Awake()
     {
-        //서버 연결
-        PhotonNetwork.ConnectUsingSettings();
-        //StartCoroutine(wait());
-        //roomPanels.SetActive(true);
-        //serverPanel.SetActive(false);
-    }
-    IEnumerator wait()
-    {
-        yield return new WaitForSeconds(5);
-        roomPanels.SetActive(true);
-        serverPanel.SetActive(false);
-    }
-
-    public void CreateRoom()
-    {
-        if (PhotonNetwork.IsConnected)
+        if (Instance == null)
         {
-            Debug.Log("방만들기 버튼 클릭");
-            //일단 인원 제한없음
-            PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions()); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
-            Debug.Log("방이름 : " + PhotonNetwork.CurrentRoom.Name);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            //혹시몰라서
-            //서버 연결
-            PhotonNetwork.ConnectUsingSettings();
+            Destroy(gameObject);
         }
     }
-
-    public void JoinRoom()
+    private void Update()
     {
-        PhotonNetwork.JoinRoom(joinRoomInput.text);
-    }
-    public void JoinRandomRoom()
-    {
-        PhotonNetwork.JoinRandomRoom();
-    }
-    public void QuitRoom()
-    {
-        PhotonNetwork.LeaveLobby();
-        Debug.Log("룸나감");
-
+       Debug.Log(FirebaseAuthMgr.user.DisplayName + "의 돈 : " + userMoney);
     }
 
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("서버 연결 완료");
-    }
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        Debug.Log("연결 끊김 감지. 사유: " + cause);
-    }
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        Debug.Log("방 참여 실패. 보통 이러면 새로운 방 생성");
-        //PhotonNetwork.CreateRoom(PhotonNetwork.NickName, new RoomOptions()); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
-    }
 
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("클라이언트가 방에 입장시에 알아서 호출");
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
-    }
-    public override void OnJoinedLobby()
-    {
-        Debug.Log("로비 입장");
-    }
 
-    public override void OnLeftLobby()
-    {
-        Debug.Log("로비 퇴장");
-    }
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    private void Start()
     {
-        foreach (RoomInfo roomInfo in roomList)
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(async task =>
         {
-            var roomBtn = Instantiate(roomPrefab, roomListPanel); //룸 리스트 패널 하에 버튼 하나 생성
-            roomBtn.GetComponentInChildren<Text>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
-        }
+            FirebaseApp app = FirebaseApp.DefaultInstance;
+            dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+            Debug.Log("ㅇㅇ12");
+
+            if (FirebaseAuthMgr.user != null)
+            {
+                SaveUserData(FirebaseAuthMgr.user.DisplayName, "money",900);
+                userMoney = await LoadUserDataAsync(FirebaseAuthMgr.user.DisplayName, "money", userMoney);
+                Debug.Log("유저 닉네임 : " + FirebaseAuthMgr.user.DisplayName);
+                Debug.Log("유저 돈 : " + userMoney);
+            }
+            else
+            {
+                Debug.LogError("파이어베이스 문제");
+            }
+        });
     }
+
+
+
+
+    //데이터 저장 함수
+    //SaveUserData(id,"level",5);
+    //id의 레벨은 5 추가됌
+    //ContinueWithOnMainThread 메인쓰레드에서 함
+    public void SaveUserData<T>(string userId, string dataName, T value) 
+    {
+        dbReference.Child("users").Child(userId).Child(dataName).SetValueAsync(value).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log(userId+ "의" + dataName +  value+"추가됨");
+            }
+            else
+            {
+                Debug.LogError("실패함");
+            }
+        });
+    }
+
+    //데이터 불러오기 함수
+    //함수쓸때 앞에 await 붙여야댐
+    //playerLevel = await LoadUserDataAsync(id, "level", useLevel);
+    //id의 레벨 불러오고 playerLevel 변수에 담음
+    //playerLevel =  데이터value; 이런식
+    //await할때까지 기달림
+    //그놈의 비동기 
+    //https://ljhyunstory.tistory.com/284 
+    public async Task<T> LoadUserDataAsync<T>(string userId, string dataName, T type)
+    {
+        // 비동기적으로 데이터 불러오기
+        DataSnapshot snapshot = await dbReference.Child("users").Child(userId).Child(dataName).GetValueAsync();
+        T Tvalue;
+
+        try
+        {
+            Tvalue = type;
+            if (snapshot.Exists)
+            {
+                //타입을 바꿔서 집어넣음
+                Tvalue = (T)Convert.ChangeType(snapshot.Value, typeof(T));
+                Debug.Log(userId + "의 " + dataName + "불러옴");
+                Debug.Log("Tvalue : " + Tvalue);
+            }
+            else
+            {
+                Debug.Log("저장된 데이터 없음"); 
+            }
+        }
+        catch (System.Exception dd)
+        {
+            Debug.Log(dd);
+            Tvalue = type;
+        }
+
+        return Tvalue;
+
+    }
+
+    //질문 ***
+    //비동기 처리가 느려서 먼저 return됌
+    public int LoadUserData(string userId, string dataName, int value)
+    {
+        //불러오기 실패할수도잇어서 넣어줌
+        int Tvalue = value;
+
+
+        dbReference.Child("users").Child(userId).Child(dataName).GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            try
+            {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    if (snapshot.Exists)
+                    {
+                        Tvalue = int.Parse(snapshot.Value.ToString());//불러오기
+                        Debug.Log(userId + "의 " + dataName + "불러옴");
+                        Debug.Log("Tvalue : " + Tvalue);
+                    }
+                    else
+                    {
+                        Debug.Log("저장된 데이터없음");
+                    }
+                }
+                else
+                {
+                    Debug.Log("실패함");
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        });
+        Debug.Log("Tvalue : " + Tvalue);
+        return Tvalue;
+
+    }
+
+
+
+
 
 
 
