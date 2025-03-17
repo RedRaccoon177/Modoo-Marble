@@ -27,15 +27,17 @@ public class Singleton<T> : MonoBehaviourPunCallbacks where T : MonoBehaviourPun
     }
     private void Awake()
     {
-        //자식객체 삭제용
-        if (transform.parent != null && transform.root != null)
+        if (instance == null)
         {
-            DontDestroyOnLoad(this.transform.root.gameObject);
+            instance = this as T;
+            DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (instance != this)
         {
-            DontDestroyOnLoad(this.gameObject);    
+            Destroy(gameObject);
         }
+
+
 
     }
 

@@ -27,6 +27,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         serverPanel.gameObject.SetActive(true);
     }
 
+
     
 
     public void CreateRoom()
@@ -36,7 +37,6 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
             Debug.Log("방만들기 버튼 클릭");
             //일단 인원 제한없음
             PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions()); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
-            Debug.Log("방이름 : " + PhotonNetwork.CurrentRoom.Name);
         }
         else
         {
@@ -64,6 +64,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     public override void OnConnectedToMaster()
     {
         Debug.Log("서버 연결 완료");
+        PhotonNetwork.JoinLobby();
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
