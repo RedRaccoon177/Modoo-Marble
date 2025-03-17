@@ -25,6 +25,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         roomPanels.SetActive(true);
         serverPanel.SetActive(false);
     }
+
     
 
     public void CreateRoom()

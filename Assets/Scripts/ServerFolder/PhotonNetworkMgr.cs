@@ -59,10 +59,11 @@ public class PhotonNetworkMgr : MonoBehaviourPunCallbacks
         SceneManager.LoadScene(0); //타이틀로 이동
     }
 
-    public void changeScene()
+    public void changeScene(string SceneName)
     {
 
         PhotonNetwork.LoadLevel("SampleScene");
+        //PhotonNetwork.LoadLevel(SceneName);
 
     }
 

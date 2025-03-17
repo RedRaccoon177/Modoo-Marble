@@ -50,8 +50,8 @@ public class test : MonoBehaviourPunCallbacks
 
             if (FirebaseAuthMgr.user != null)
             {
-                SaveUserData(FirebaseAuthMgr.user.DisplayName, "money",900);
-                userMoney = await LoadUserDataAsync(FirebaseAuthMgr.user.DisplayName, "money", userMoney);
+                SaveUserData(FirebaseAuthMgr.user.DisplayName, "money", userMoney + 10000);
+                userMoney = await LoadUserDataAsync(FirebaseAuthMgr.user.DisplayName, "money", 1);
                 Debug.Log("유저 닉네임 : " + FirebaseAuthMgr.user.DisplayName);
                 Debug.Log("유저 돈 : " + userMoney);
             }
@@ -123,55 +123,7 @@ public class test : MonoBehaviourPunCallbacks
 
     }
 
-    //질문 ***
-    //비동기 처리가 느려서 먼저 return됌
-    public int LoadUserData(string userId, string dataName, int value)
-    {
-        //불러오기 실패할수도잇어서 넣어줌
-        int Tvalue = value;
-
-
-        dbReference.Child("users").Child(userId).Child(dataName).GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            try
-            {
-                if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    if (snapshot.Exists)
-                    {
-                        Tvalue = int.Parse(snapshot.Value.ToString());//불러오기
-                        Debug.Log(userId + "의 " + dataName + "불러옴");
-                        Debug.Log("Tvalue : " + Tvalue);
-                    }
-                    else
-                    {
-                        Debug.Log("저장된 데이터없음");
-                    }
-                }
-                else
-                {
-                    Debug.Log("실패함");
-                }
-            }
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-        });
-        Debug.Log("Tvalue : " + Tvalue);
-        return Tvalue;
-
-    }
-
-
-
-
-
-
-
-
+   
 
 
 }
