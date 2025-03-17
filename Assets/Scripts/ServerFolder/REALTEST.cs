@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ public class REALTEST : MonoBehaviour
 {
     public Text playerNickNameText;
     public Text playerMoneyText;
+    public Text playerTurn;
 
     int playerMoney = 0;
 
@@ -23,7 +25,8 @@ public class REALTEST : MonoBehaviour
 
     private async void Update()
     {
-       await LoadPlayerMoney();
+        await LoadPlayerMoney();
+        playerTurn.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
     }
 
 

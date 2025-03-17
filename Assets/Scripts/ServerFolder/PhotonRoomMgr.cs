@@ -25,6 +25,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
         serverPanel.gameObject.SetActive(true);
+       
     }
 
 

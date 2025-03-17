@@ -6,6 +6,7 @@ using Photon;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using Photon.Pun.Demo.Procedural;
+using UnityEngine.UI;
 
 
 
@@ -14,37 +15,34 @@ using Photon.Pun.Demo.Procedural;
 //내턴일때만 사용가능
 public class PlayerMoveTest : MonoBehaviourPunCallbacks
 {
-    int turn;
+    int currentTurn = 1;
+
+    public Text playerTurnText;
+    public Text currentTurnText;
 
     private void Start()
     {
-        turn = PhotonNetwork.IsMasterClient ? 1 : 1;
-
-    }
-
-    private void Update()
-    {
-        //내턴
+        playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
         if (PhotonNetwork.IsMasterClient)
         {
-            //q누르면 턴 넘김
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                photonView.RPC("playerMove", RpcTarget.All);
-                photonView.RPC("endTurn", RpcTarget.All);
-            }
+            currentTurn = PhotonNetwork.IsMasterClient ? 1 : 1;
         }
 
     }
 
-   
 
-    [PunRPC]
-    void endTurn()
+    private void Update()
     {
-        turn++;
-        Debug.Log(turn+ "입니다");
+        //지금 누구 턴?
+        currentTurnText.text = currentTurn.ToString();
+
+        //내턴일때만
+        if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurn && Input.GetKeyDown(KeyCode.W))
+        {
+            photonView.RPC("playerMove", RpcTarget.All);
+        }
     }
+
 
     [PunRPC]
     void playerMove()
@@ -52,15 +50,23 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
         transform.Translate(5 * Time.deltaTime, 0, 0);
     }
 
-
-    void sdsd()
+    public void endTurn()
     {
-        var PlayerList = PhotonNetwork.PlayerList;
-
-        foreach (var dd in PlayerList)
+        //내턴일때만 턴넘김 
+        if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurn)
         {
-            Debug.Log(dd.NickName); //현재 방 닉네임들 출력
+            photonView.RPC("NextTurn", RpcTarget.All);
         }
     }
+
+    [PunRPC]
+    void NextTurn()
+    {
+        currentTurn = (currentTurn + 1 ) % PhotonNetwork.PlayerList.Length;
+    }
+
+
+
+
 
 }
