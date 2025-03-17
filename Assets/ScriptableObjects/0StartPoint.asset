@@ -27,3 +27,8 @@ MonoBehaviour:
   _tileCondoPrice: 0
   _tileHotelPrice: 0
   _tileLandMarkPrice: 0
+  _tileLandToll: 0
+  _tilePensionToll: 0
+  _tileCondoToll: 0
+  _tileHotelToll: 0
+  _tileLandMarkToll: 0

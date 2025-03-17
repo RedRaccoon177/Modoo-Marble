@@ -5,12 +5,18 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     int _playerPosIndex;
+
     // 플레이어 move 2번 실행 방지하기 위해 코루틴 담아두는 변수 
     Coroutine _playerMoveCor;
-    // 맵 정보 가져오기
+
+    // 맵 정보 가져오기(배열로 관리)
     MapManager _mapInfo;
+
     TurnBasedManager _turnBasedManager;
+
+    //플레이어 정보
     PlayerManager _playerManager;
+    //GameObject _tileBuyUI;
 
     private void Start()
     {
@@ -18,18 +24,18 @@ public class GameManager : MonoBehaviour
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바 입력 감지
         {
-            if (_playerMoveCor == null)
+            if (_playerMoveCor == null) // 현재 이동 중이 아니면 실행
             {
-                Debug.Log("실행");
                 StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
-                Debug.Log("실행 완료");
             }
         }
     }
+
     /// <summary>
     /// 플레이어 이동 : num 숫자가 될때까지 한칸씩 이동함
     /// </summary>
@@ -37,25 +43,40 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator MovePlayer(int num)
     {
-        int count = 0;
-        while (count < num)
+        int count = 0;  // 실제 이동한 횟수
+
+        while (count < num) // 주사위 값(num)만큼 반복
         {
             count++;
             Debug.Log("플레이어 현재 위치 인덱스 : " + (_playerPosIndex + count));
+
+            // 플레이어를 해당 타일의 위치로 이동
             _playerManager.transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
+
+            // 만약 맵의 끝(39번 타일)을 넘으면 0번으로 돌아감
             if ((_playerPosIndex + count) >= 39)
             {
                 _playerPosIndex -= 40;
             }
+            // 시작 지점(0번 타일)에 도착하면 보너스 처리
             else if (_playerPosIndex + count == 0)
             {
                 StartPointPass();
             }
-            yield return new WaitForSeconds(0.1f);
+
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다음 이동
         }
+
+        // 최종적으로 위치 업데이트
         _playerPosIndex += count;
-        _playerMoveCor = null;
+
+        //TODO: 도착한 타일의  
+        Debug.Log(_mapInfo._tiles[_playerPosIndex]);
+        //타일 ui프리펩 안에 들어간 스크립트함수에서 값을 다 받아서 선언해버리자.
+
+        _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
+
     public void StartPointPass()
     {
         _playerManager.IncreaseMoney(1000);

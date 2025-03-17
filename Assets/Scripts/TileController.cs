@@ -3,7 +3,6 @@ using UnityEngine.EventSystems;
 
 public class TileController : MonoBehaviour,IPointerClickHandler
 {
-
     [Header("타일 키값")] public int _tileKey;
     [Header("타일 이름")] public string _tileName;
     [Header("타일 위치")] public Vector3 _tilePos;
@@ -26,6 +25,13 @@ public class TileController : MonoBehaviour,IPointerClickHandler
     [Header("타일 3번 건물 가격")] public int _tileHotelPrice;
     [Header("랜드마크 가격")] public int _tileLandMarkPrice;
 
+    [Separator]
+    [Header("타일 땅 통행료")] public int _tileLandToll;
+    [Header("타일 1번 건물 통행료")] public int _tilePensionToll;
+    [Header("타일 2번 건물 통행료")] public int _tileCondoToll;
+    [Header("타일 3번 건물 통행료")] public int _tileHotelToll;
+    [Header("랜드마크 통행료")] public int _tileLandMarkToll;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("타일 이름 : " + _tileName);
@@ -35,13 +41,38 @@ public class TileController : MonoBehaviour,IPointerClickHandler
     }
 
     // 타일 정보를 설정하는 메서드
+
+    /// <summary>
+    /// 타일에 데이터 저장
+    /// </summary>
     public void SetTileData(TileInfoData data)
     {
         _tileKey = data._tileKey;
         _tileName = data._tileName;
-        transform.position = data._tilePos;
         _tilePos = data._tilePos;
+        transform.position = _tilePos;
         _tileType = data._tileType;
+
+        _tileLandOwner = data._tileLandOwner;
+        _tilePensionOwner = data._tilePensionOwner;
+        _tileCondoOwner = data._tileCondoOwner;
+        _tileHotelOwner = data._tileHotelOwner;
+        _tileLandMarkOwner = data._tileLandMarkOwner;
+
+        _tilePriceColor = data._tilePriceColor;
+
+        _tileLandPrice = data._tileLandPrice;
+        _tilePensionPrice = data._tilePensionPrice;
+        _tileCondoPrice = data._tileCondoPrice;
+        _tileHotelPrice = data._tileHotelPrice;
+        _tileLandMarkPrice = data._tileLandMarkPrice;
+
+        _tileLandToll = data._tileLandToll;
+        _tilePensionToll = data._tilePensionToll;
+        _tileCondoToll = data._tileCondoToll;
+        _tileHotelToll = data._tileHotelToll;
+        _tileLandMarkToll = data._tileLandMarkToll;
+
 
         // 타일 색상 적용 (MeshRenderer가 있다고 가정)
         Renderer renderer = GetComponent<Renderer>();
