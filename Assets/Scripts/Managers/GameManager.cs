@@ -16,13 +16,15 @@ public class GameManager : MonoBehaviour
 
     //플레이어 정보
     PlayerManager _playerManager;
-    //GameObject _tileBuyUI;
+
+    UIManagerP _uiManagerP;
 
     private void Start()
     {
         _playerManager = FindObjectOfType<PlayerManager>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
+        _uiManagerP = FindObjectOfType<UIManagerP>();
     }
 
     private void Update()
@@ -70,7 +72,9 @@ public class GameManager : MonoBehaviour
         // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
-        //TODO: 도착한 타일의  
+
+        //_uiManagerP._buyUI.
+        //TODO: 도착한 타일의 화면을 출력해야 한다.
         Debug.Log(_mapInfo._tiles[_playerPosIndex]);
         //타일 ui프리펩 안에 들어간 스크립트함수에서 값을 다 받아서 선언해버리자.
 
