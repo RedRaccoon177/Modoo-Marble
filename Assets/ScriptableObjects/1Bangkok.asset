@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 1Bangkok
   m_EditorClassIdentifier: 
-  tileName: "\uBC29\uCF55"
-  tilePos: {x: 1.5, y: 0, z: 0}
-  tileType: 0
+  _tileKey: 1
+  _tileName: "\uBC29\uCF55"
+  _tilePos: {x: 1, y: 0, z: 0}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

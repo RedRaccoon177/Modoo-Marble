@@ -38,18 +38,27 @@ public class GameManager : MonoBehaviour
     IEnumerator MovePlayer(int num)
     {
         int count = 0;
-        Debug.Log("플레이어 출발 위치 인덱스 : " + _playerPosIndex);
         while (count < num)
         {
-            if ((_playerPosIndex + count) >= 31)
-            {
-                _playerPosIndex -= 32;
-            }
             count++;
-            _playerManager.transform.position = _mapInfo._grounds[_playerPosIndex + count].transform.position;
-            yield return new WaitForSeconds(1f);
+            Debug.Log("플레이어 현재 위치 인덱스 : " + (_playerPosIndex + count));
+            _playerManager.transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
+            if ((_playerPosIndex + count) >= 39)
+            {
+                _playerPosIndex -= 40;
+            }
+            else if (_playerPosIndex + count == 0)
+            {
+                Debug.Log("```````````````````````");
+                StartPointPass();
+            }
+            yield return new WaitForSeconds(0.1f);
         }
         _playerPosIndex += count;
         _playerMoveCor = null;
+    }
+    public void StartPointPass()
+    {
+        _playerManager.IncreaseMoney(1000);
     }
 }

@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 2BonusGame
   m_EditorClassIdentifier: 
-  tileName: "\uBCF4\uB108\uC2A4 \uAC8C\uC784"
-  tilePos: {x: 3, y: 0, z: 0}
-  tileType: 2
+  _tileKey: 2
+  _tileName: "\uBCF4\uB108\uC2A4 \uAC8C\uC784"
+  _tilePos: {x: 2, y: 0, z: 0}
+  _tileType: 2
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0

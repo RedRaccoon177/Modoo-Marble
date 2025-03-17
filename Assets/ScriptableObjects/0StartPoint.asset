@@ -12,6 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 0StartPoint
   m_EditorClassIdentifier: 
-  tileName: "\uC2DC\uC791\uC810"
-  tilePos: {x: 0, y: 0, z: 0}
-  tileType: 3
+  _tileKey: 0
+  _tileName: GO
+  _tilePos: {x: 0, y: 0, z: 0}
+  _tileType: 3
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0
+  _tileLandPrice: 0
+  _tilePensionPrice: 0
+  _tileCondoPrice: 0
+  _tileHotelPrice: 0
+  _tileLandMarkPrice: 0
