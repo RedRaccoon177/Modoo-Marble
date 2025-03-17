@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 61, y: 10}
+  m_AnchoredPosition: {x: 60, y: 10}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &21242500
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 66.5271, w: 0}
+  m_margin: {x: -1.3287964, y: -5.315094, z: 111.70557, w: -22.589272}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1369,7 +1369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4499039379688627236, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6065049154907087792, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
       propertyPath: m_Pivot.x
@@ -1470,7 +1470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1081851401116152791, guid: d136d49cdf712a044a43dcb8ae77fcf2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7056461974217958896, guid: d136d49cdf712a044a43dcb8ae77fcf2, type: 3}
       propertyPath: m_Pivot.x
@@ -1772,7 +1772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8886160249979617007, guid: bf315e79811f7cf4a903f8dfcfefaf84, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1900,6 +1900,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 2920248548553575888, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
     - {fileID: 984516393931109051, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
+    - {fileID: 6197203615841277301, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9134565503526860556, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
       insertIndex: -1
@@ -1947,7 +1948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4188171647600667817, guid: c142aa39862cc174a8b516598dc943e9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5923235823656709658, guid: c142aa39862cc174a8b516598dc943e9, type: 3}
       propertyPath: m_Pivot.x
