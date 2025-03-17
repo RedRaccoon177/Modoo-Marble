@@ -7,13 +7,12 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
-using WebSocketSharp;
 
 //로그인창
 //임시 나중에 리스트로 담아서 해야될듯 지금은 기능 구현 우선
-public class FirebaseAuthMgr : MonoBehaviour
+public class FirebaseLoginMgr : MonoBehaviour
 {
-    //임시 
+    //유저 
     static public FirebaseUser user;
     static public FirebaseAuth auth;
 
@@ -34,7 +33,7 @@ public class FirebaseAuthMgr : MonoBehaviour
     //nickField.text = user.DisplayName; 따로만들자 
 
     [Header("큰테두리Ui")]
-    [SerializeField] private GameObject ServerPanel;
+    [SerializeField] private GameObject SceneChanege;
     [SerializeField] private GameObject LoginUiPanel;
     [SerializeField] private GameObject CreateUiIdPanel;
     [SerializeField] private GameObject NickNameUiPanel;
@@ -47,6 +46,7 @@ public class FirebaseAuthMgr : MonoBehaviour
     {
         //안전코드 auth연결
         //비동기식 ContinueWith
+        //파이어베이스 초기화
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             DependencyStatus dependencyStatus = task.Result;
@@ -102,7 +102,7 @@ public class FirebaseAuthMgr : MonoBehaviour
     public void Login()
     {
         StartCoroutine(LoginCor(LoginIdInputField.text, LoginPasswordInputField.text));
-        ServerPanel.gameObject.SetActive(true);
+        SceneChanege.gameObject.SetActive(true);
     }
 
     //로그아웃
@@ -115,7 +115,7 @@ public class FirebaseAuthMgr : MonoBehaviour
     public void CreateNickName()
     {
         StartCoroutine(CreateNickNameCor(NickNameInputField.text));
-        ServerPanel.gameObject.SetActive(true);
+        SceneChanege.gameObject.SetActive(true);
 
     }
     IEnumerator CreateNickNameCor(string NickName)
@@ -243,7 +243,7 @@ public class FirebaseAuthMgr : MonoBehaviour
             }
             else
             {
-                ServerPanel.gameObject.SetActive(true);
+                SceneChanege.gameObject.SetActive(true);
 
             }
         }

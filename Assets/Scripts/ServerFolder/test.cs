@@ -34,7 +34,7 @@ public class test : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-       Debug.Log(FirebaseAuthMgr.user.DisplayName + "의 돈 : " + userMoney);
+       Debug.Log(FirebaseLoginMgr.user.DisplayName + "의 돈 : " + userMoney);
     }
 
 
@@ -48,11 +48,11 @@ public class test : MonoBehaviourPunCallbacks
             dbReference = FirebaseDatabase.DefaultInstance.RootReference;
             Debug.Log("ㅇㅇ12");
 
-            if (FirebaseAuthMgr.user != null)
+            if (FirebaseLoginMgr.user != null)
             {
-                SaveUserData(FirebaseAuthMgr.user.DisplayName, "money", userMoney + 10000);
-                userMoney = await LoadUserDataAsync(FirebaseAuthMgr.user.DisplayName, "money", 1);
-                Debug.Log("유저 닉네임 : " + FirebaseAuthMgr.user.DisplayName);
+                SaveUserData(FirebaseLoginMgr.user.DisplayName, "money",12000);
+                userMoney = await LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", userMoney);
+                Debug.Log("유저 닉네임 : " + FirebaseLoginMgr.user.DisplayName);
                 Debug.Log("유저 돈 : " + userMoney);
             }
             else

@@ -1,3 +1,4 @@
+//ÃÖµ¿¿À
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ using Photon;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PhotonRoomMgr : MonoBehaviourPunCallbacks
+//½Ì±ÛÅæ
+public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 {
     public InputField createRoomInput;
     public InputField joinRoomInput;
@@ -22,8 +24,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
     {
         //¼­¹ö ¿¬°á
         PhotonNetwork.ConnectUsingSettings();
-        roomPanels.SetActive(true);
-        serverPanel.SetActive(false);
+        serverPanel.gameObject.SetActive(true);
     }
 
     
