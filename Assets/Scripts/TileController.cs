@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class TileController : MonoBehaviour
+public class TileController : MonoBehaviour,IPointerClickHandler
 {
 
     [Header("타일 키값")] public int _tileKey;
@@ -25,12 +26,21 @@ public class TileController : MonoBehaviour
     [Header("타일 3번 건물 가격")] public int _tileHotelPrice;
     [Header("랜드마크 가격")] public int _tileLandMarkPrice;
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("타일 이름 : " + _tileName);
+        Debug.Log("타일 타입 : " + _tileType);
+        Debug.Log("땅 소유주 : " + _tileLandOwner);
+        Debug.Log("타일 땅 가격 : " + _tileLandPrice);
+    }
+
     // 타일 정보를 설정하는 메서드
     public void SetTileData(TileInfoData data)
     {
         _tileKey = data._tileKey;
         _tileName = data._tileName;
         transform.position = data._tilePos;
+        _tilePos = data._tilePos;
         _tileType = data._tileType;
 
         // 타일 색상 적용 (MeshRenderer가 있다고 가정)
