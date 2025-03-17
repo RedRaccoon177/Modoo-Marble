@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviour
             }
             else if (_playerPosIndex + count == 0)
             {
-                Debug.Log("```````````````````````");
                 StartPointPass();
             }
             yield return new WaitForSeconds(0.1f);
