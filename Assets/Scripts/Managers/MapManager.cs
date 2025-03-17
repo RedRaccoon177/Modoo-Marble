@@ -44,9 +44,12 @@ public class MapManager : MonoBehaviour
 
             // TileController를 가져와서 데이터 적용
             TileController tileScript = _temp.GetComponent<TileController>();
+            TileBuyUI tileBuyUI = _temp2.GetComponent<TileBuyUI>();
+
             if (tileScript != null)
             {
                 tileScript.SetTileData(_tiledates[i]); // 데이터 적용
+                tileBuyUI.SetTileData(_tiledates[i]);
             }
             else
             {
