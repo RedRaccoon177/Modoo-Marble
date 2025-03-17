@@ -22,3 +22,8 @@ MonoBehaviour:
   _tileHotelOwner: 0
   _tileLandMarkOwner: 0
   _tilePriceColor: 0
+  _tileLandPrice: 0
+  _tilePensionPrice: 0
+  _tileCondoPrice: 0
+  _tileHotelPrice: 0
+  _tileLandMarkPrice: 0

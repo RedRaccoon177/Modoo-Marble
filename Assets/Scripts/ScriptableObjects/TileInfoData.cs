@@ -38,5 +38,11 @@ public class TileInfoData : ScriptableObject
     [Header("타일 3번 건물 가격")] public int _tileHotelPrice;
     [Header("랜드마크 가격")] public int _tileLandMarkPrice;
 
+    [Separator]
+    [Header("타일 땅 통행료")] public int _tileLandToll;
+    [Header("타일 1번 건물 통행료")] public int _tilePensionToll;
+    [Header("타일 2번 건물 통행료")] public int _tileCondoToll;
+    [Header("타일 3번 건물 통행료")] public int _tileHotelToll;
+    [Header("랜드마크 통행료")] public int _tileLandMarkToll;
 
 }
