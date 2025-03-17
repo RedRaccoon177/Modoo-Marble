@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour//임시 클래스
 {
     public event Action OnDataChanged; 
 
@@ -20,9 +20,9 @@ public class Player : MonoBehaviour
         OnDataChanged?.Invoke(); 
     }
 
-    public void UpdateExtraAssets(int newExtraAssets)
+    public void UpdateExtraMoney(int newExtraMoney)
     {
-        extraMoney = newExtraAssets;
+        extraMoney = newExtraMoney;
         OnDataChanged?.Invoke(); 
     }
 
