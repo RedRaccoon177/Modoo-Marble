@@ -2551,6 +2551,7 @@ GameObject:
   - component: {fileID: 6065049154907087792}
   - component: {fileID: 5136675498042696535}
   - component: {fileID: 9006465735845429330}
+  - component: {fileID: 1853682334994844163}
   m_Layer: 5
   m_Name: BuyBuildingUI
   m_TagString: Untagged
@@ -2583,8 +2584,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -451.1655, y: -41.322388}
-  m_SizeDelta: {x: 200.1997, y: 268.4784}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 268.4784}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5136675498042696535
 CanvasRenderer:
@@ -2624,6 +2625,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1853682334994844163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499039379688627236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 333378eec127b0d4ca832d7633a91be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileName: {fileID: 512685250681404288}
+  _tileLandPrice: {fileID: 5880668378450288455}
+  _tilePensionPrice: {fileID: 4891085817742832565}
+  _tileCondoPrice: {fileID: 6767239795736583131}
+  _tileHotelPrice: {fileID: 6305471841633091903}
+  _tileToll: {fileID: 3574236908453778370}
+  _tileTotalCost: {fileID: 1134954735165419776}
+  _playerMoney: {fileID: 1008203119972701063}
 --- !u!1 &4639574736957484156
 GameObject:
   m_ObjectHideFlags: 0
