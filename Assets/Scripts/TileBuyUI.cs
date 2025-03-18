@@ -23,7 +23,6 @@ public class TileBuyUI : MonoBehaviour
         gameManager.OnValueChanged += SetTileData;
     }
 
-
     public void SetTileData(TileController data)
     {
         if (data == null) return;

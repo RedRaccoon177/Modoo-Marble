@@ -805,7 +805,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a714c699cbf9d48b427da7e5283fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileBuyUI: {fileID: 1853682334994844163, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
+  _tileGroundBuyUI: {fileID: 1853682334994844163, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
+  _tileSeaBuyUI: {fileID: 3733452599913366, guid: bf315e79811f7cf4a903f8dfcfefaf84, type: 3}
   _tileParent: {fileID: 131538669}
   _clickUI: {fileID: 0}
 --- !u!1 &1220694346
