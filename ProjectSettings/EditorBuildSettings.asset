@@ -9,14 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/LoginScene.unity
     guid: fb3aafedb9e7375429dc6a0fb2e46f69
   - enabled: 1
+    path: Assets/Scenes/RoomScene.unity
+    guid: 016c2327fbd1a1b48a884122755e3ca1
+  - enabled: 1
     path: Assets/Scenes/ServerScene.unity
     guid: 9aa9f3b2739e64c42b1988a7762523ac
   - enabled: 1
     path: Assets/Scenes/testIngameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/RoomScene.unity
-    guid: 016c2327fbd1a1b48a884122755e3ca1
   - enabled: 1
     path: Assets/Scenes/PlayerMoveTest.unity
     guid: 67603900a77fd024b9ea7fa8d152ef21

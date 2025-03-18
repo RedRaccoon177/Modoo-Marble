@@ -4,28 +4,52 @@ using UnityEngine;
 using Photon.Pun;
 using Photon;
 using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using Photon.Pun.Demo.Procedural;
 using UnityEngine.UI;
+using Photon.Realtime;
 
 
 
 //마스터 턴이있고
 //턴이 지나면 마스터가 턴을 +1함
 //내턴일때만 사용가능
-public class PlayerMoveTest : MonoBehaviourPunCallbacks
+public class PlayerMoveTest : Singleton<PlayerMoveTest>
 {
-    int currentTurn = 1;
+    static public int currentTurn = 1;
+    public GameObject playerfabs;
+
+    static public int CurrentTurn
+    {
+        get
+        {
+            return currentTurn;
+        }
+        set
+        {
+            if (value <= 0)
+            {
+                currentTurn = 1;
+            }
+            else
+            {
+                currentTurn = value;
+            }
+        }
+    }
+
+
+
 
     public Text playerTurnText;
     public Text currentTurnText;
 
     private void Start()
     {
+        PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
         if (PhotonNetwork.IsMasterClient)
         {
-            currentTurn = PhotonNetwork.IsMasterClient ? 1 : 1;
+            CurrentTurn = PhotonNetwork.IsMasterClient ? 1 : 1;
         }
 
     }
@@ -35,37 +59,42 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
     {
         //지금 누구 턴?
         currentTurnText.text = currentTurn.ToString();
-
-        //내턴일때만
-        if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurn && Input.GetKeyDown(KeyCode.W))
-        {
-            photonView.RPC("playerMove", RpcTarget.All);
-        }
     }
 
 
-    [PunRPC]
-    void playerMove()
-    {
-        transform.Translate(5 * Time.deltaTime, 0, 0);
-    }
+   
 
     public void endTurn()
     {
         //내턴일때만 턴넘김 
-        if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurn)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {
-            photonView.RPC("NextTurn", RpcTarget.All);
+
+            try
+            {
+                if (photonView == null)
+                {
+                    Debug.LogError("photonView가 null입니다!");
+                    return;
+                }
+                photonView.RPC("NextTurn", RpcTarget.All);
+
+            }
+            catch (System.Exception DD)
+            {
+                Debug.Log(DD);
+            }
         }
     }
 
     [PunRPC]
     void NextTurn()
     {
-        currentTurn = (currentTurn + 1 ) % PhotonNetwork.PlayerList.Length;
+        CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1);
     }
+   
 
-
+     
 
 
 
