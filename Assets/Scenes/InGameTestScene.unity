@@ -349,8 +349,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 3699882789391996105, guid: 22d25cf25389a3a408fd3bbdc89f3cfb, type: 3}
-  _tileBuyUI: {fileID: 4499039379688627236, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
-  _tileParent: {fileID: 131538669}
   _tiles:
   - {fileID: 0}
   - {fileID: 0}
@@ -807,7 +805,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05a714c699cbf9d48b427da7e5283fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buyUI: {fileID: 4499039379688627236, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
+  _tileBuyUI: {fileID: 1853682334994844163, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
+  _tileParent: {fileID: 131538669}
+  _clickUI: {fileID: 0}
 --- !u!1 &1220694346
 GameObject:
   m_ObjectHideFlags: 0

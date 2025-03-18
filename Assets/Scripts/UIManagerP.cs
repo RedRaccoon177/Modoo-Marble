@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class UIManagerP : MonoBehaviour
 {
-    [Header("토지 UI")] public GameObject _buyUI; 
+    [Header("토지 UI")]
+    public TileBuyUI _tileBuyUI;
+
+    [Header("타일 UI 생성될 곳")]
+    [SerializeField] Transform _tileParent;
+
     [Header("클릭시 토지 UI")] public GameObject _clickUI; 
 
 
     void Start()
     {
-        
+        TileBuyUI _temp = Instantiate(_tileBuyUI, _tileParent);
     }
 
     void Update()

@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     double _money; 
     int _mapTurn; // 맵을 몇 바퀴 돌앗는지
     List<TileController> _playerGroundLists; // 가지고 있는 건물 리스트
+
     public void IncreaseMoney(double money)
     {
         _money += money;
@@ -20,14 +21,17 @@ public class PlayerManager : MonoBehaviour
     {
         _money -= money;
     }
+
     public double GetMoney()
     {
         return _money;
     }
+    
     public void MapTurn()
     {
         _mapTurn++;
     }
+    
     public void PrintPlayerGroundLists()
     {
         foreach (var item in _playerGroundLists)
@@ -35,6 +39,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log(item);
         }
     }
+    
     // 
     public void AddPlayerGroundLists(TileController tileController)
     {
