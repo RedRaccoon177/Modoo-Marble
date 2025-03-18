@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -802,13 +802,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220132947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05a714c699cbf9d48b427da7e5283fb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ea923d7e24e5e04fa195d7351e659e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _tileGroundBuyUI: {fileID: 1853682334994844163, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
   _tileSeaBuyUI: {fileID: 3733452599913366, guid: bf315e79811f7cf4a903f8dfcfefaf84, type: 3}
-  _tileParent: {fileID: 131538669}
-  _clickUI: {fileID: 0}
+  _tileParent: {fileID: 2004488151}
+  _clickUI: {fileID: 4188171647600667817, guid: c142aa39862cc174a8b516598dc943e9, type: 3}
 --- !u!1 &1220694346
 GameObject:
   m_ObjectHideFlags: 0
