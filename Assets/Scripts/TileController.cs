@@ -92,4 +92,9 @@ public class TileController : MonoBehaviour
             default: return Color.white;
         }
     }
+
+    public void ChangeTileData()
+    {
+        //TODO: 2중 옵저버 패턴
+    }
 }

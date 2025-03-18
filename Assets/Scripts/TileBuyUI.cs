@@ -16,8 +16,17 @@ public class TileBuyUI : MonoBehaviour
     [Header("총 구매 비용")] public TextMeshProUGUI _tileTotalCost;
     [Header("보유 현금")] public TextMeshProUGUI _playerMoney;
 
+    void Start()
+    {
+        // GameManager의 OnValueChanged 이벤트 구독
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        gameManager.OnValueChanged += SetTileData;
+    }
+
     public void SetTileData(TileController data)
     {
+        if (data == null) return;
+
         _tileName.text = data._tileName;
         _tileLandPrice.text = data._tileLandPrice.ToString();
         _tilePensionPrice.text = data._tilePensionPrice.ToString();
