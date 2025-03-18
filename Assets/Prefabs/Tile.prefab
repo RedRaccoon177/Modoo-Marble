@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5508504248435723196}
   - component: {fileID: 3460822718031046038}
   - component: {fileID: 4859121585563102265}
+  - component: {fileID: -7105071037113260314}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -118,5 +119,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4eda50d29f8b6549bd3ae2cceac9fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: 
-  tileType: 0
+  _tileKey: 0
+  _tileName: 
+  _tilePos: {x: 0, y: 0, z: 0}
+  _tileType: 0
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
+  _tilePriceColor: 0
+  _tileLandPrice: 0
+  _tilePensionPrice: 0
+  _tileCondoPrice: 0
+  _tileHotelPrice: 0
+  _tileLandMarkPrice: 0
+  _tileLandToll: 0
+  _tilePensionToll: 0
+  _tileCondoToll: 0
+  _tileHotelToll: 0
+  _tileLandMarkToll: 0
+--- !u!114 &-7105071037113260314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699882789391996105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5567bde15492354ca10efdb3c2b5f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
