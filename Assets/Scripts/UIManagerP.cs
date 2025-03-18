@@ -11,8 +11,10 @@ public class UIManagerP : MonoBehaviour
     [Header("광광지 구매 UI")]
     public TileSeaBuyUI _tileSeaBuyUI;
     [Header("타일 UI 생성 될 곳")]
-    [SerializeField] Transform _tileParent;
-    [Header("클릭시 토지 UI")] public GameObject _clickUI; 
+    [SerializeField] Transform _tileUIParent;
+    [SerializeField] Transform canvus;
+    [Header("클릭시 뜨는 토지 UI")] public GameObject _clickGroundUI; 
+    [Header("클릭시 뜨는 관광지 UI")] public GameObject _clickSeaUI; 
     public event Action<TileController> _clickEvenetGround;
 
 
@@ -25,9 +27,33 @@ public class UIManagerP : MonoBehaviour
     }
     private void Start()
     {
+
         CreateClickUI();
-        TileBuyUI _temp0 = Instantiate(_tileGroundBuyUI, _tileParent);
+        CreateUI();
+        OffBuyUIPanel();
+        OffClickUIPanel();
     }
+    public void OnBuyUIPanel()
+    {
+        _tileUIParent.gameObject.SetActive(true);
+    }
+    public void OffBuyUIPanel()
+    {
+        _tileUIParent.gameObject.SetActive(false);
+    }
+    public void OnClcikUIPanel()
+    {
+        _clickGroundUI.SetActive(true);
+    }
+    public void OffClickUIPanel()
+    {
+        _clickGroundUI.SetActive(false);
+    }
+    public void CreateUI()
+    {
+        var temp = Instantiate(_tileGroundBuyUI, _tileUIParent);
+    }
+
     #region
     //public void CreateClickUI()
     //{
@@ -47,7 +73,7 @@ public class UIManagerP : MonoBehaviour
     #endregion
     public void CreateClickUI()
     {
-        Instantiate(_clickUI, _tileParent);
+        _clickGroundUI = Instantiate(_clickGroundUI, canvus);
     }
 
     public void OnPopupGround(TileController _tileController)
