@@ -16,7 +16,7 @@ public class TileBuyUI : MonoBehaviour
     [Header("총 구매 비용")] public TextMeshProUGUI _tileTotalCost;
     [Header("보유 현금")] public TextMeshProUGUI _playerMoney;
 
-    public void SetTileData(TileInfoData data)
+    public void SetTileData(TileController data)
     {
         _tileName.text = data._tileName;
         _tileLandPrice.text = data._tileLandPrice.ToString();

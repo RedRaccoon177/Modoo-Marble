@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     UIManagerP _uiManagerP;
 
+
     private void Start()
     {
         _playerManager = FindObjectOfType<PlayerManager>();
@@ -72,12 +73,16 @@ public class GameManager : MonoBehaviour
         // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
+        _uiManagerP._tileBuyUI.SetTileData(_mapInfo._tiles[_playerPosIndex].GetComponent<TileController>());
 
         //_uiManagerP._buyUI.
-        //TODO: 도착한 타일의 화면을 출력해야 한다.
-        Debug.Log(_mapInfo._tiles[_playerPosIndex]);
-        //타일 ui프리펩 안에 들어간 스크립트함수에서 값을 다 받아서 선언해버리자.
-
+        //TODO: 도착한 타일의 팝업을 출력시킨다.
+        //1. 1개의 팝업을 만든다.
+        //2. 만들어진 팝업에 data를 삽입시킨다.
+        //3. 팝업의 위치 좌표를 정 가운데로 가져온다.
+        //4. buy 버튼을 클릭하면 좌표를 날려버린다.
+        Debug.Log(_mapInfo._tiles[_playerPosIndex].GetComponent<TileController>());
+        
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
