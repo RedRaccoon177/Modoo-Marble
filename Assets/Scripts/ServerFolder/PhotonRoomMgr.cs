@@ -57,7 +57,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     }
     public void QuitRoom()
     {
-        PhotonNetwork.LeaveLobby();
+        PhotonNetwork.LeaveRoom();
         Debug.Log("룸나감");
 
     }
@@ -65,6 +65,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     public override void OnConnectedToMaster()
     {
         Debug.Log("서버 연결 완료");
+        PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
         PhotonNetwork.JoinLobby();
     }
     public override void OnDisconnected(DisconnectCause cause)

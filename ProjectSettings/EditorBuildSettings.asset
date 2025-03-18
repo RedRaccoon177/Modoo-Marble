@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayerMoveTest.unity
     guid: 67603900a77fd024b9ea7fa8d152ef21
+  - enabled: 1
+    path: Assets/Scenes/InGameRoomScene.unity
+    guid: f460ad4f0903e194994fff4db1fe6550
   m_configObjects: {}
