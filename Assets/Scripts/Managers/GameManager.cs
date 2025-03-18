@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     UIManagerP _uiManagerP;
 
+    public event Action<TileController> OnValueChanged;    //값이 변경될 때 발생하는 이벤트
 
     private void Start()
     {
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
         // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
-        _uiManagerP._tileBuyUI.SetTileData(_mapInfo._tiles[_playerPosIndex].GetComponent<TileController>());
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
         //_uiManagerP._buyUI.
         //TODO: 도착한 타일의 팝업을 출력시킨다.
@@ -81,8 +82,14 @@ public class GameManager : MonoBehaviour
         //2. 만들어진 팝업에 data를 삽입시킨다.
         //3. 팝업의 위치 좌표를 정 가운데로 가져온다.
         //4. buy 버튼을 클릭하면 좌표를 날려버린다.
-        Debug.Log(_mapInfo._tiles[_playerPosIndex].GetComponent<TileController>());
-        
+
+        // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
+        TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
+        OnValueChanged?.Invoke(currentTile);
+        Debug.Log(currentTile);
+
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
