@@ -123,7 +123,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3176815206964504923}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTileLandCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &251425464487708572
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,7 +775,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3904751786545706117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTilePensionCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1051586480445741372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,7 +1629,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7236283613165755574}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTileCondoCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2389499901777749903
 GameObject:
   m_ObjectHideFlags: 0
@@ -2637,6 +2673,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333378eec127b0d4ca832d7633a91be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playeTempMoney: 100
+  _buyTileLandCheck: 0
+  _buyTilePensionCheck: 0
+  _buyTileCondoCheck: 0
+  _buyTileHotelCheck: 0
+  _buyTileLandBtn: {fileID: 7004571724987840629}
+  _buyTilePensionBtn: {fileID: 6856578354912691859}
+  _buyTileCondoBtn: {fileID: 912535915725009261}
+  _buyTileHotelBtn: {fileID: 7746184815601710086}
   _tileName: {fileID: 512685250681404288}
   _tileLandPrice: {fileID: 5880668378450288455}
   _tilePensionPrice: {fileID: 4891085817742832565}
@@ -2645,6 +2690,11 @@ MonoBehaviour:
   _tileToll: {fileID: 3574236908453778370}
   _tileTotalCost: {fileID: 1134954735165419776}
   _playerMoney: {fileID: 1008203119972701063}
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
 --- !u!1 &4639574736957484156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,7 +3146,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2555785950258808952}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4499039379688627236}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5144914201196339474
 GameObject:
   m_ObjectHideFlags: 0
@@ -4383,7 +4445,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8202003601044638434}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTileHotelCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8953244861267421148
 GameObject:
   m_ObjectHideFlags: 0

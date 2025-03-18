@@ -17,16 +17,14 @@ public class GameManager : MonoBehaviour
     //플레이어 정보
     PlayerManager _playerManager;
 
-    UIManagerP _uiManagerP;
-
-    public event Action<TileController> OnValueChanged;    //값이 변경될 때 발생하는 이벤트
+    //값이 변경될 때 발생하는 이벤트
+    public event Action<TileController> OnTilePopupChange;
 
     private void Start()
     {
         _playerManager = FindObjectOfType<PlayerManager>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
-        _uiManagerP = FindObjectOfType<UIManagerP>();
     }
 
     private void Update()
@@ -85,8 +83,7 @@ public class GameManager : MonoBehaviour
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        OnValueChanged?.Invoke(currentTile);
-        Debug.Log(currentTile);
+        OnTilePopupChange?.Invoke(currentTile);
 
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

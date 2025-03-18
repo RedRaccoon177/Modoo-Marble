@@ -20,22 +20,24 @@ public class TileController : MonoBehaviour
     [Header("지역 가격 색상 타입")] public int _tilePriceColor;
 
     [Separator]
-    [Header("타일 땅 가격")] public int _tileLandPrice;
-    [Header("타일 1번 건물 가격")] public int _tilePensionPrice;
-    [Header("타일 2번 건물 가격")] public int _tileCondoPrice;
-    [Header("타일 3번 건물 가격")] public int _tileHotelPrice;
-    [Header("랜드마크 가격")] public int _tileLandMarkPrice;
+    [Header("타일 땅 가격")] public double _tileLandPrice;
+    [Header("타일 1번 건물 가격")] public double _tilePensionPrice;
+    [Header("타일 2번 건물 가격")] public double _tileCondoPrice;
+    [Header("타일 3번 건물 가격")] public double _tileHotelPrice;
+    [Header("랜드마크 가격")] public double _tileLandMarkPrice;
 
     [Separator]
-    [Header("타일 땅 통행료")] public int _tileLandToll;
-    [Header("타일 1번 건물 통행료")] public int _tilePensionToll;
-    [Header("타일 2번 건물 통행료")] public int _tileCondoToll;
-    [Header("타일 3번 건물 통행료")] public int _tileHotelToll;
-    [Header("랜드마크 통행료")] public int _tileLandMarkToll;
+    [Header("타일 땅 통행료")] public double _tileLandToll;
+    [Header("타일 1번 건물 통행료")] public double _tilePensionToll;
+    [Header("타일 2번 건물 통행료")] public double _tileCondoToll;
+    [Header("타일 3번 건물 통행료")] public double _tileHotelToll;
+    [Header("랜드마크 통행료")] public double _tileLandMarkToll;
 
-
-   
-    // 타일 정보를 설정하는 메서드
+    void Start()
+    {
+        TileBuyUI tileBuyUI = FindObjectOfType<TileBuyUI>();
+        //tileBuyUI.OnTileValueChange += ChangeTileData();
+    }
 
     /// <summary>
     /// 타일에 데이터 저장
@@ -95,8 +97,12 @@ public class TileController : MonoBehaviour
         }
     }
 
-    public void ChangeTileData()
-    {
-        //TODO: 2중 옵저버 패턴
-    }
+    //public void ChangeTileData(int data)
+    //{
+    //    _tileLandOwner = data._tileLandOwner;
+    //    _tilePensionOwner = data._tilePensionOwner;
+    //    _tileCondoOwner = data._tileCondoOwner;
+    //    _tileHotelOwner = data._tileHotelOwner;
+    //    _tileLandMarkOwner = data._tileLandMarkOwner;
+    //}
 }
