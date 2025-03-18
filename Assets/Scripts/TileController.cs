@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,6 +32,7 @@ public class TileController : MonoBehaviour
     [Header("타일 2번 건물 통행료")] public int _tileCondoToll;
     [Header("타일 3번 건물 통행료")] public int _tileHotelToll;
     [Header("랜드마크 통행료")] public int _tileLandMarkToll;
+
 
    
     // 타일 정보를 설정하는 메서드
