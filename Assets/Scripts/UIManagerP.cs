@@ -11,8 +11,14 @@ public class UIManagerP : MonoBehaviour
     [Header("광광지 구매 UI")]
     public TileSeaBuyUI _tileSeaBuyUI;
     [Header("타일 UI 생성 될 곳")]
+
+
     [SerializeField] Transform _tileParent;
-    [Header("클릭시 토지 UI")] public GameObject _clickUI; 
+
+
+    [Header("클릭시 토지 UI")] public GameObject _clickUI;
+    [Header("클릭시 관광지 UI")] public GameObject TouristClickUI;
+
     public event Action<TileController> _clickEvenetGround;
 
 
@@ -26,6 +32,7 @@ public class UIManagerP : MonoBehaviour
     private void Start()
     {
         CreateClickUI();
+        ClickTouristUI();
         TileBuyUI _temp0 = Instantiate(_tileGroundBuyUI, _tileParent);
     }
     #region
@@ -48,6 +55,11 @@ public class UIManagerP : MonoBehaviour
     public void CreateClickUI()
     {
         Instantiate(_clickUI, _tileParent);
+    }
+
+    public void ClickTouristUI()
+    {
+        Instantiate(TouristClickUI, _tileParent);
     }
 
     public void OnPopupGround(TileController _tileController)
