@@ -609,7 +609,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebff99fe4bf459d44917d8fd01e2f12f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileName: {fileID: 5843548292724568244}
+  AreaName: {fileID: 5843548292724568244}
+  GroundPrice: {fileID: 2530831311732338170}
+  Visit1: {fileID: 3199106127487986107}
+  Visit2: {fileID: 3568899198575432350}
+  Visit3: {fileID: 5307043844625982633}
+  Visit4: {fileID: 6867116784466664435}
+  VisitNumber: {fileID: 1732017229177602010}
+  CurrentToll: {fileID: 624871656236401092}
 --- !u!1 &1239167054637488114
 GameObject:
   m_ObjectHideFlags: 0

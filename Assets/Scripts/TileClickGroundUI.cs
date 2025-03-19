@@ -9,6 +9,13 @@ public class TileClickGroundUI : MonoBehaviour
     [Header("콘도 건물 가격")] public TextMeshProUGUI _tileCondoPrice;
     [Header("호텔 건물 가격")] public TextMeshProUGUI _tileHotelPrice;
 
+    //추가
+    [Header("건물")] public TextMeshProUGUI Building;
+    [Header("올림픽")] public TextMeshProUGUI Olympics;
+    [Header("축제")] public TextMeshProUGUI Festivities;
+    [Header("독점")] public TextMeshProUGUI Monopolize;
+    [Header("기타")] public TextMeshProUGUI Etc;
+
     [Separator]
     [Header("통행료")] public TextMeshProUGUI _tileToll;
     private void Awake()
@@ -22,6 +29,14 @@ public class TileClickGroundUI : MonoBehaviour
         _tilePensionPrice.text = data._tilePensionPrice.ToString();
         _tileCondoPrice.text = data._tileCondoPrice.ToString();
         _tileHotelPrice.text = data._tileHotelPrice.ToString();
-        // 총 통행료 넣어야함
+
+        //Building.text = data.<건물값넣기>.ToString();
+        //Olympics.text = data.<올림픽값넣기>.ToString();
+        //Festivities.text = data.<축제값넣기>.ToString();
+        //Monopolize.text = data.<독점값넣기>.ToString();
+        //Etc.text = data.<기타값넣기>.ToString();
+
+        //_tileToll.text = data.<통행료값넣기>.ToString();
+
     }
 }
