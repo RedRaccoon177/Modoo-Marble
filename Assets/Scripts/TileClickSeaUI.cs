@@ -20,10 +20,6 @@ public class TileClickSea : MonoBehaviour
         UIManagerP.instance._clickEvenetGround += SetTileData;
     }
 
-    private void Start()
-    {
-        UIManagerP.instance._clickEvenetSea += SetTileData;
-    }
     public void SetTileData(TileController data)
     {
         AreaName.text = data._tileName;

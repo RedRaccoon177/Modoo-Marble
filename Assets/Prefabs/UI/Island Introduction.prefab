@@ -4023,6 +4023,7 @@ GameObject:
   - component: {fileID: 1769901125666135822}
   - component: {fileID: 6153690879671603480}
   - component: {fileID: 4293737242463489942}
+  - component: {fileID: 242450679656312797}
   m_Layer: 5
   m_Name: Check
   m_TagString: Untagged
@@ -4132,3 +4133,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &242450679656312797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9003979165628161579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1d71b6f58a56f46b82be534fbc9f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
