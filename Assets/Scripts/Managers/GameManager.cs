@@ -17,16 +17,14 @@ public class GameManager : MonoBehaviour
     //플레이어 정보
     PlayerManager _playerManager;
 
-    UIManagerP _uiManagerP;
-
-    public event Action<TileController> OnValueChanged;    //값이 변경될 때 발생하는 이벤트
+    //값이 변경될 때 발생하는 이벤트
+    public event Action<TileController> OnTilePopupChange;
 
     private void Start()
     {
         _playerManager = FindObjectOfType<PlayerManager>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
-        _uiManagerP = FindObjectOfType<UIManagerP>();
     }
 
     private void Update()
@@ -35,7 +33,7 @@ public class GameManager : MonoBehaviour
         {
             if (_playerMoveCor == null) // 현재 이동 중이 아니면 실행
             {
-                _playerMoveCor = StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
+                StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
             }
         }
     }
@@ -51,8 +49,11 @@ public class GameManager : MonoBehaviour
 
         while (count < num) // 주사위 값(num)만큼 반복
         {
+            count++;
+            Debug.Log("플레이어 현재 위치 인덱스 : " + (_playerPosIndex + count));
 
             // 플레이어를 해당 타일의 위치로 이동
+            _playerManager.transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
 
             // 만약 맵의 끝(39번 타일)을 넘으면 0번으로 돌아감
             if ((_playerPosIndex + count) >= 39)
@@ -64,9 +65,7 @@ public class GameManager : MonoBehaviour
             {
                 StartPointPass();
             }
-            count++;
-            _playerManager.transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
-            Debug.Log("플레이어 현재 위치 인덱스 : " + (_playerPosIndex + count));
+
             yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다음 이동
         }
 
@@ -84,9 +83,7 @@ public class GameManager : MonoBehaviour
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        OnValueChanged?.Invoke(currentTile);
-        UIManagerP.instance.OnBuyUIPanel();
-        Debug.Log(currentTile);
+        OnTilePopupChange?.Invoke(currentTile);
 
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
