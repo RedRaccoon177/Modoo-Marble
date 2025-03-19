@@ -36,8 +36,18 @@ public class TileController : MonoBehaviour
     GameObject _ground;
     GameObject _Sea;
 
+    void Awake()
+    {
+        TileBuyUI tileBuyUI = FindObjectOfType<TileBuyUI>(); // (가능하면 개선 필요)
+        if (tileBuyUI != null)
+        {
+            tileBuyUI.OnTileValueChange -= ChangeTileData;
+            tileBuyUI.OnTileValueChange += ChangeTileData;
+        }
+    }
 
-    private void Start()
+
+    void Start()
     {
         _ground = transform.GetChild(0).gameObject;
         _Sea = transform.GetChild(1).gameObject;
@@ -109,11 +119,12 @@ public class TileController : MonoBehaviour
         }
     }
 
-    public void ChangeTileData(int Landowner, int PensionOwner, int CondoOwner, int HotelOwner)
+    public void ChangeTileData(TileController tile)
     {
-        _tileLandOwner = Landowner;
-        _tilePensionOwner = PensionOwner;
-        _tileCondoOwner = CondoOwner;
-        _tileHotelOwner = HotelOwner;
+        Debug.Log("ChangeTileData 호출됨!"); // 디버깅 로그 추가
+        _tileLandOwner = tile._tileLandOwner;
+        _tilePensionOwner = tile._tilePensionOwner;
+        _tileCondoOwner = tile._tileCondoOwner;
+        _tileHotelOwner = tile._tileHotelOwner;
     }
 }

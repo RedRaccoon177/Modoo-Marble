@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     PlayerManager _playerManager;
 
     //값이 변경될 때 발생하는 이벤트
-    public event Action<TileController> OnTilePopupChange;
+    public event Action<TileController> OnTilePopupDataChange;
 
     private void Start()
     {
@@ -72,20 +72,9 @@ public class GameManager : MonoBehaviour
         // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-        //_uiManagerP._buyUI.
-        //TODO: 도착한 타일의 팝업을 출력시킨다.
-        //1. 1개의 팝업을 만든다.
-        //2. 만들어진 팝업에 data를 삽입시킨다.
-        //3. 팝업의 위치 좌표를 정 가운데로 가져온다.
-        //4. buy 버튼을 클릭하면 좌표를 날려버린다.
-
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        OnTilePopupChange?.Invoke(currentTile);
-
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        OnTilePopupDataChange?.Invoke(currentTile);
 
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }

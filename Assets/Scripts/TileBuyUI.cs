@@ -56,11 +56,13 @@ public class TileBuyUI : MonoBehaviour
     // 타일 정보 변경 이벤트
     public event Action<TileController> OnTileValueChange;
 
+    private TileController _currentTile; // 현재 선택된 타일 저장
+
     void Awake()
     {
         // 게임 매니저에서 타일 데이터 변경 이벤트를 구독
         GameManager gameManager = FindObjectOfType<GameManager>();
-        gameManager.OnTilePopupChange += SetTileData;
+        gameManager.OnTilePopupDataChange += SetTileData;
     }
 
     void Start()
@@ -106,6 +108,8 @@ public class TileBuyUI : MonoBehaviour
         // 데이터가 없으면 바로 리턴 (안전장치)
         if (data == null) return;
 
+        _currentTile = data;
+
         // UI에 타일 정보 업데이트
         _tileName.text = data._tileName;
         _tileLandPrice.text = data._tileLandPrice.ToString();
@@ -147,17 +151,28 @@ public class TileBuyUI : MonoBehaviour
 
         // 버튼 클릭 이벤트 초기화 후 다시 연결
         Button[] buyButtons = { _buyTileLandBtn, _buyTilePensionBtn, _buyTileCondoBtn, _buyTileHotelBtn };
-        bool[] checkStates = { _isLandCheck, _isPensionCheck, _isCondoCheck, _isHotelCheck };
         Image[] checkImages = { _islandImage, _isPensionImage, _isCondoImage, _isHotelImage };
 
         for (int i = 0; i < buyButtons.Length; i++)
         {
             buyButtons[i].onClick.RemoveAllListeners();
             buyButtons[i].interactable = true; // 버튼 초기화 (클릭 가능하게)
+
             int index = i; // 람다 캡처 문제 방지
-            buyButtons[i].onClick.AddListener(() => ToggleButtonState(ref checkStates[index], checkImages[index]));
+
+            buyButtons[i].onClick.AddListener(() =>
+            {
+                switch (index)
+                {
+                    case 0: ToggleButtonState(ref _isLandCheck, _islandImage); break;
+                    case 1: ToggleButtonState(ref _isPensionCheck, _isPensionImage); break;
+                    case 2: ToggleButtonState(ref _isCondoCheck, _isCondoImage); break;
+                    case 3: ToggleButtonState(ref _isHotelCheck, _isHotelImage); break;
+                }
+            });
         }
     }
+
 
     private void UpdateTilePurchaseButtons(TileController data, PlayerManager playerManager)
     {
@@ -237,19 +252,15 @@ public class TileBuyUI : MonoBehaviour
 
     void BuyButtonClick()
     {
-        if (_isLandCheck) _tileLandOwner = _playerKey;
+        if (_currentTile == null) return; // 현재 선택된 타일이 없으면 리턴
 
-        if(_isPensionCheck) _tilePensionOwner = _playerKey;
+        _currentTile._tileLandOwner = _isLandCheck ? _playerKey : 0;
+        _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : 0;
+        _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : 0;
+        _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : 0;
 
-        if(_isCondoCheck) _tileCondoOwner = _playerKey;
-
-        if(_isHotelCheck) _tileHotelOwner = _playerKey;
-
-        Debug.Log(_isLandCheck);
+        OnTileValueChange?.Invoke(_currentTile); // 정확한 타일 데이터 전달
     }
-
-
-
 
 
 
