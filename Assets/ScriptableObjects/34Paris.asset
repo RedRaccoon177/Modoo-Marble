@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 34Paris
   m_EditorClassIdentifier: 
+  _subTileType: 34
   _tileKey: 34
   _tileName: "\uD30C\uB9AC"
   _tilePos: {x: -0.4, y: 0, z: -7.8}
   _tileType: 0
-  _subTileType: 34
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0
   _tileHotelOwner: 0
   _tileLandMarkOwner: 0
   _tilePriceColor: 0
-  _tileLandPrice: 0
-  _tilePensionPrice: 0
-  _tileCondoPrice: 0
-  _tileHotelPrice: 0
-  _tileLandMarkPrice: 0
-  _tileLandToll: 0
-  _tilePensionToll: 0
-  _tileCondoToll: 0
-  _tileHotelToll: 0
-  _tileLandMarkToll: 0
+  _tileLandPrice: 170000
+  _tilePensionPrice: 70000
+  _tileCondoPrice: 210000
+  _tileHotelPrice: 350000
+  _tileLandMarkPrice: 350000
+  _tileLandToll: 60000
+  _tilePensionToll: 130000
+  _tileCondoToll: 290000
+  _tileHotelToll: 620000
+  _tileLandMarkToll: 700000
