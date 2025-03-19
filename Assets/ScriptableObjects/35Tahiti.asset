@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 35Tahiti
   m_EditorClassIdentifier: 
+  _subTileType: 35
   _tileKey: 35
   _tileName: "\uD0C0\uD788\uD2F0"
-  _tilePos: {x: 0, y: 0, z: -5}
+  _tilePos: {x: -0.4, y: 0, z: -6.5}
   _tileType: 1
   _tileLandOwner: 0
   _tilePensionOwner: 0
@@ -22,13 +23,13 @@ MonoBehaviour:
   _tileHotelOwner: 0
   _tileLandMarkOwner: 0
   _tilePriceColor: 0
-  _tileLandPrice: 170000
-  _tilePensionPrice: 70000
-  _tileCondoPrice: 210000
-  _tileHotelPrice: 350000
-  _tileLandMarkPrice: 350000
-  _tileLandToll: 60000
-  _tilePensionToll: 130000
-  _tileCondoToll: 290000
-  _tileHotelToll: 620000
-  _tileLandMarkToll: 700000
+  _tileLandPrice: 0
+  _tilePensionPrice: 0
+  _tileCondoPrice: 0
+  _tileHotelPrice: 0
+  _tileLandMarkPrice: 0
+  _tileLandToll: 0
+  _tilePensionToll: 0
+  _tileCondoToll: 0
+  _tileHotelToll: 0
+  _tileLandMarkToll: 0

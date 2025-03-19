@@ -2,7 +2,16 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TileController : MonoBehaviour
+public partial class TileController : MonoBehaviour
+{
+    [Header("보조 타일 타입")] public SubTileType _subTileType;
+    [Header("보조 타일 타입")] public UnderTilePrefab subUnderTilePrefab;
+    [Header("보조 타일 타입")] public GameObject subTileParent;
+    [Header("보조 타일 타입")] public GameObject UnderPrefab;
+    [Header("보조 타일 타입")] public GameObject BuildPostions;
+}
+
+public partial class TileController : MonoBehaviour
 {
     [Header("타일 키값")] public int _tileKey;
     [Header("타일 이름")] public string _tileName;
@@ -71,6 +80,7 @@ public class TileController : MonoBehaviour
         _tilePos = data._tilePos;
         transform.position = _tilePos;
         _tileType = data._tileType;
+        _subTileType = data._subTileType;
 
         _tileLandOwner = data._tileLandOwner;
         _tilePensionOwner = data._tilePensionOwner;
