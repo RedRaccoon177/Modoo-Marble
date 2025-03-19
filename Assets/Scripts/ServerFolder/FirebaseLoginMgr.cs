@@ -70,6 +70,12 @@ public class FirebaseLoginMgr : MonoBehaviour
 
     }
 
+    public void CreateIdPanelFalse()
+    {
+        LoginUiPanel.gameObject.SetActive(true); 
+        CreateUiIdPanel.gameObject.SetActive(false);
+    }
+
     //닉네임패널로 넘어감
     public void NickNamePanel()
     {

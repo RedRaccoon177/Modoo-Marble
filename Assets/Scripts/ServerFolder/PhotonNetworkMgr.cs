@@ -20,13 +20,6 @@ public class PhotonNetworkMgr : Singleton<PhotonNetworkMgr>
 
     }
     
-  
-
-    public override void OnLeftRoom() //방 나가면 알아서 호출
-    {
-        Debug.Log("방나감");
-
-    }
 
     public void changeScene(string SceneName)
     {
