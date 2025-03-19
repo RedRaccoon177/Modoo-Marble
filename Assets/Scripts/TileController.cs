@@ -51,9 +51,6 @@ public class TileController : MonoBehaviour
         }
     }
 
-
-    // 타일 정보를 설정하는 메서드
-
     /// <summary>
     /// 타일에 데이터 저장
     /// </summary>
@@ -112,8 +109,11 @@ public class TileController : MonoBehaviour
         }
     }
 
-    public void ChangeTileData()
+    public void ChangeTileData(int Landowner, int PensionOwner, int CondoOwner, int HotelOwner)
     {
-        //TODO: 2중 옵저버 패턴
+        _tileLandOwner = Landowner;
+        _tilePensionOwner = PensionOwner;
+        _tileCondoOwner = CondoOwner;
+        _tileHotelOwner = HotelOwner;
     }
 }

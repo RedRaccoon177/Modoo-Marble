@@ -9,11 +9,6 @@ public class MapManager : MonoBehaviour
     [Header("타일 프리팹")]
     [SerializeField] GameObject _tilePrefab;
 
-    //[Header("타일 구매 UI")]
-    //[SerializeField] GameObject _tileBuyUI;
-    //[Header("타일 UI 생성될 곳")]
-    //[SerializeField] Transform _tileParent;
-
     // 생성된 타일 오브젝트를 저장하는 배열
     [Header("실제 땅")]
     [SerializeField] public GameObject[] _tiles = new GameObject[40];
@@ -38,20 +33,14 @@ public class MapManager : MonoBehaviour
             // 프리팹을 생성하고 위치를 설정
             GameObject _temp = Instantiate(_tilePrefab);
             
-            //GameObject _temp2 = Instantiate(_tileBuyUI, _tileParent);
-
             _temp.transform.position = _tiledates[i]._tilePos;
 
             // TileController를 가져와서 데이터 적용
             TileController tileScript = _temp.GetComponent<TileController>();
             
-            //TileBuyUI tileBuyUI = _temp2.GetComponent<TileBuyUI>();
-
             if (tileScript != null)
             {
                 tileScript.SetTileData(_tiledates[i]); // 데이터 적용
-                
-                //tileBuyUI.SetTileData(_tiledates[i]);
             }
             else
             {

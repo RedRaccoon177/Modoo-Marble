@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public int userMoney = 0;
     bool isLoan; // 대출여부
     // 게임 안에서 사용되는 돈 , 데이터 베이스 에서 돈을 가져올거임(300만원)
-    double _money = 100000; 
+    public double _money = 100000; 
     int _mapTurn; // 맵을 몇 바퀴 돌앗는지
     List<TileController> _playerGroundLists; // 가지고 있는 건물 리스트
 
