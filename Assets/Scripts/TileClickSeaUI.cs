@@ -15,9 +15,9 @@ public class TileClickSea : MonoBehaviour
     public TextMeshProUGUI VisitNumber;
     public TextMeshProUGUI CurrentToll;
 
-    private void Start()
+    private void Awake()
     {
-        UIManagerP.instance._clickEvenetGround += SetTileData;
+        UIManagerP.instance._clickEvenetSea += SetTileData;
     }
 
     public void SetTileData(TileController data)

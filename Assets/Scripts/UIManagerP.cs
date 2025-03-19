@@ -52,6 +52,10 @@ public class UIManagerP : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  타입 전해주면 그 타입의 ui 띄움
+    /// </summary>
+    /// <param name="_type"></param>
     public void OnClickUI(TileType _type)
     {
         OffClickUI();

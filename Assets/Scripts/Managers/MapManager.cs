@@ -22,10 +22,25 @@ public class MapManager : MonoBehaviour
     [Header("타일 초기 데이터")]
     [SerializeField] TileInfoData[] _tiledates = new TileInfoData[40];
 
-
     void Start()
     {
         CreatMap();
+    }
+    //Vector3 tilePos;
+    public void ChangeTilePos(int num,GameObject gameObject)
+    {
+        if ((0< num && num < 10) || (20 < num && num < 30))
+        {
+            gameObject.transform.localScale = new Vector3(1.2f,0.18f,1.8f);
+        }
+        else if ((10 < num && num < 20) || (30 < num && num < 40))
+        {
+            gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.2f);
+        }
+        else if (num == 10 || num == 20 || num == 30 || num == 0) 
+        {
+            gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.8f);
+        }
     }
 
     /// <summary>
@@ -37,11 +52,10 @@ public class MapManager : MonoBehaviour
         {
             // 프리팹을 생성하고 위치를 설정
             GameObject _temp = Instantiate(_tilePrefab);
-            
+
             //GameObject _temp2 = Instantiate(_tileBuyUI, _tileParent);
-
+            ChangeTilePos(i, _temp);
             _temp.transform.position = _tiledates[i]._tilePos;
-
             // TileController를 가져와서 데이터 적용
             TileController tileScript = _temp.GetComponent<TileController>();
             

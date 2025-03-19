@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tileKey: 5
   _tileName: "\uB3C5\uB3C4"
-  _tilePos: {x: 5, y: 0, z: 0}
+  _tilePos: {x: 6.5, y: 0, z: 0.3}
   _tileType: 1
+  _subTileType: 5
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0
