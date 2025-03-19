@@ -38,7 +38,7 @@ public class TileBuyUI : MonoBehaviour
     {
         // 게임 매니저에서 타일 데이터 변경 이벤트를 구독
         GameManager gameManager = FindObjectOfType<GameManager>();
-        gameManager.OnTilePopupChange += SetTileData;
+        //gameManager.OnTilePopupChange += SetTileData;
     }
 
     public void SetTileData(TileController data)
