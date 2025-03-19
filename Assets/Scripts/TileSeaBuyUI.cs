@@ -23,7 +23,7 @@ public class TileSeaBuyUI : MonoBehaviour
     {
         // GameManager의 OnValueChanged 이벤트 구독
         GameManager gameManager = FindObjectOfType<GameManager>();
-        gameManager.OnValueChanged += SetTileData;
+        gameManager.OnTilePopupChange += SetTileData;
     }
 
     public void SetTileData(TileController data)

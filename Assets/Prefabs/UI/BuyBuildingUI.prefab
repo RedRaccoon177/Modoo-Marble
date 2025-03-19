@@ -123,7 +123,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3176815206964504923}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTileLandCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &251425464487708572
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +431,7 @@ RectTransform:
   m_GameObject: {fileID: 562335744418335880}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.16666667, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4563594693696654163}
@@ -427,7 +439,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -58.5, y: 0.2}
-  m_SizeDelta: {x: 185.447, y: 86.9385}
+  m_SizeDelta: {x: 40.9, y: 16.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8927536344463774713
 CanvasRenderer:
@@ -679,7 +691,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -458, y: 210}
+  m_AnchoredPosition: {x: -463, y: 213}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5780744549791297359
@@ -763,7 +775,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3904751786545706117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTilePensionCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1051586480445741372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,7 +1223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3504172448685939295
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1605,7 +1629,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7236283613165755574}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTileCondoCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2389499901777749903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,7 +1669,7 @@ RectTransform:
   m_GameObject: {fileID: 2389499901777749903}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.16666667, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4563594693696654163}
@@ -1641,7 +1677,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -25.1, y: -0.04998398}
-  m_SizeDelta: {x: 185.447, y: 86.9385}
+  m_SizeDelta: {x: 70.61, y: 17.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1354862774874229258
 CanvasRenderer:
@@ -1747,15 +1783,15 @@ RectTransform:
   m_GameObject: {fileID: 3239713383257645204}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4563594693696654163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.6, y: 3.9}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 4, y: 50.7}
+  m_SizeDelta: {x: 107.2, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2656455757419877984
 CanvasRenderer:
@@ -1848,7 +1884,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 108.02097, y: 16.80694, z: 21.064861, w: 20.555746}
+  m_margin: {x: 0.71477896, y: 0.2757416, z: -1.461041, w: -0.14868833}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2637,6 +2673,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333378eec127b0d4ca832d7633a91be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buyTileLandBtn: {fileID: 7004571724987840629}
+  _buyTilePensionBtn: {fileID: 6856578354912691859}
+  _buyTileCondoBtn: {fileID: 912535915725009261}
+  _buyTileHotelBtn: {fileID: 7746184815601710086}
   _tileName: {fileID: 512685250681404288}
   _tileLandPrice: {fileID: 5880668378450288455}
   _tilePensionPrice: {fileID: 4891085817742832565}
@@ -2645,6 +2685,11 @@ MonoBehaviour:
   _tileToll: {fileID: 3574236908453778370}
   _tileTotalCost: {fileID: 1134954735165419776}
   _playerMoney: {fileID: 1008203119972701063}
+  _tileLandOwner: 0
+  _tilePensionOwner: 0
+  _tileCondoOwner: 0
+  _tileHotelOwner: 0
+  _tileLandMarkOwner: 0
 --- !u!1 &4639574736957484156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3109,7 +3154,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2555785950258808952}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4499039379688627236}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5144914201196339474
 GameObject:
   m_ObjectHideFlags: 0
@@ -3127,7 +3184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4023291686835447060
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3375,7 +3432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2830743214083854459
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3526,8 +3583,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.8, y: -7.1}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 9.8, y: 66.3}
+  m_SizeDelta: {x: 203.73, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8483193477344675467
 CanvasRenderer:
@@ -3620,7 +3677,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 108.02097, y: 16.80694, z: 36.91265, w: 20.555746}
+  m_margin: {x: -0.3212662, y: 0.43095112, z: -1.4293098, w: -10.260323}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4396,7 +4453,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8202003601044638434}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1853682334994844163}
+        m_TargetAssemblyTypeName: TileBuyUI, Assembly-CSharp
+        m_MethodName: BuyTileHotelCheck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8953244861267421148
 GameObject:
   m_ObjectHideFlags: 0
