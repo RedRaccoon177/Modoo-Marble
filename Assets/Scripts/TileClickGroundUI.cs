@@ -11,7 +11,7 @@ public class TileClickGroundUI : MonoBehaviour
 
     [Separator]
     [Header("≈Î«‡∑·")] public TextMeshProUGUI _tileToll;
-    private void Start()
+    private void Awake()
     {
         UIManagerP.instance._clickEvenetGround += SetTileData;
     }
