@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 public partial class TileController : MonoBehaviour
 {
     [Header("보조 타일 타입")] public SubTileType _subTileType;
+    [Header("보조 타일 타입")] public UnderTilePrefab subUnderTilePrefab;
+    [Header("보조 타일 타입")] public GameObject subTileParent;
+    [Header("보조 타일 타입")] public GameObject UnderPrefab;
+    [Header("보조 타일 타입")] public GameObject BuildPostions;
 }
 
 public partial class TileController : MonoBehaviour
