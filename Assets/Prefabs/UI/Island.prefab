@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8542888397957783305}
   - component: {fileID: 706670736362814828}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9104, y: 270.3067}
-  m_SizeDelta: {x: 875.67, y: 53.3505}
+  m_AnchoredPosition: {x: 2.210266, y: 276}
+  m_SizeDelta: {x: 890, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8542888397957783305
 CanvasRenderer:
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 5937660115566081845}
   - component: {fileID: 5425955299178288295}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,8 +109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9104, y: 270.3067}
-  m_SizeDelta: {x: 875.67, y: 53.3505}
+  m_AnchoredPosition: {x: 0.6996, y: 272.72815}
+  m_SizeDelta: {x: 1720.4631, y: 155.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5937660115566081845
 CanvasRenderer:
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 8216383054038875616}
   - component: {fileID: 499040691520604692}
   m_Layer: 5
-  m_Name: Visit
+  m_Name: Hold2 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,8 +223,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.322, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.35}
+  m_AnchoredPosition: {x: -195.37006, y: 276}
+  m_SizeDelta: {x: 314.8499, y: 90.002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8216383054038875616
 CanvasRenderer:
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "2 \uC7A5\uBCF4\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -281,14 +281,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 6928333246505251291}
   - component: {fileID: 570217633052148204}
   m_Layer: 5
-  m_Name: Image
+  m_Name: emoticon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -357,8 +357,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375, y: 270.3}
-  m_SizeDelta: {x: 121.85, y: 53.354}
+  m_AnchoredPosition: {x: -397.79, y: 251.98}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6928333246505251291
 CanvasRenderer:
@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 3345378953318583131}
   - component: {fileID: 5542134361435044081}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Ground Price Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,8 +432,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -242.07047, y: -0.000099182}
+  m_SizeDelta: {x: 404.4591, y: 86.854}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3345378953318583131
 CanvasRenderer:
@@ -463,7 +463,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ground Price
+  m_text: "\uB545\uAC12"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -490,8 +490,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -285.2217, y: 0, z: 176.57838, w: 0}
+  m_margin: {x: 0.6706543, y: 0, z: -0.17668152, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -544,7 +544,7 @@ GameObject:
   - component: {fileID: 4782364211517573780}
   - component: {fileID: 7470156538485665763}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -566,8 +566,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9104, y: 270.3067}
-  m_SizeDelta: {x: 875.67, y: 53.3505}
+  m_AnchoredPosition: {x: 2.210266, y: 294}
+  m_SizeDelta: {x: 890, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4782364211517573780
 CanvasRenderer:
@@ -619,7 +619,7 @@ GameObject:
   - component: {fileID: 862835029222200055}
   - component: {fileID: 8401816144461726190}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Explanation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,8 +641,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -3.8394}
+  m_SizeDelta: {x: 888.6, y: 162.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &862835029222200055
 CanvasRenderer:
@@ -700,8 +700,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -343.8373, y: -18.047417, z: -341.76633, w: -17.097418}
+  m_margin: {x: 1.7926941, y: -0.9601364, z: -2.1369324, w: 1.2788029}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -754,7 +754,7 @@ GameObject:
   - component: {fileID: 4607172056033797347}
   - component: {fileID: 2270900642368171172}
   m_Layer: 5
-  m_Name: Visit
+  m_Name: Hold4 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -776,8 +776,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.322, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.35}
+  m_AnchoredPosition: {x: -194.7396, y: 169}
+  m_SizeDelta: {x: 316.0969, y: 90.005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4607172056033797347
 CanvasRenderer:
@@ -807,7 +807,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "4 \uC7A5\uBCF4\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -834,14 +834,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -911,8 +911,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16, y: 603.00006}
-  m_SizeDelta: {x: 1809.188, y: 100}
+  m_AnchoredPosition: {x: 16, y: 783.9221}
+  m_SizeDelta: {x: 1800, y: 130.1558}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8577249496543167976
 CanvasRenderer:
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 96779197485816304}
   - component: {fileID: 999835168836890888}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -986,8 +986,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9104, y: 270.3067}
-  m_SizeDelta: {x: 875.67, y: 53.3505}
+  m_AnchoredPosition: {x: 2.210266, y: 169}
+  m_SizeDelta: {x: 890, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &96779197485816304
 CanvasRenderer:
@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 5526188670028656327}
   - component: {fileID: 8535328785942581009}
   m_Layer: 5
-  m_Name: Visit Price
+  m_Name: Hold2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1061,8 +1061,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.347}
+  m_AnchoredPosition: {x: 204.63, y: 276}
+  m_SizeDelta: {x: 485.16, y: 90.002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5526188670028656327
 CanvasRenderer:
@@ -1092,7 +1092,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "6\uB9CC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -1119,14 +1119,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1202,8 +1202,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -446.51, y: 184.87}
-  m_SizeDelta: {x: -1236, y: -714.66}
+  m_AnchoredPosition: {x: -422.42767, y: 221}
+  m_SizeDelta: {x: -996.8455, y: -853.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5898386841060711832
 CanvasRenderer:
@@ -1255,7 +1255,7 @@ GameObject:
   - component: {fileID: 638436887813446156}
   - component: {fileID: 6474543546173728253}
   m_Layer: 5
-  m_Name: TileSheet
+  m_Name: Hold Island
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1277,8 +1277,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 116, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 222.5, y: 0}
+  m_SizeDelta: {x: 445, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &638436887813446156
 CanvasRenderer:
@@ -1308,7 +1308,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "0\uC7A5"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -1335,8 +1335,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: -17.438375, z: -119.5132, w: -18.683908}
+  m_margin: {x: 0, y: -0.4421749, z: -1.3123932, w: 0.62994957}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1389,7 +1389,7 @@ GameObject:
   - component: {fileID: 8421167453035775002}
   - component: {fileID: 3512663620907630140}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CityName Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1411,8 +1411,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -0.000059128}
+  m_SizeDelta: {x: 1800, y: 130.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8421167453035775002
 CanvasRenderer:
@@ -1442,7 +1442,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Dokdo Island
+  m_text: "\uB3C5\uB3C4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -803.29675, y: -23.998476, z: -803.2972, w: -25.198387}
+  m_margin: {x: -1.7163086, y: 0.47320366, z: -0.1531372, w: 1.0212173}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1523,7 +1523,7 @@ GameObject:
   - component: {fileID: 3813274748079525650}
   - component: {fileID: 1770043504173659780}
   m_Layer: 5
-  m_Name: Visit Price
+  m_Name: My Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1545,8 +1545,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.347}
+  m_AnchoredPosition: {x: 439.18, y: 241.52}
+  m_SizeDelta: {x: 842.11, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3813274748079525650
 CanvasRenderer:
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 200
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -1603,8 +1603,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1681,8 +1681,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.210266, y: 273.48285}
-  m_SizeDelta: {x: 888.6, y: 86.8544}
+  m_AnchoredPosition: {x: 2.210266, y: 388}
+  m_SizeDelta: {x: 890, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6484448673372833728
 CanvasRenderer:
@@ -1734,7 +1734,7 @@ GameObject:
   - component: {fileID: 3203759302639063560}
   - component: {fileID: 5807470819434413674}
   m_Layer: 5
-  m_Name: Image
+  m_Name: emoticon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1756,8 +1756,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375, y: 270.3}
-  m_SizeDelta: {x: 121.85, y: 53.354}
+  m_AnchoredPosition: {x: -397.78973, y: 294}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3203759302639063560
 CanvasRenderer:
@@ -1833,7 +1833,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -169}
+  m_AnchoredPosition: {x: -0, y: -154}
   m_SizeDelta: {x: 82.255, y: 101.6274}
   m_Pivot: {x: 0.5, y: 3.2016199}
 --- !u!1 &4921559716947181832
@@ -1872,8 +1872,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -356.236}
-  m_SizeDelta: {x: -160.73999, y: -1005.7581}
+  m_AnchoredPosition: {x: 18.82, y: -479.57242}
+  m_SizeDelta: {x: -114.35, y: -1387.812}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7925658385700622073
 CanvasRenderer:
@@ -1925,7 +1925,7 @@ GameObject:
   - component: {fileID: 3237192647709595309}
   - component: {fileID: 9204925787887174468}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Hold Island Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1947,8 +1947,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -336, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -222.5, y: 0}
+  m_SizeDelta: {x: 445, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3237192647709595309
 CanvasRenderer:
@@ -1978,7 +1978,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "\uD604\uC7AC \uBCF4\uC720\uC911\uC778 \uC7A5\uC218"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -2005,8 +2005,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2041,7 +2041,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 89.6348, y: -17.438375, z: -214.58032, w: -18.683908}
+  m_margin: {x: 0.018463135, y: -0.4421749, z: -0.5826721, w: 1.4025097}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2060,7 +2060,7 @@ GameObject:
   - component: {fileID: 212608204615556099}
   - component: {fileID: 6338860197242573531}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Buy Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2075,7 +2075,7 @@ RectTransform:
   m_GameObject: {fileID: 5035356240418116108}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7149233513943629815}
@@ -2083,8 +2083,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -402, y: -601}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -383, y: -788}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4807233127979087911
 CanvasRenderer:
@@ -2180,7 +2180,7 @@ GameObject:
   - component: {fileID: 3493071798360125675}
   - component: {fileID: 7260393734051196775}
   m_Layer: 5
-  m_Name: Visit
+  m_Name: My Cost Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2202,8 +2202,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.322, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.35}
+  m_AnchoredPosition: {x: -346.05756, y: 238.99998}
+  m_SizeDelta: {x: 728.3548, y: 155.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3493071798360125675
 CanvasRenderer:
@@ -2233,7 +2233,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: My Cost
+  m_text: "\uBCF4\uC720 \uD604\uAE08"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -2260,14 +2260,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2314,7 +2314,7 @@ GameObject:
   - component: {fileID: 3448200768963764695}
   - component: {fileID: 5063870690195815753}
   m_Layer: 5
-  m_Name: Visit Price
+  m_Name: Hold1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2336,8 +2336,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.347}
+  m_AnchoredPosition: {x: 203.82, y: 294}
+  m_SizeDelta: {x: 486.79, y: 90.002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3448200768963764695
 CanvasRenderer:
@@ -2367,7 +2367,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "6\uB9CC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -2394,14 +2394,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2471,9 +2471,9 @@ RectTransform:
   m_Father: {fileID: 6311335095490750388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -82}
-  m_SizeDelta: {x: 82.255, y: 101.6274}
+  m_AnchorMax: {x: 0.5, y: 0.51417434}
+  m_AnchoredPosition: {x: -0, y: -154}
+  m_SizeDelta: {x: 82.255, y: 88.6274}
   m_Pivot: {x: 0.5, y: 3.2016199}
 --- !u!1 &5808883660180989300
 GameObject:
@@ -2509,8 +2509,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: 184.87506}
-  m_SizeDelta: {x: 843.29, y: 633.8236}
+  m_AnchoredPosition: {x: 497.18, y: 221}
+  m_SizeDelta: {x: 837.64, y: 919.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3455564286052541159
 CanvasRenderer:
@@ -2585,8 +2585,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.210266, y: 187}
-  m_SizeDelta: {x: 888.6, y: 86.8544}
+  m_AnchoredPosition: {x: 2.9103, y: 265.53}
+  m_SizeDelta: {x: 888.6, y: 154.9389}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2804928514891932191
 CanvasRenderer:
@@ -2662,7 +2662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 3}
+  m_AnchoredPosition: {x: -0, y: -18}
   m_SizeDelta: {x: 82.255, y: 101.6274}
   m_Pivot: {x: 0.5, y: 3.2016199}
 --- !u!1 &5880355422184109282
@@ -2677,7 +2677,7 @@ GameObject:
   - component: {fileID: 5843152070699680125}
   - component: {fileID: 7539649092285287568}
   m_Layer: 5
-  m_Name: landPrice
+  m_Name: Ground Price
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2699,8 +2699,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 331, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 252.8117, y: -0.000099182}
+  m_SizeDelta: {x: 382.9766, y: 86.854}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5843152070699680125
 CanvasRenderer:
@@ -2730,7 +2730,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10M
+  m_text: "10\uB9CC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -2757,8 +2757,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2793,7 +2793,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -231.29556, y: 0, z: 52.990963, w: 0}
+  m_margin: {x: 1.2241516, y: 0, z: -1.4730873, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2811,7 +2811,7 @@ GameObject:
   - component: {fileID: 2536239293414467912}
   - component: {fileID: 1243012384218375308}
   m_Layer: 5
-  m_Name: Image
+  m_Name: emoticon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2833,8 +2833,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375, y: 270.3}
-  m_SizeDelta: {x: 121.85, y: 53.354}
+  m_AnchoredPosition: {x: -782.71, y: 239}
+  m_SizeDelta: {x: 155.05, y: 155.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2536239293414467912
 CanvasRenderer:
@@ -2886,7 +2886,7 @@ GameObject:
   - component: {fileID: 940005751991700250}
   - component: {fileID: 4254874273402830438}
   m_Layer: 5
-  m_Name: Visit
+  m_Name: Hold3 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2908,8 +2908,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.322, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.35}
+  m_AnchoredPosition: {x: -195.7543, y: 253}
+  m_SizeDelta: {x: 314.0815, y: 90.002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &940005751991700250
 CanvasRenderer:
@@ -2939,7 +2939,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "3 \uC7A5\uBCF4\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -2966,14 +2966,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3033,7 +3033,7 @@ RectTransform:
   m_GameObject: {fileID: 6189876733741582706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6820471247435768093}
@@ -3059,7 +3059,7 @@ GameObject:
   - component: {fileID: 2888651700067704118}
   - component: {fileID: 8107007858211101843}
   m_Layer: 5
-  m_Name: Image
+  m_Name: emoticon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3081,8 +3081,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375, y: 270.3}
-  m_SizeDelta: {x: 121.85, y: 53.354}
+  m_AnchoredPosition: {x: -397.78973, y: 169.00002}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2888651700067704118
 CanvasRenderer:
@@ -3134,7 +3134,7 @@ GameObject:
   - component: {fileID: 2415962268067027016}
   - component: {fileID: 3493856780162400005}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Buy Bt Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3187,7 +3187,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy
+  m_text: "\uC0AC\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -3214,8 +3214,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3268,7 +3268,7 @@ GameObject:
   - component: {fileID: 1104608269207277468}
   - component: {fileID: 5710358275528280714}
   m_Layer: 5
-  m_Name: Image
+  m_Name: emoticon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3290,8 +3290,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375, y: 270.3}
-  m_SizeDelta: {x: 121.85, y: 53.354}
+  m_AnchoredPosition: {x: -782.01, y: 272.73}
+  m_SizeDelta: {x: 155.05, y: 155.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1104608269207277468
 CanvasRenderer:
@@ -3396,7 +3396,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cancle
+  m_text: "\uCDE8\uC18C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -3423,8 +3423,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3490,7 +3490,7 @@ RectTransform:
   m_GameObject: {fileID: 6669116205827102580}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4747188362128028164}
@@ -3516,7 +3516,7 @@ GameObject:
   - component: {fileID: 2973888578358667800}
   - component: {fileID: 1361703599553719408}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3538,8 +3538,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9104, y: 270.3067}
-  m_SizeDelta: {x: 875.67, y: 53.3505}
+  m_AnchoredPosition: {x: 2.210266, y: 253}
+  m_SizeDelta: {x: 890, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2973888578358667800
 CanvasRenderer:
@@ -3591,7 +3591,7 @@ GameObject:
   - component: {fileID: 6099834836607657451}
   - component: {fileID: 1593887998965487843}
   m_Layer: 5
-  m_Name: Visit Price
+  m_Name: Total Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3613,8 +3613,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.347}
+  m_AnchoredPosition: {x: 436.91, y: 272.73}
+  m_SizeDelta: {x: 848.05, y: 155.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6099834836607657451
 CanvasRenderer:
@@ -3644,7 +3644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10 M
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -3671,8 +3671,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3725,7 +3725,7 @@ GameObject:
   - component: {fileID: 6218187583317187165}
   - component: {fileID: 7309562235002780963}
   m_Layer: 5
-  m_Name: Image
+  m_Name: emoticon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3747,8 +3747,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -375, y: 270.3}
-  m_SizeDelta: {x: 121.85, y: 53.354}
+  m_AnchoredPosition: {x: -397.78973, y: 276}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6218187583317187165
 CanvasRenderer:
@@ -3800,7 +3800,7 @@ GameObject:
   - component: {fileID: 6028693498639144112}
   - component: {fileID: 1328322382833243469}
   m_Layer: 5
-  m_Name: Visit
+  m_Name: Total Cost Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3822,8 +3822,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.322, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.35}
+  m_AnchoredPosition: {x: -348.32516, y: 270.2}
+  m_SizeDelta: {x: 722.4197, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6028693498639144112
 CanvasRenderer:
@@ -3853,7 +3853,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Total Cost
+  m_text: "\uCD1D \uAD6C\uB9E4\uBE44\uC6A9"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -3880,14 +3880,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3935,7 +3935,7 @@ GameObject:
   - component: {fileID: 1247947408766764894}
   - component: {fileID: 810592468926917998}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Cancle Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3950,7 +3950,7 @@ RectTransform:
   m_GameObject: {fileID: 7886666483075688223}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1020874359630186212}
@@ -3958,8 +3958,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 438, y: -601}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 457, y: -788}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &543853198107800619
 CanvasRenderer:
@@ -4055,7 +4055,7 @@ GameObject:
   - component: {fileID: 3599251984939543928}
   - component: {fileID: 2488280792121251160}
   m_Layer: 5
-  m_Name: Visit Price
+  m_Name: Hold3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4077,8 +4077,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.347}
+  m_AnchoredPosition: {x: 203.04, y: 252.49}
+  m_SizeDelta: {x: 488.34, y: 88.981}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3599251984939543928
 CanvasRenderer:
@@ -4108,7 +4108,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "6\uB9CC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -4135,14 +4135,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4205,7 +4205,7 @@ RectTransform:
   m_GameObject: {fileID: 8886160249979617007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.28805718, y: 0.6281501, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8000432750096919324}
@@ -4218,8 +4218,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -41.322388}
-  m_SizeDelta: {x: 0, y: 268.4784}
+  m_AnchoredPosition: {x: -280, y: 45}
+  m_SizeDelta: {x: 0, y: 692.9168}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5293906389259728983
 CanvasRenderer:
@@ -4292,7 +4292,7 @@ GameObject:
   - component: {fileID: 6807964108389698337}
   - component: {fileID: 5527250567667798945}
   m_Layer: 5
-  m_Name: Visit Price
+  m_Name: Hold4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4314,8 +4314,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 264, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.347}
+  m_AnchoredPosition: {x: 205.26, y: 169}
+  m_SizeDelta: {x: 483.9, y: 90.006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6807964108389698337
 CanvasRenderer:
@@ -4345,7 +4345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "6\uB9CC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -4372,14 +4372,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4426,7 +4426,7 @@ GameObject:
   - component: {fileID: 1533049798665265916}
   - component: {fileID: 530901497791076774}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4448,8 +4448,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9104, y: 270.3067}
-  m_SizeDelta: {x: 875.67, y: 53.3505}
+  m_AnchoredPosition: {x: 0.00001502, y: 239}
+  m_SizeDelta: {x: 1720.4631, y: 155.05}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1533049798665265916
 CanvasRenderer:
@@ -4525,8 +4525,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.210266, y: -273}
-  m_SizeDelta: {x: 888.6, y: 86.8544}
+  m_AnchoredPosition: {x: 2.210266, y: -386}
+  m_SizeDelta: {x: 890, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6564686823102855014
 CanvasRenderer:
@@ -4578,7 +4578,7 @@ GameObject:
   - component: {fileID: 1166144275010006354}
   - component: {fileID: 2984541945456357761}
   m_Layer: 5
-  m_Name: Visit
+  m_Name: Hold1 Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4600,8 +4600,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125.322, y: 270.31}
-  m_SizeDelta: {x: 297.356, y: 53.35}
+  m_AnchoredPosition: {x: -196.1869, y: 294}
+  m_SizeDelta: {x: 313.2162, y: 90.002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1166144275010006354
 CanvasRenderer:
@@ -4631,7 +4631,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "1 \uC7A5\uBCF4\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -4658,14 +4658,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
