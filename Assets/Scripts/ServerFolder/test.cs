@@ -46,12 +46,17 @@ public class test : MonoBehaviourPunCallbacks
                 //방장만 게임시작 버튼 기능 추가
                 var btn = dd.transform.GetChild(2).GetComponent<Button>();
                 btn.onClick.AddListener(StartBtn);
+                //btn.onClick.AddListener(()=>Destroy(dd.transform.GetChild(2).gameObject));
             }
             else
             {
-                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "only ready";
+
+                //dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "only ready";
                 var btn = dd.transform.GetChild(2).GetComponent<Button>();
                 btn.onClick.AddListener(ReadyCountBtn);
+                btn.onClick.AddListener(() => Destroy(dd.transform.GetChild(2).gameObject));
+                btn.onClick.AddListener(() => dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "only ready");
+
             }
 
         }
