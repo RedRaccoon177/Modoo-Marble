@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 34Paris
   m_EditorClassIdentifier: 
   _subTileType: 34
+  subUnderTilePrefab: 0
   _tileKey: 34
   _tileName: "\uD30C\uB9AC"
   _tilePos: {x: -0.4, y: 0, z: -7.8}

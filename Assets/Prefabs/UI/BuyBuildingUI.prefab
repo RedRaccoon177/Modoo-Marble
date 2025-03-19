@@ -2255,6 +2255,11 @@ MonoBehaviour:
   _buyTilePensionBtn: {fileID: 6856578354912691859}
   _buyTileCondoBtn: {fileID: 912535915725009261}
   _buyTileHotelBtn: {fileID: 7746184815601710086}
+  _buyBtn: {fileID: 682818754718960036}
+  _islandCheckImage: {fileID: 2269877332811921073}
+  _isPensionCheckImage: {fileID: 4443169050696662865}
+  _isCondoCheckImage: {fileID: 4565647698651670063}
+  _isHotelCheckImage: {fileID: 4766803146945383556}
   _tileName: {fileID: 512685250681404288}
   _tileLandPrice: {fileID: 6621626229428078917}
   _tilePensionPrice: {fileID: 4891085817742832565}

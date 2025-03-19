@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 30WorldTravel
   m_EditorClassIdentifier: 
+  _subTileType: 0
+  subUnderTilePrefab: 0
   _tileKey: 30
   _tileName: "\uC138\uACC4\uC5EC\uD589"
   _tilePos: {x: -0.34, y: 0, z: -13.37}

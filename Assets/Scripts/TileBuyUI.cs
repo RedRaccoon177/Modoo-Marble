@@ -22,10 +22,10 @@ public class TileBuyUI : MonoBehaviour
     private bool _isHotelCheck = false;     // 호텔 구매 여부 체크
 
     //체크 이미지들
-    public Image _islandImage;
-    public Image _isPensionImage;       
-    public Image _isCondoImage;
-    public Image _isHotelImage;
+    public Image _islandCheckImage;
+    public Image _isPensionCheckImage;       
+    public Image _isCondoCheckImage;
+    public Image _isHotelCheckImage;
 
     // 타일 정보 (UI에 표시되는 텍스트)
     [Header("땅 이름")] public TextMeshProUGUI _tileName;                   // 땅의 이름 표시
@@ -48,7 +48,6 @@ public class TileBuyUI : MonoBehaviour
 
     // 플레이어 현재 보유 금액 (게임 내에서 변할 수 있음)
     private double _currentMoney;
-    private bool _isLandPurchased = false; // 플레이어가 토지를 구매했는지 여부
 
     //플레이어의 고유 번호
     int _playerKey = 1;
@@ -71,22 +70,27 @@ public class TileBuyUI : MonoBehaviour
         UpdateCheckImages();
 
         // 버튼 클릭 이벤트 연결
-        _buyTileLandBtn.onClick.AddListener(() => ToggleButtonState(ref _isLandCheck, _islandImage));
-        _buyTilePensionBtn.onClick.AddListener(() => ToggleButtonState(ref _isPensionCheck, _isPensionImage));
-        _buyTileCondoBtn.onClick.AddListener(() => ToggleButtonState(ref _isCondoCheck, _isCondoImage));
-        _buyTileHotelBtn.onClick.AddListener(() => ToggleButtonState(ref _isHotelCheck, _isHotelImage));
+        _buyTileLandBtn.onClick.AddListener(() => ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice));
+        _buyTilePensionBtn.onClick.AddListener(() => ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice));
+        _buyTileCondoBtn.onClick.AddListener(() => ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice));
+        _buyTileHotelBtn.onClick.AddListener(() => ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice));
         _buyBtn.onClick.AddListener(() => BuyButtonClick());
     }
 
     #region 구매 체크 이미지 색상 변경 false 빨강 / true 초록
     // 버튼 상태를 변경하고 체크 이미지 색상 업데이트 + Buy 버튼 상태 업데이트
-    private void ToggleButtonState(ref bool isChecked, Image image)
+    private void ToggleButtonState(ref bool isChecked, Image image, ref double playerMoney, double price)
     {
-        isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
-        Debug.Log($"ToggleButtonState 실행됨: {isChecked}");
+        // isChecked가 참이면 구매 한 것일 테니 클릭하여 구매 안하겠다고 하는 것이다. 돈을 돌려줘라.
+        if (isChecked) playerMoney += price;
+        else playerMoney -= price;
 
+        isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
         UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
         UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
+
+        TileBuyCheckBtnCheck(_currentTile);
+        Debug.Log(_currentMoney);
     }
 
     // Buy 버튼을 _isLandCheck 값에 따라 활성화/비활성화
@@ -104,10 +108,10 @@ public class TileBuyUI : MonoBehaviour
     // 모든 체크 이미지 초기 색상 설정
     private void UpdateCheckImages()
     {
-        UpdateImageColor(_islandImage, _isLandCheck);
-        UpdateImageColor(_isPensionImage, _isPensionCheck);
-        UpdateImageColor(_isCondoImage, _isCondoCheck);
-        UpdateImageColor(_isHotelImage, _isHotelCheck);
+        UpdateImageColor(_islandCheckImage, _isLandCheck);
+        UpdateImageColor(_isPensionCheckImage, _isPensionCheck);
+        UpdateImageColor(_isCondoCheckImage, _isCondoCheck);
+        UpdateImageColor(_isHotelCheckImage, _isHotelCheck);
     }
     #endregion
 
@@ -162,7 +166,7 @@ public class TileBuyUI : MonoBehaviour
 
         // 버튼 클릭 이벤트 초기화 후 다시 연결
         Button[] buyButtons = { _buyTileLandBtn, _buyTilePensionBtn, _buyTileCondoBtn, _buyTileHotelBtn };
-        Image[] checkImages = { _islandImage, _isPensionImage, _isCondoImage, _isHotelImage };
+        Image[] checkImages = { _islandCheckImage, _isPensionCheckImage, _isCondoCheckImage, _isHotelCheckImage };
 
         for (int i = 0; i < buyButtons.Length; i++)
         {
@@ -175,15 +179,14 @@ public class TileBuyUI : MonoBehaviour
             {
                 switch (index)
                 {
-                    case 0: ToggleButtonState(ref _isLandCheck, _islandImage); break;
-                    case 1: ToggleButtonState(ref _isPensionCheck, _isPensionImage); break;
-                    case 2: ToggleButtonState(ref _isCondoCheck, _isCondoImage); break;
-                    case 3: ToggleButtonState(ref _isHotelCheck, _isHotelImage); break;
+                    case 0: ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice); break;
+                    case 1: ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice); break;
+                    case 2: ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice); break;
+                    case 3: ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice); break;
                 }
             });
         }
     }
-
 
     private void UpdateTilePurchaseButtons(TileController data, PlayerManager playerManager)
     {
@@ -219,12 +222,10 @@ public class TileBuyUI : MonoBehaviour
 
             // 토지 구매 버튼 강제 클릭 (토글 상태 변경을 위해)
             _buyTileLandBtn.onClick.Invoke();
-            _currentMoney -= data._tileLandPrice;
 
             if (_currentMoney >= data._tilePensionPrice)
             {
                 _buyTilePensionBtn.onClick.Invoke();
-                _currentMoney -= data._tilePensionPrice;
             }
             else
             {
@@ -234,7 +235,6 @@ public class TileBuyUI : MonoBehaviour
             if (_currentMoney >= data._tileCondoPrice)
             {
                 _buyTileCondoBtn.onClick.Invoke();
-                _currentMoney -= data._tileCondoPrice;
             }
             else
             {
@@ -244,7 +244,6 @@ public class TileBuyUI : MonoBehaviour
             if (_currentMoney >= data._tileHotelPrice)
             {
                 _buyTileHotelBtn.onClick.Invoke();
-                _currentMoney -= data._tileHotelPrice;
             }
             else
             {
@@ -260,7 +259,37 @@ public class TileBuyUI : MonoBehaviour
         }
     }
 
+    private void TileBuyCheckBtnCheck(TileController data)
+    {
+        if (!_isPensionCheck && _currentMoney >= data._tilePensionPrice)
+        {
+            _buyTilePensionBtn.interactable = true;
+        }
+        else
+        {
+            _buyTilePensionBtn.interactable = false;
+        }
 
+        if (!_isCondoCheck && _currentMoney >= data._tileCondoPrice)
+        {
+            _buyTileCondoBtn.interactable = true;
+        }
+        else
+        {
+            _buyTileCondoBtn.interactable = false;
+        }
+
+        if (!_isHotelCheck && _currentMoney >= data._tileHotelPrice)
+        {
+            _buyTileHotelBtn.interactable = true;
+        }
+        else
+        {
+            _buyTileHotelBtn.interactable = false;
+        }
+    }
+
+    //구매 버튼 클릭
     void BuyButtonClick()
     {
         if (_currentTile == null) return; // 현재 선택된 타일이 없으면 리턴
@@ -274,20 +303,21 @@ public class TileBuyUI : MonoBehaviour
     }
 
 
-
     #region 추후에 진행
+
     /// <summary>
     /// 플레이어 자신의 땅일 경우 함수
     /// </summary>
     /// <param name="data"></param>
     private void HandlePlayerOwnership(TileController data)
     {
-        _isLandPurchased = true; // 이미 땅을 구매한 상태로 설정
-
-        // 미구매한 건물만 버튼 활성화
-        _buyTilePensionBtn.interactable = data._tilePensionOwner == 0 && _currentMoney >= data._tilePensionPrice;
-        _buyTileCondoBtn.interactable = data._tileCondoOwner == 0 && _currentMoney >= data._tileCondoPrice;
-        _buyTileHotelBtn.interactable = data._tileHotelOwner == 0 && _currentMoney >= data._tileHotelPrice;
+        _buyTileLandBtn.interactable = false;
+        _buyTilePensionBtn.interactable = 
+            data._tilePensionOwner == 0 && _currentMoney >= data._tilePensionPrice;
+        _buyTileCondoBtn.interactable =
+            data._tileCondoOwner == 0 && _currentMoney >= data._tileCondoPrice;
+        _buyTileHotelBtn.interactable = 
+            data._tileHotelOwner == 0 && _currentMoney >= data._tileHotelPrice;
     }
 
     /// <summary>
@@ -300,8 +330,6 @@ public class TileBuyUI : MonoBehaviour
         // 통행료를 가져와서 차감
         _currentMoney = playerManager.GetMoney();
 
-        // 적이 소유한 땅이므로 구매 불가능
-        _isLandPurchased = false;
     }
     #endregion
 }

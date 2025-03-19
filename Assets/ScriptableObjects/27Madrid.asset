@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 27Madrid
   m_EditorClassIdentifier: 
+  _subTileType: 27
+  subUnderTilePrefab: 0
   _tileKey: 27
   _tileName: "\uB9C8\uB4DC\uB9AC\uB4DC"
   _tilePos: {x: 3.9, y: 0, z: -13.41}
   _tileType: 0
-  _subTileType: 27
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 38NationalTaxService
   m_EditorClassIdentifier: 
+  _subTileType: 0
+  subUnderTilePrefab: 0
   _tileKey: 38
   _tileName: "\uAD6D\uC138\uCCAD"
   _tilePos: {x: -0.4, y: 0, z: -2.6}

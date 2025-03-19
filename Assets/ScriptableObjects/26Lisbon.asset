@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 26Lisbon
   m_EditorClassIdentifier: 
+  _subTileType: 26
+  subUnderTilePrefab: 0
   _tileKey: 26
   _tileName: "\uB9AC\uC2A4\uBCF8"
   _tilePos: {x: 5.2, y: 0, z: -13.41}
   _tileType: 0
-  _subTileType: 26
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

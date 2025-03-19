@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 13SanJose
   m_EditorClassIdentifier: 
+  _subTileType: 13
+  subUnderTilePrefab: 0
   _tileKey: 13
   _tileName: "\uC0B0\uD638\uC138"
   _tilePos: {x: 13.4, y: 0, z: -3.9}
   _tileType: 0
-  _subTileType: 13
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

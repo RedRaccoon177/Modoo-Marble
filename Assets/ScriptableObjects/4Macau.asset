@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 4Macau
   m_EditorClassIdentifier: 
+  _subTileType: 4
+  subUnderTilePrefab: 0
   _tileKey: 4
   _tileName: "\uB9C8\uCE74\uC624"
   _tilePos: {x: 5.2, y: 0, z: 0.3}
   _tileType: 8
-  _subTileType: 4
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

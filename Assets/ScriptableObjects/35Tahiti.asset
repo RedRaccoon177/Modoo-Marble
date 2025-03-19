@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 35Tahiti
   m_EditorClassIdentifier: 
   _subTileType: 35
+  subUnderTilePrefab: 0
   _tileKey: 35
   _tileName: "\uD0C0\uD788\uD2F0"
   _tilePos: {x: -0.4, y: 0, z: -6.5}

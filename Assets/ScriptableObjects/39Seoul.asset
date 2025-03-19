@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 39Seoul
   m_EditorClassIdentifier: 
+  _subTileType: 39
+  subUnderTilePrefab: 0
   _tileKey: 39
   _tileName: "\uC11C\uC6B8"
   _tilePos: {x: -0.4, y: 0, z: -1.3}
   _tileType: 0
-  _subTileType: 39
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0
