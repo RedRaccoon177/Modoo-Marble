@@ -1,32 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class CameraMove : MonoBehaviour
 {
     Camera mainCam;
-    public GameObject target;
     Vector3 mainCamPos;
     float mX;
-    float mY;
+    float maxMX;
+    float minMX;
     private void Start()
     {
         mX = 0;
-        mY = 0;
+        maxMX = 2;
+        minMX = -2;
         mainCam = Camera.main;
+        Cursor.lockState = CursorLockMode.Confined; // 마우스 화면 밖으로 못나가게
     }
     private void Update()
     {
-        mX = Input.GetAxis("Mouse X");
 
         if (Input.GetKey(KeyCode.A))
         {
-            if (mX>0)
+            mX += Input.GetAxis("Mouse X");
+            if (minMX > mX)
             {
-                mainCamPos = new Vector3 (0, 4.7f, mX);
+                mX = minMX;
             }
-            transform.LookAt(target.transform);
+            else if (maxMX < mX)
+            {
+                mX = maxMX;
+            }
+            mainCamPos = new Vector3 (-mX, 4.2f, -mX);
             mainCam.transform.position = mainCamPos;
         }
     }
