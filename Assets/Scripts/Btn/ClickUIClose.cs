@@ -8,6 +8,6 @@ public class ClickUIClose : MonoBehaviour
     private void Awake()
     {
         closeBtn = GetComponent<Button>();
-        closeBtn.onClick.AddListener(() => UIManagerP.instance.OffClickUIPanel());
+        closeBtn.onClick.AddListener(() => UIManagerP.instance.OffClickUI());
     }
 }

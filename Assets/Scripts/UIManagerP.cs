@@ -13,9 +13,9 @@ public class UIManagerP : MonoBehaviour
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
     [SerializeField] Transform canvus;
-    [Header("클릭시 뜨는 토지 UI")] public GameObject _clickGroundUI; 
-    [Header("클릭시 뜨는 관광지 UI")] public GameObject _clickSeaUI; 
+    [Header("클릭시 뜨는 UI")] public GameObject[] _clickTileUI; 
     public event Action<TileController> _clickEvenetGround;
+    public event Action<TileController> _clickEvenetSea;
 
 
     private void Awake()
@@ -27,11 +27,9 @@ public class UIManagerP : MonoBehaviour
     }
     private void Start()
     {
-
-        CreateClickUI();
         CreateUI();
+        CreateClickUI();
         OffBuyUIPanel();
-        OffClickUIPanel();
     }
     public void OnBuyUIPanel()
     {
@@ -41,43 +39,52 @@ public class UIManagerP : MonoBehaviour
     {
         _tileUIParent.gameObject.SetActive(false);
     }
-    public void OnClcikUIPanel()
-    {
-        _clickGroundUI.SetActive(true);
-    }
-    public void OffClickUIPanel()
-    {
-        _clickGroundUI.SetActive(false);
-    }
     public void CreateUI()
     {
         var temp = Instantiate(_tileGroundBuyUI, _tileUIParent);
     }
-
-    #region
-    //public void CreateClickUI()
-    //{
-    //
-    //    for (int i= 0; i < _ClickUI.Length; i ++)
-    //    {
-    //        string key = "";
-    //        if (i == 0) { key = "Ground"; }
-    //        if (i == 1) { key = "Sea"; }
-    //        _tempClickUI[key] = Instantiate(_ClickUI[i]);
-    //    }
-    //}
-    //public void OnClickUI(string key,TileController tileData)
-    //{
-    //    _tempClickUI[key].SetActive(true);
-    //}
-    #endregion
     public void CreateClickUI()
     {
-        _clickGroundUI = Instantiate(_clickGroundUI, canvus);
+        for (int i = 0; i < _clickTileUI.Length; i++)
+        {
+            _clickTileUI[i] = Instantiate(_clickTileUI[i],canvus);
+            _clickTileUI[i].SetActive(false);
+        }
     }
 
-    public void OnPopupGround(TileController _tileController)
+    public void OnClickUI(TileType _type)
     {
-        _clickEvenetGround?.Invoke(_tileController);
+        OffClickUI();
+        for (int i = 0; i < _clickTileUI.Length; i++)
+        {
+            if (_type == TileType.Ground)
+            {
+                _clickTileUI[0].SetActive(true);
+            }
+            else if(_type == TileType.Sea)
+            {
+                _clickTileUI[1].SetActive(true);
+            }
+        }
+    }
+    public void OffClickUI()
+    {
+        foreach (var temp in _clickTileUI)
+        {
+            temp.SetActive(false);
+        }
+    }
+
+
+    public void InvokeClickUI(TileController _tileController, TileType tileType)
+    {
+        if (tileType == TileType.Ground)
+        {
+            _clickEvenetGround?.Invoke(_tileController);
+        }
+        else if (tileType == TileType.Sea)
+        {
+            _clickEvenetSea?.Invoke(_tileController);
+        }
     }
 }
