@@ -12,9 +12,46 @@ public enum TileType
     revenue,    // 7 국세청
     casino      // 8 카지노
 }
+public enum SubTileType
+{
+    Bangkok = 1,
+    Beijing = 3,
+    Macau = 4,
+    Dokdo = 5,
+    NewDelhi = 6,
+    Dubai = 8,
+    Cairo = 9,
+    Toronto = 11,
+    Gyeongpodae = 12,
+    SanJose = 13,
+    Bogota = 14,
+    Hawaii = 15,
+    Santiago = 16,
+    BuenosAires = 18,
+    SaoPaulo = 19,
+    Athens = 21,
+    Prague = 23,
+    Berlin = 24,
+    Santorini = 25,
+    Lisbon = 26,
+    Madrid = 27,
+    Haeundae = 28,
+    Rome = 29,
+    Osaka = 31,
+    London = 32,
+    Paris = 34,
+    Tahiti = 35,
+    NewYork = 37,
+    Seoul = 39,
+
+}
+public partial class TileInfoData : ScriptableObject
+{
+    [Header("보조 타일 타입")] public SubTileType _subTileType;
+}
 
 [CreateAssetMenu(fileName = "TileInfoData")]
-public class TileInfoData : ScriptableObject
+public partial class TileInfoData : ScriptableObject
 {
     [Header("타일 키값")] public int _tileKey;
     [Header("타일 이름")] public string _tileName;
