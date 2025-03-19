@@ -79,12 +79,20 @@ public class TileBuyUI : MonoBehaviour
     }
 
     #region 구매 체크 이미지 색상 변경 false 빨강 / true 초록
-    // 버튼 상태를 변경하고 체크 이미지 색상 업데이트
+    // 버튼 상태를 변경하고 체크 이미지 색상 업데이트 + Buy 버튼 상태 업데이트
     private void ToggleButtonState(ref bool isChecked, Image image)
     {
         isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
-        Debug.Log($"▶ ToggleButtonState 실행됨: {isChecked}");
+        Debug.Log($"ToggleButtonState 실행됨: {isChecked}");
+
         UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
+        UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
+    }
+
+    // Buy 버튼을 _isLandCheck 값에 따라 활성화/비활성화
+    private void UpdateBuyButtonState()
+    {
+        _buyBtn.interactable = _isLandCheck; // _isLandCheck가 true면 활성화, false면 비활성화
     }
 
     // 특정 체크 이미지의 색상을 변경
@@ -149,6 +157,9 @@ public class TileBuyUI : MonoBehaviour
         // 모든 체크 이미지 색상을 빨간색으로 초기화
         UpdateCheckImages();
 
+        // Buy 버튼 상태 초기화
+        UpdateBuyButtonState();
+
         // 버튼 클릭 이벤트 초기화 후 다시 연결
         Button[] buyButtons = { _buyTileLandBtn, _buyTilePensionBtn, _buyTileCondoBtn, _buyTileHotelBtn };
         Image[] checkImages = { _islandImage, _isPensionImage, _isCondoImage, _isHotelImage };
@@ -204,7 +215,7 @@ public class TileBuyUI : MonoBehaviour
     {
         if (_currentMoney >= data._tileLandPrice)
         {
-            Debug.Log($"▶ HandleBankOwnership 실행됨 (현재 보유 금액: {_currentMoney})");
+            Debug.Log($" HandleBankOwnership 실행됨 (현재 보유 금액: {_currentMoney})");
 
             // 토지 구매 버튼 강제 클릭 (토글 상태 변경을 위해)
             _buyTileLandBtn.onClick.Invoke();
