@@ -1,130 +1,96 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using Firebase;
-using Firebase.Database;
-using Firebase.Extensions;
-using System.Threading.Tasks;
-using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-
-//궁금한게 내가원하는씬에서 부터 생성하면 그때부터 계속 생성되게는 안돼나
 public class test : MonoBehaviourPunCallbacks
 {
-    public static test Instance { get; private set; }
-    private DatabaseReference dbReference;
-    public int userMoney = 0;
+    public Transform roomListPanel;
+    public GameObject TestPlayerImage;
+    public int readyCount = 0;
 
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    private void Update()
-    {
-       Debug.Log(FirebaseLoginMgr.user.DisplayName + "의 돈 : " + userMoney);
-    }
-
-
-
+    //겟차일드 찾고 
+    //그거에 텍스를 찾아서 변경
 
     private void Start()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(async task =>
-        {
-            FirebaseApp app = FirebaseApp.DefaultInstance;
-            dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-            Debug.Log("ㅇㅇ12");
-
-            if (FirebaseLoginMgr.user != null)
-            {
-                SaveUserData(FirebaseLoginMgr.user.DisplayName, "money",12000);
-                userMoney = await LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", userMoney);
-                Debug.Log("유저 닉네임 : " + FirebaseLoginMgr.user.DisplayName);
-                Debug.Log("유저 돈 : " + userMoney);
-            }
-            else
-            {
-                Debug.LogError("파이어베이스 문제");
-            }
-        });
+        UpdatePlayerList();
     }
-
-
-
-
-    //데이터 저장 함수
-    //SaveUserData(id,"level",5);
-    //id의 레벨은 5 추가됌
-    //ContinueWithOnMainThread 메인쓰레드에서 함
-    public void SaveUserData<T>(string userId, string dataName, T value) 
-    {
-        dbReference.Child("users").Child(userId).Child(dataName).SetValueAsync(value).ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted)
-            {
-                Debug.Log(userId+ "의" + dataName +  value+"추가됨");
-            }
-            else
-            {
-                Debug.LogError("실패함");
-            }
-        });
-    }
-
-    //데이터 불러오기 함수
-    //함수쓸때 앞에 await 붙여야댐
-    //playerLevel = await LoadUserDataAsync(id, "level", useLevel);
-    //id의 레벨 불러오고 playerLevel 변수에 담음
-    //playerLevel =  데이터value; 이런식
-    //await할때까지 기달림
-    //그놈의 비동기 
-    //https://ljhyunstory.tistory.com/284 
-    public async Task<T> LoadUserDataAsync<T>(string userId, string dataName, T type)
-    {
-        // 비동기적으로 데이터 불러오기
-        DataSnapshot snapshot = await dbReference.Child("users").Child(userId).Child(dataName).GetValueAsync();
-        T Tvalue;
-
-        try
-        {
-            Tvalue = type;
-            if (snapshot.Exists)
-            {
-                //타입을 바꿔서 집어넣음
-                Tvalue = (T)Convert.ChangeType(snapshot.Value, typeof(T));
-                Debug.Log(userId + "의 " + dataName + "불러옴");
-                Debug.Log("Tvalue : " + Tvalue);
-            }
-            else
-            {
-                Debug.Log("저장된 데이터 없음"); 
-            }
-        }
-        catch (System.Exception dd)
-        {
-            Debug.Log(dd);
-            Tvalue = type;
-        }
-
-        return Tvalue;
-
-    }
-
    
 
 
-}
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        UpdatePlayerList();
+    }
 
+    public void UpdatePlayerList()
+    {
+        for (int i = 0; i < roomListPanel.childCount; i++)
+        {
+            Destroy(roomListPanel.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            var dd = Instantiate(TestPlayerImage, roomListPanel); //룸 리스트 패널 하에 하나 생성
+            dd.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].NickName;
+
+            if (PhotonNetwork.PlayerList[i].IsMasterClient)
+            {
+                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "GameStart";
+
+                //방장만 게임시작 버튼 기능 추가
+                var btn = dd.transform.GetChild(2).GetComponent<Button>();
+                btn.onClick.AddListener(StartBtn);
+            }
+            else
+            {
+                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "only ready";
+                var btn = dd.transform.GetChild(2).GetComponent<Button>();
+                btn.onClick.AddListener(ReadyCountBtn);
+            }
+
+        }
+
+
+    }
+
+    //레디버튼 누를경우 전체의 readyCount가 오름
+    public void ReadyCountBtn()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("ReadyCount", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    public void ReadyCount()
+    {
+        readyCount++;
+
+    }
+
+    //전체 유저수가 레디를 누를경우 클릭가능하게
+    [PunRPC]
+    public void StartBtn()
+    {
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("게임 시작 버튼 눌럿음");
+            if (readyCount >= PhotonNetwork.PlayerList.Length - 1)
+            {
+                Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
+                PhotonNetworkMgr.Instance.changeScene("testIngameScene");
+            }
+        }
+
+    }
+
+
+}

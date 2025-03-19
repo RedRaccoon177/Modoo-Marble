@@ -18,7 +18,7 @@ public class REALTEST : MonoBehaviour
 
     public async Task LoadPlayerMoney()
     {
-        playerMoney = await test.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
+        playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
         playerNickNameText.text = FirebaseLoginMgr.user.DisplayName;
         playerMoneyText.text = playerMoney.ToString();
     }
