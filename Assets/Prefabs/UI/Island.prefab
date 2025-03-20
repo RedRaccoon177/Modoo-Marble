@@ -4280,6 +4280,7 @@ MonoBehaviour:
   _tileSheet: {fileID: 6474543546173728253}
   _tileToll: {fileID: 1593887998965487843}
   _playerMoney: {fileID: 1770043504173659780}
+  _closeButton: {fileID: 810592468926917998}
 --- !u!1 &8940945745390443157
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,8 +16,8 @@ public class TileClick : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        UIManagerP.instance.InvokeClickUI(_tileController, _tileController._tileType);
         UIManagerP.instance.OnClickUI(_tileController._tileType);
+        UIManagerP.instance.InvokeClickUI(_tileController, _tileController._tileType);
     }
 
 }

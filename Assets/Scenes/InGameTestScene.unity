@@ -1068,13 +1068,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea923d7e24e5e04fa195d7351e659e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileGroundBuyUI: {fileID: 1853682334994844163, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
-  _tileSeaBuyUI: {fileID: 3733452599913366, guid: bf315e79811f7cf4a903f8dfcfefaf84, type: 3}
-  _tileUIParent: {fileID: 131538669}
-  canvus: {fileID: 2004488151}
+  _tileBuyUI:
+  - {fileID: 4499039379688627236, guid: 91293d81c488ef14b96d8f1850842979, type: 3}
+  - {fileID: 8886160249979617007, guid: bf315e79811f7cf4a903f8dfcfefaf84, type: 3}
+  - {fileID: 2981705093667156229, guid: 4d20f7b1a41c58b4c817c7d0fc81a8ed, type: 3}
   _clickTileUI:
   - {fileID: 4188171647600667817, guid: c142aa39862cc174a8b516598dc943e9, type: 3}
   - {fileID: 1081851401116152791, guid: d136d49cdf712a044a43dcb8ae77fcf2, type: 3}
+  - {fileID: 2981705093667156229, guid: 4d20f7b1a41c58b4c817c7d0fc81a8ed, type: 3}
+  _tileUIParent: {fileID: 131538669}
+  canvus: {fileID: 2004488151}
 --- !u!1 &1220694346
 GameObject:
   m_ObjectHideFlags: 0

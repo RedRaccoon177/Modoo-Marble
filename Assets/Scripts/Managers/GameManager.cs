@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour
     //플레이어 정보
     PlayerManager _playerManager;
 
-    //값이 변경될 때 발생하는 이벤트
-    public event Action<TileController> OnTilePopupDataChange;
 
     private void Start()
     {
@@ -71,8 +69,8 @@ public class GameManager : MonoBehaviour
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        OnTilePopupDataChange?.Invoke(currentTile);
-
+        UIManagerP.instance.OnBuyUIPanel(currentTile._tileType);
+        UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
