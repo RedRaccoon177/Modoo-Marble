@@ -21,15 +21,25 @@ public class PlayerMoveTest2 : MonoBehaviourPunCallbacks
         {
             photonView.RPC("playerMove", RpcTarget.All);
         }
+        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.S) && photonView.IsMine)
+        {
+            photonView.RPC("FplayerMove", RpcTarget.All);
+        }
     }
 
 
 
-    [PunRPC]
+    [PunRPC]    
     void playerMove()
     {
         transform.Translate(2 , 0, 0);
     }
 
+
+    [PunRPC]
+    void FplayerMove()
+    {
+        transform.Translate(-2, 0, 0);
+    }
 
 }

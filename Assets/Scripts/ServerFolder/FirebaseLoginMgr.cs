@@ -108,7 +108,6 @@ public class FirebaseLoginMgr : MonoBehaviour
     public void Login()
     {
         StartCoroutine(LoginCor(LoginIdInputField.text, LoginPasswordInputField.text));
-        SceneChanege.gameObject.SetActive(true);
     }
 
     //로그아웃
@@ -121,7 +120,6 @@ public class FirebaseLoginMgr : MonoBehaviour
     public void CreateNickName()
     {
         StartCoroutine(CreateNickNameCor(NickNameInputField.text));
-        SceneChanege.gameObject.SetActive(true);
 
     }
     IEnumerator CreateNickNameCor(string NickName)
@@ -146,9 +144,22 @@ public class FirebaseLoginMgr : MonoBehaviour
             {
                 NickNamewarningText.text = "";
                 Debug.Log("닉네임 : " + user.DisplayName);
-            }
-        }
+                var dd = string.IsNullOrEmpty(user.DisplayName);
+                //닉네임이 있으면
+                if (dd != true)
+                {
+                    NickNameUiPanel.gameObject.SetActive(false);
+                    SceneChanege.gameObject.SetActive(true);
+                }
+                
+                
 
+
+               
+            }
+
+        }
+       
     }
 
 

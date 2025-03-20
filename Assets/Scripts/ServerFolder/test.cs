@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -39,25 +40,47 @@ public class test : MonoBehaviourPunCallbacks
             var dd = Instantiate(TestPlayerImage, roomListPanel); //룸 리스트 패널 하에 하나 생성
             dd.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].NickName;
 
+            var player = PhotonNetwork.PlayerList[i];
+            bool isLocalPlayer = player == PhotonNetwork.LocalPlayer;
+
+            //방장이냐
             if (PhotonNetwork.PlayerList[i].IsMasterClient)
             {
                 dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "GameStart";
 
-                //방장만 게임시작 버튼 기능 추가
                 var btn = dd.transform.GetChild(2).GetComponent<Button>();
-                btn.onClick.AddListener(StartBtn);
-                //btn.onClick.AddListener(()=>Destroy(dd.transform.GetChild(2).gameObject));
+
+                if (isLocalPlayer)
+                {
+                    btn.onClick.AddListener(StartBtn);
+                    //btn.onClick.AddListener(()=>Destroy(dd.transform.GetChild(2).gameObject));
+                }
+                else
+                {
+                    Destroy(btn.gameObject);
+                }
             }
+            //방장아니냐
             else
             {
+                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "no ready";
 
-                //dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "only ready";
                 var btn = dd.transform.GetChild(2).GetComponent<Button>();
-                btn.onClick.AddListener(ReadyCountBtn);
-                btn.onClick.AddListener(() => Destroy(dd.transform.GetChild(2).gameObject));
-                btn.onClick.AddListener(() => dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "only ready");
+                if (isLocalPlayer)
+                {
+                    btn.onClick.AddListener(ReadyCountBtn);
+                    btn.onClick.AddListener(() => Destroy(dd.transform.GetChild(2).gameObject));
+                    btn.onClick.AddListener(() => dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "ready");
+                }
+                else
+                {
+                    Destroy(btn.gameObject);
+                }
+                 
 
             }
+
+
 
         }
 
@@ -69,14 +92,37 @@ public class test : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("ReadyCount", RpcTarget.All);
+            photonView.RPC("ReadyCount", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
         }
     }
 
     [PunRPC]
-    public void ReadyCount()
+    public void ReadyCount(int playerID)
     {
         readyCount++;
+        for (int i = 0; i < roomListPanel.childCount; i++)
+        {
+            Transform playerUI = roomListPanel.GetChild(i);
+            TextMeshProUGUI playerNameText = playerUI.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+            Player player = null;
+            foreach (var p in PhotonNetwork.PlayerList)
+            {
+                if (p.ActorNumber == playerID)
+                {
+                    player = p;
+                    break; 
+                }
+            }
+
+            // 현재 업데이트해야 하는 플레이어 찾기
+            //Player player = PhotonNetwork.PlayerList.FirstOrDefault(p => p.ActorNumber == playerID);
+            if (player != null && player.NickName == playerNameText.text)
+            {
+                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "ready"; // 모든 클라이언트에서 UI 변경
+                break;
+            }
+        }
 
     }
 
@@ -84,14 +130,13 @@ public class test : MonoBehaviourPunCallbacks
     [PunRPC]
     public void StartBtn()
     {
-
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("게임 시작 버튼 눌럿음");
             if (readyCount >= PhotonNetwork.PlayerList.Length - 1)
             {
                 Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
-                PhotonNetworkMgr.Instance.changeScene("testIngameScene");
+                PhotonNetworkMgr.Instance.changeScene("PlayerMoveTest");
             }
         }
 

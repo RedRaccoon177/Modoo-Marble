@@ -24,7 +24,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     {
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
-        serverPanel.gameObject.SetActive(true);
+        //serverPanel.gameObject.SetActive(true);
        
     }
 
@@ -67,6 +67,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         Debug.Log("서버 연결 완료");
         PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
         PhotonNetwork.JoinLobby();
+        PhotonNetworkMgr.Instance.changeScene("RoomScene");
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
@@ -82,6 +83,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     {
         Debug.Log("클라이언트가 방에 입장시에 알아서 호출");
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
     }
     public override void OnJoinedLobby()
     {
