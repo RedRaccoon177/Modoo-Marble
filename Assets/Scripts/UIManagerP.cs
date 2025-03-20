@@ -14,10 +14,12 @@ public class UIManagerP : MonoBehaviour
     [Header("Å¬¸¯½Ã ¶ß´Â UI")] public GameObject[] _clickTileUI; 
     public event Action<TileController> _clickEvenetGround;
     public event Action<TileController> _clickEvenetSea;
+    public event Action<int,int> _diceNumEvent;
 
 
     private void Awake()
     {
+        Debug.Log("???");
         if (instance == null) 
         {
             instance = this;
@@ -88,5 +90,10 @@ public class UIManagerP : MonoBehaviour
         {
             _clickEvenetSea?.Invoke(_tileController);
         }
+    }
+
+    public void InvokeDiceNum(int firstDice, int secondDice)
+    {
+        _diceNumEvent?.Invoke(firstDice, secondDice);
     }
 }

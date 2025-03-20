@@ -51,7 +51,7 @@ public class MapManager : MonoBehaviour
         else if (num == 10 || num == 20 || num == 30 || num == 0)
         {
             gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.8f);
-           // gameObject.transform.GetChild(4).gameObject.SetActive(false);
+            gameObject.transform.GetChild(4).gameObject.SetActive(false);
         }
     }
 
