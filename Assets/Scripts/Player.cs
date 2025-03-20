@@ -6,7 +6,9 @@ public class Player : MonoBehaviour//임시 클래스
     public event Action OnDataChanged; 
 
     [SerializeField] private string nickname;//임시값
+
     private int money = 2000000; //임시값
+
     private int extraMoney = 0;
 
     public string Nickname => nickname;
