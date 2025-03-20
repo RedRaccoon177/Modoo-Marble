@@ -35,11 +35,12 @@ public class UIManagerP : MonoBehaviour
         CreateBuyUI();      // 구매할 때 나타나는 UI 
         OffBuyUIPanel();    // 구매할 때 나타나는 UI 비활성화
     }
-    public void OnBuyUIPanel(TileType _tileType)
-    {
-        OffBuyUIPanel();
-        OnBuyUI(_tileType);
-    }
+    /// <summary>
+    /// 패널 활성화 및 구매 UI 활성화 
+    /// </summary>
+    /// <param name="_tileType"></param>
+
+    /// 구매 Ui비활성화
     public void OffBuyUIPanel()
     {
         // 판넬 비활성화 전에 자식 객체들 먼저 비활성화
@@ -49,6 +50,10 @@ public class UIManagerP : MonoBehaviour
         }
         _tileUIParent.gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// 구매 Ui생성 함수
+    /// </summary>
     public void CreateBuyUI()
     {
         for (int i=0; i< _tileBuyUI.Length; i++)
@@ -56,8 +61,14 @@ public class UIManagerP : MonoBehaviour
             _tileBuyUI[i] = Instantiate(_tileBuyUI[i], _tileUIParent);
         }
     }
+
+    /// <summary>
+    /// 타입에 알맞은 구매 Ui활성화
+    /// </summary>
+    /// <param name="_tileType"></param>
     public void OnBuyUI(TileType _tileType)
     {
+        OffBuyUIPanel();
         _tileUIParent.gameObject.SetActive(true);
         for (int i = 0; i < _clickTileUI.Length; i++)
         {
@@ -75,6 +86,12 @@ public class UIManagerP : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 타입에 알맞은 이벤트 실행
+    /// </summary>
+    /// <param name="_currentTile"></param>
+    /// <param name="_tileType"></param>
     public void InvokeBuyUI(TileController _currentTile,TileType _tileType)
     {
         if (_tileType == TileType.Ground)
@@ -90,6 +107,7 @@ public class UIManagerP : MonoBehaviour
             _DataUnfinished.Invoke(_currentTile);
         }
     }
+
     /// <summary>
     ///  타일 클릭시 나타나는 UI 생성
     /// </summary>
@@ -138,13 +156,13 @@ public class UIManagerP : MonoBehaviour
     /// </summary>
     /// <param name="_tileController"></param>
     /// <param name="tileType"></param>
-    public void InvokeClickUI(TileController _currentTile, TileType tileType)
+    public void InvokeClickUI(TileController _currentTile, TileType _tileType)
     {
-        if (tileType == TileType.Ground)
+        if (_tileType == TileType.Ground)
         {
             _clickChangeDataGround?.Invoke(_currentTile);
         }
-        else if (tileType == TileType.Sea)
+        else if (_tileType == TileType.Sea)
         {
             _clickChangeDataSea?.Invoke(_currentTile);
         }
