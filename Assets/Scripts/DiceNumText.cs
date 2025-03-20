@@ -6,9 +6,10 @@ using UnityEngine;
 public class DiceNumText : MonoBehaviour
 {
     [Header("주사위 숫자")] public TextMeshProUGUI _diceNum;
-    void Awake()
+    void Start()
     {
-        
+        Debug.Log("!!!!");
+        UIManagerP.instance._diceNumEvent += ChangeDiceText;
     }
     public void ChangeDiceText(int FirstDice , int SecondDice)
     {
