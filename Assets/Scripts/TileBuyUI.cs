@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using System.ComponentModel;
 
 public class TileBuyUI : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class TileBuyUI : MonoBehaviour
 
     // 실제 구매 버튼
     public Button _buyBtn;
+
+    //취소 버튼
+    public Button _cancelBtn;
 
     [Header("토지, 펜션, 콘도, 호텔 구매 여부 체크")]
     private bool _isLandCheck = false;      // 토지 구매 여부 체크
@@ -46,8 +50,9 @@ public class TileBuyUI : MonoBehaviour
     [Header("타일 3번 건물 소유주")] public int _tileHotelOwner;    // 호텔 소유주 ID
     [Header("랜드마크 소유주")] public int _tileLandMarkOwner;      // 랜드마크 소유주 ID
 
-    // 플레이어 현재 보유 금액 (게임 내에서 변할 수 있음)
+    [Header("플레이어 현재 보유 금액 (게임 내에서 변할 수 있음)")]
     public double _currentMoney;
+    public double _cancelRememberMoney;
 
     //플레이어의 고유 번호
     int _playerKey = 1;
@@ -81,7 +86,7 @@ public class TileBuyUI : MonoBehaviour
     /// <summary>
     /// 버튼 클릭 이벤트 연결
     /// </summary>
-    private void BindButtonEvents()
+    void BindButtonEvents()
     {
         _buyTileLandBtn.onClick.AddListener(() => ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice));
 
@@ -92,6 +97,8 @@ public class TileBuyUI : MonoBehaviour
         _buyTileHotelBtn.onClick.AddListener(() => ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice));
 
         _buyBtn.onClick.AddListener(() => BuyButtonClick());
+
+        _cancelBtn.onClick.AddListener(() => CancelBtnClick());
     }
 
     #region 구매 체크 이미지 색상 변경 false 빨강 / true 초록
@@ -102,12 +109,13 @@ public class TileBuyUI : MonoBehaviour
     /// <param name="image"></param>
     /// <param name="playerMoney"></param>
     /// <param name="price"></param>
-    private void ToggleButtonState(ref bool isChecked, Image image, ref double playerMoney, double price)
+    void ToggleButtonState(ref bool isChecked, Image image, ref double playerMoney, double price)
     {
         // isChecked가 참이면 구매 한 것일 테니 클릭하여 구매 안하겠다고 하는 것이다. 돈을 돌려줘라.
         if (isChecked)
         {
             playerMoney += price;
+
             isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
             UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
             UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
@@ -139,12 +147,9 @@ public class TileBuyUI : MonoBehaviour
     /// <summary>
     /// Buy 버튼을 _isLandCheck 값에 따라 활성화/비활성화
     /// </summary>
-    private void UpdateBuyButtonState()
+    void UpdateBuyButtonState()
     {
         _buyBtn.interactable = _isLandCheck; // _isLandCheck가 true면 활성화, false면 비활성화
-        //_buyTilePensionBtn.interactable = _isLandCheck;
-        //_buyTileCondoBtn.interactable = _isLandCheck;
-        //_buyTileHotelBtn.interactable= _isLandCheck;
     }
 
     /// <summary>
@@ -152,7 +157,7 @@ public class TileBuyUI : MonoBehaviour
     /// </summary>
     /// <param name="image"></param>
     /// <param name="isChecked"></param>
-    private void UpdateImageColor(Image image, bool isChecked)
+    void UpdateImageColor(Image image, bool isChecked)
     {
         image.color = isChecked ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f); // 초록색 or 빨간색
     }
@@ -160,7 +165,7 @@ public class TileBuyUI : MonoBehaviour
     /// <summary>
     /// 모든 체크 이미지 초기 색상 설정
     /// </summary>
-    private void UpdateCheckImages()
+    void UpdateCheckImages()
     {
         UpdateImageColor(_islandCheckImage, _isLandCheck);
         UpdateImageColor(_isPensionCheckImage, _isPensionCheck);
@@ -255,12 +260,13 @@ public class TileBuyUI : MonoBehaviour
     /// </summary>
     /// <param name="data"></param>
     /// <param name="playerManager"></param>
-    private void UpdateTilePurchaseButtons(TileController data, PlayerManager playerManager)
+    void UpdateTilePurchaseButtons(TileController data, PlayerManager playerManager)
     {
         if (data == null || playerManager == null) return;
 
         // 현재 플레이어가 보유한 돈을 가져옴
         _currentMoney = playerManager.GetMoney();
+        _cancelRememberMoney = _currentMoney;
 
         // 소유 상태에 따라 구매 가능 여부를 체크
         switch (data._tileLandOwner)
@@ -281,7 +287,7 @@ public class TileBuyUI : MonoBehaviour
     /// 은행 소유일 경우 함수
     /// </summary>
     /// <param name="data"></param>
-    private void HandleBankOwnership(TileController data)
+    void HandleBankOwnership(TileController data)
     {
 
         if (_currentMoney >= data._tileLandPrice)
@@ -333,7 +339,7 @@ public class TileBuyUI : MonoBehaviour
     /// 첫번째 비교 이후 두번째 부터는 버튼 클릭 시 체크용
     /// </summary>
     /// <param name="data"></param>
-    private void TileBuyCheckBtnCheck(TileController data)
+    void TileBuyCheckBtnCheck(TileController data)
     {
         if (!_isPensionCheck && _currentMoney >= data._tilePensionPrice)
         {
@@ -388,6 +394,16 @@ public class TileBuyUI : MonoBehaviour
         _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : 0;
 
         OnTileValueChange?.Invoke(_currentTile); // 정확한 타일 데이터 전달
+    }
+
+    /// <summary>
+    /// 취소 버튼 클릭 했을 때
+    /// </summary>
+    void CancelBtnClick()
+    {
+        _currentMoney = _cancelRememberMoney;
+
+        //TODO:Panel 비활성화 시키기
     }
 
     #region 추후에 진행

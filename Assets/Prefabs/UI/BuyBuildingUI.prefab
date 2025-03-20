@@ -2256,6 +2256,7 @@ MonoBehaviour:
   _buyTileCondoBtn: {fileID: 912535915725009261}
   _buyTileHotelBtn: {fileID: 7746184815601710086}
   _buyBtn: {fileID: 682818754718960036}
+  _cancelBtn: {fileID: 2166266912701654780}
   _islandCheckImage: {fileID: 2269877332811921073}
   _isPensionCheckImage: {fileID: 4443169050696662865}
   _isCondoCheckImage: {fileID: 4565647698651670063}
@@ -2273,6 +2274,8 @@ MonoBehaviour:
   _tileCondoOwner: 0
   _tileHotelOwner: 0
   _tileLandMarkOwner: 0
+  _currentMoney: 0
+  _cancelRememberMoney: 0
 --- !u!1 &4639574736957484156
 GameObject:
   m_ObjectHideFlags: 0
@@ -2764,9 +2767,8 @@ GameObject:
   - component: {fileID: 6520755048332409901}
   - component: {fileID: 2256509330012926380}
   - component: {fileID: 2166266912701654780}
-  - component: {fileID: 5805348658540359204}
   m_Layer: 5
-  m_Name: CancleBt
+  m_Name: CancelBt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2874,18 +2876,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5805348658540359204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5099161206826403849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a447ea82dff1dff48acf81ba0fce9b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5139541814569416041
 GameObject:
   m_ObjectHideFlags: 0
