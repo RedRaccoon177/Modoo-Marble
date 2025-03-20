@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class TileBuyUI : MonoBehaviour
 {
+    #region UI 변수들
     // 구매 체크 버튼 (땅, 건물)
     public Button _buyTileLandBtn;    // 땅 구매 버튼
     public Button _buyTilePensionBtn; // 펜션 구매 버튼
@@ -58,6 +59,7 @@ public class TileBuyUI : MonoBehaviour
     private TileController _currentTile; // 현재 선택된 타일 저장
 
     bool _FHandleBankOwnership = false;
+    #endregion
 
     void Awake()
     {
@@ -322,7 +324,6 @@ public class TileBuyUI : MonoBehaviour
 
         OnTileValueChange?.Invoke(_currentTile); // 정확한 타일 데이터 전달
     }
-
 
     #region 추후에 진행
 
