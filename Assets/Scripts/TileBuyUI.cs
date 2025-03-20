@@ -57,6 +57,8 @@ public class TileBuyUI : MonoBehaviour
 
     private TileController _currentTile; // 현재 선택된 타일 저장
 
+    bool _FHandleBankOwnership = false;
+
     void Awake()
     {
         // 게임 매니저에서 타일 데이터 변경 이벤트를 구독
@@ -88,9 +90,11 @@ public class TileBuyUI : MonoBehaviour
         isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
         UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
         UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
-
-        TileBuyCheckBtnCheck(_currentTile);
-        Debug.Log(_currentMoney);
+        
+        if(_FHandleBankOwnership == true)
+        {
+            TileBuyCheckBtnCheck(_currentTile);
+        }
     }
 
     // Buy 버튼을 _isLandCheck 값에 따라 활성화/비활성화
@@ -117,6 +121,8 @@ public class TileBuyUI : MonoBehaviour
 
     public void SetTileData(TileController data)
     {
+        _FHandleBankOwnership = false;
+
         // 데이터가 없으면 바로 리턴 (안전장치)
         if (data == null) return;
 
@@ -216,6 +222,7 @@ public class TileBuyUI : MonoBehaviour
     /// <param name="data"></param>
     private void HandleBankOwnership(TileController data)
     {
+
         if (_currentMoney >= data._tileLandPrice)
         {
             Debug.Log($" HandleBankOwnership 실행됨 (현재 보유 금액: {_currentMoney})");
@@ -257,11 +264,17 @@ public class TileBuyUI : MonoBehaviour
             _buyTileCondoBtn.interactable = false;
             _buyTileHotelBtn.interactable = false;
         }
+
+        _FHandleBankOwnership = true;
     }
 
     private void TileBuyCheckBtnCheck(TileController data)
     {
         if (!_isPensionCheck && _currentMoney >= data._tilePensionPrice)
+        {
+            _buyTilePensionBtn.interactable = true;
+        }
+        else if (_isPensionCheck)
         {
             _buyTilePensionBtn.interactable = true;
         }
@@ -274,12 +287,20 @@ public class TileBuyUI : MonoBehaviour
         {
             _buyTileCondoBtn.interactable = true;
         }
+        else if (_isCondoCheck)
+        {
+            _buyTileCondoBtn.interactable = true;
+        }
         else
         {
             _buyTileCondoBtn.interactable = false;
         }
 
         if (!_isHotelCheck && _currentMoney >= data._tileHotelPrice)
+        {
+            _buyTileHotelBtn.interactable = true;
+        }
+        else if (_isHotelCheck)
         {
             _buyTileHotelBtn.interactable = true;
         }
