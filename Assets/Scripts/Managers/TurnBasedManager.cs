@@ -13,8 +13,7 @@ public class TurnBasedManager : MonoBehaviour
     {
         _diceNumFirst = Random.Range(1, 7);
         _diceNumSecond = Random.Range(1, 7);
-        Debug.Log("첫 번째 주사위 숫자 : " + _diceNumFirst);
-        Debug.Log("두 번째 주사위 숫자 : " + _diceNumSecond);
+        UIManagerP.instance.InvokeDiceNum(_diceNumFirst, _diceNumSecond);
         return _diceNumFirst + _diceNumSecond;
     }
 }
