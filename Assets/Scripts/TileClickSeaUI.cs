@@ -25,10 +25,10 @@ public class TileClickSea : MonoBehaviour
         AreaName.text = data._tileName;
         GroundPrice.text = data._tileLandPrice.ToString();
 
-        Visit1.text = data._tileLandToll.ToString();
-        Visit2.text = data._tilePensionToll.ToString();
-        Visit3.text = data._tileCondoToll.ToString();
-        Visit4.text = data._tileHotelToll.ToString();
+        //Visit1.text = data._tileLandToll.ToString();
+        //Visit2.text = data._tilePensionToll.ToString();
+        //Visit3.text = data._tileCondoToll.ToString();
+        //Visit4.text = data._tileHotelToll.ToString();
 
         //VisitNumber.text = data.< 방문횟수 >.ToString();
         //CurrentToll.text = data.< 통행료 >.ToString();
