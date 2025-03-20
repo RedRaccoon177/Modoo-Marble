@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileClickGroundUI : MonoBehaviour
 {
@@ -18,9 +19,12 @@ public class TileClickGroundUI : MonoBehaviour
 
     [Separator]
     [Header("통행료")] public TextMeshProUGUI _tileToll;
+    [Header("닫기 버튼")] public Button _closeBtn;
+
     private void Awake()
     {
         UIManagerP.instance._clickEvenetGround += SetTileData;
+        _closeBtn.onClick.AddListener(() => UIManagerP.instance.OffClickUI());
     }
     public void SetTileData(TileController data)
     {
