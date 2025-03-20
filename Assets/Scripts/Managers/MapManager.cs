@@ -29,23 +29,17 @@ public class MapManager : MonoBehaviour
     //Vector3 tilePos;
     public void ChangeTilePos(int num, GameObject gameObject)
     {
-        if (0 < num && num < 10)
+        gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);
+        if (10 < num && num < 20)
         {
-            gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);
-        }
-        else if (10 < num && num < 20)
-        {
-            gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.2f);
             gameObject.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
         }
         else if (20 < num && num < 30)
         {
-            gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.2f);
             gameObject.transform.rotation = Quaternion.Euler(0f, -180f, 0f);
         }
         else if (30 < num && num < 40)
         {
-            gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.2f);
             gameObject.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
         }
         else if (num == 10 || num == 20 || num == 30 || num == 0)
