@@ -38,6 +38,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
             Debug.Log("방만들기 버튼 클릭");
             //일단 인원 제한없음
             PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions()); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
+
         }
         else
         {
@@ -98,10 +99,15 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         Debug.Log("리스트들어옴");
+        foreach (Transform child in roomListPanel)
+        {
+            Destroy(child.gameObject);
+        }
         foreach (RoomInfo roomInfo in roomList)
         {
             var roomBtn = Instantiate(roomPrefab, roomListPanel); //룸 리스트 패널 하에 버튼 하나 생성
             roomBtn.GetComponentInChildren<Text>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
+            roomBtn.GetComponent<Button>().onClick.AddListener(()=>PhotonNetwork.JoinRoom(roomInfo.Name));
         }
     }
 
