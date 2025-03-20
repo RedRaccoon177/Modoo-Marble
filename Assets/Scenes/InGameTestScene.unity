@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3727f753b288ee7428b5d7d7eb3eaf13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userMoney: 0
+  _money: 100000
 --- !u!1 &131538668
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 486048715}
   - component: {fileID: 486048714}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: WorldCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 2004488149}
   - component: {fileID: 2004488148}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
