@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 10DesertedIsland
   m_EditorClassIdentifier: 
-  _subTileType: 0
+  _subTileType: 15
   subUnderTilePrefab: 0
   _tileKey: 10
   _tileName: "\uBB34\uC778\uB3C4"

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 21Athens
   m_EditorClassIdentifier: 
-  _subTileType: 21
+  _subTileType: 4
   subUnderTilePrefab: 0
   _tileKey: 21
   _tileName: "\uBE44\uC5D4\uB098"

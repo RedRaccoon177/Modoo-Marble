@@ -38,11 +38,11 @@ public enum SubTileType
     River_4,
     Pond_1,
     Pond_2,
-    Warer_1,
-    Warer_2,
-    Snow_1,
-    Snow_2,
-    Snow_3,
+    Water_1,
+    Water_2,
+    City_1,
+    City_2,
+    City_3,
 
     #region
     //Bangkok = 1,

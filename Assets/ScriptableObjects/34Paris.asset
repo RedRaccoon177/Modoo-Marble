@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 34Paris
   m_EditorClassIdentifier: 
-  _subTileType: 34
+  _subTileType: 6
   subUnderTilePrefab: 0
   _tileKey: 34
   _tileName: "\uC5D8\uB3C4\uB974"
