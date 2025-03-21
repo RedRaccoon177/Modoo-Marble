@@ -2,7 +2,28 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
-using System.ComponentModel;
+using Photon.Pun.Demo.PunBasics;
+public partial class TileBuyUI : MonoBehaviour
+{
+    [Header("통행료")] public TextMeshProUGUI _tollPriceText;
+    double _tollPrice = 0;
+    [Header("총 구매 비용")] public TextMeshProUGUI _totalBuyPriceText;
+    [Header("보유 현금")] public TextMeshProUGUI _playerTotalMoneyText;
+    PlayerManager playerManager;
+
+    public void PrintTotalBuyPrice(double current, double currentRemember)
+    {
+        _totalBuyPriceText.text = (currentRemember - current).ToString();
+    }
+    public void PrintTollPrice(double _tollPrice)
+    {
+        _tollPriceText.text = _tollPrice.ToString();
+    }
+    public void PrintPlayerMoney(PlayerManager _player)
+    {
+        _playerTotalMoneyText.text = _player._money.ToString();
+    }
+}
 
 public partial class TileBuyUI : MonoBehaviour
 {
@@ -70,7 +91,6 @@ public partial class TileBuyUI : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("버튼 Awake");
         UIManagerP.instance._buyChangeDataGround += SetTileData;
         // 초기 색상 설정
         UpdateCheckImages();
@@ -78,9 +98,9 @@ public partial class TileBuyUI : MonoBehaviour
         BindButtonEvents();
     }
 
-    void Start()
+    private void OnEnable()
     {
-        Debug.Log("버튼 Start");
+        _tollPrice = 0;
     }
 
     /// <summary>
@@ -88,13 +108,13 @@ public partial class TileBuyUI : MonoBehaviour
     /// </summary>
     void BindButtonEvents()
     {
-        _buyTileLandBtn.onClick.AddListener(() => ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice));
+        _buyTileLandBtn.onClick.AddListener(() => ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice, _currentTile._tileLandToll));
 
-        _buyTilePensionBtn.onClick.AddListener(() => ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice));
+        _buyTilePensionBtn.onClick.AddListener(() => ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice, _currentTile._tilePensionToll));
 
-        _buyTileCondoBtn.onClick.AddListener(() => ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice));
+        _buyTileCondoBtn.onClick.AddListener(() => ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice, _currentTile._tileCondoToll));
 
-        _buyTileHotelBtn.onClick.AddListener(() => ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice));
+        _buyTileHotelBtn.onClick.AddListener(() => ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice, _currentTile._tileHotelToll));
 
         _buyBtn.onClick.AddListener(() => BuyButtonClick());
 
@@ -109,13 +129,13 @@ public partial class TileBuyUI : MonoBehaviour
     /// <param name="image"></param>
     /// <param name="playerMoney"></param>
     /// <param name="price"></param>
-    void ToggleButtonState(ref bool isChecked, Image image, ref double playerMoney, double price)
+    void ToggleButtonState(ref bool isChecked, Image image, ref double playerMoney, double price , double tollPrice)
     {
         // isChecked가 참이면 구매 한 것일 테니 클릭하여 구매 안하겠다고 하는 것이다. 돈을 돌려줘라.
         if (isChecked)
         {
             playerMoney += price;
-
+            _tollPrice -= tollPrice;
             isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
             UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
             UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
@@ -129,6 +149,7 @@ public partial class TileBuyUI : MonoBehaviour
             if (playerMoney - price >= 0)
             {
                 playerMoney -= price;
+                _tollPrice += tollPrice;
                 isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
                 UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
                 UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
@@ -142,6 +163,8 @@ public partial class TileBuyUI : MonoBehaviour
                 Debug.Log("마이너스 금지");
             }
         }
+        PrintTotalBuyPrice(_currentMoney, _cancelRememberMoney);
+        PrintTollPrice(_tollPrice);
     }
 
     /// <summary>
@@ -200,7 +223,8 @@ public partial class TileBuyUI : MonoBehaviour
         _tileHotelOwner = data._tileHotelOwner;
 
         // 현재 플레이어 정보를 가져옴
-        PlayerManager playerManager = FindObjectOfType<PlayerManager>();
+        playerManager = FindObjectOfType<PlayerManager>();
+        PrintPlayerMoney(playerManager);
         if (playerManager == null)
         {
             Debug.LogError("PlayerManager를 찾을 수 없습니다!");
@@ -246,10 +270,10 @@ public partial class TileBuyUI : MonoBehaviour
             {
                 switch (index)
                 {
-                    case 0: ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice); break;
-                    case 1: ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice); break;
-                    case 2: ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice); break;
-                    case 3: ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice); break;
+                    case 0: ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice, _currentTile._tileLandToll); break;
+                    case 1: ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice, _currentTile._tilePensionToll); break;
+                    case 2: ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice, _currentTile._tileCondoToll); break;
+                    case 3: ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice, _currentTile._tileHotelToll); break;
                 }
             });
         }
@@ -444,6 +468,8 @@ public partial class TileBuyUI : MonoBehaviour
         }
 
         OnTileValueChange?.Invoke(_currentTile); // 정확한 타일 데이터 전달
+        playerManager.DecreaseMoney(_cancelRememberMoney - _currentMoney);
+        UIManagerP.instance.OffBuyUIPanel();
     }
 
     /// <summary>
