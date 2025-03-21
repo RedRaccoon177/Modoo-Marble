@@ -56,6 +56,7 @@ public class TileBuyUI : MonoBehaviour
 
     //플레이어의 고유 번호
     int _playerKey = 1;
+    int _enemyKey = 2;
 
     // 타일 정보 변경 이벤트
     public event Action<TileController> OnTileValueChange;
@@ -148,7 +149,7 @@ public class TileBuyUI : MonoBehaviour
     /// </summary>
     void UpdateBuyButtonState()
     {
-        _buyBtn.interactable = _isLandCheck; // _isLandCheck가 true면 활성화, false면 비활성화
+        if (_tileLandOwner != _playerKey) _buyBtn.interactable = _isLandCheck; // _isLandCheck가 true면 활성화, false면 비활성화
     }
 
     /// <summary>
@@ -387,10 +388,60 @@ public class TileBuyUI : MonoBehaviour
     {
         if (_currentTile == null) return; // 현재 선택된 타일이 없으면 리턴
 
-        _currentTile._tileLandOwner = _isLandCheck ? _playerKey : 0;
-        _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : 0;
-        _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : 0;
-        _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : 0;
+        //자신이 이미 구매한 토지일 경우 자신꺼
+        if(_tileLandOwner == _playerKey)
+        {
+            _currentTile._tileLandOwner = _playerKey;
+        }
+        //이미 적이 구매한 토지일 경우
+        else if (_tileLandOwner != 0)
+        {
+            _currentTile._tileLandOwner = _isLandCheck ? _playerKey : _enemyKey;
+        }
+        // 은행꺼였을 경우
+        else
+        {
+            _currentTile._tileLandOwner = _isLandCheck ? _playerKey : 0;
+        }
+
+        if(_tilePensionOwner == _playerKey)
+        {
+            _currentTile._tilePensionOwner = _playerKey;
+        }
+        else if(_tilePensionOwner != 0)
+        {
+            _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : _enemyKey;
+        }
+        else
+        {
+            _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : 0;
+        }
+
+        if (_tileCondoOwner == _playerKey)
+        { 
+            _currentTile._tileCondoOwner = _playerKey;
+        }
+        else if (_tileCondoOwner != 0)
+        {
+            _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : _enemyKey;
+        }
+        else
+        {
+            _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : 0;
+        }
+
+        if(_tileHotelOwner == _playerKey)
+        {
+            _currentTile._tileHotelOwner = _playerKey;
+        }
+        else if (_tileHotelOwner != 0)
+        {
+            _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : _enemyKey;
+        }
+        else
+        {
+            _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : 0;
+        }
 
         OnTileValueChange?.Invoke(_currentTile); // 정확한 타일 데이터 전달
     }
