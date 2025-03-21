@@ -4,7 +4,7 @@ using System;
 using UnityEngine.UI;
 using System.ComponentModel;
 
-public class TileBuyUI : MonoBehaviour
+public partial class TileBuyUI : MonoBehaviour
 {
     #region UI 변수들
     [Header("구매 체크 버튼 (땅, 건물)")]
