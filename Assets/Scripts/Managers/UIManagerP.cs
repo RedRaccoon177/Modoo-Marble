@@ -13,12 +13,12 @@ public class UIManagerP : MonoBehaviour
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
     [SerializeField] Transform canvus;
-    public event Action<TileController> _clickChangeDataGround;
-    public event Action<TileController> _clickChangeDataSea;
-    public event Action<TileController> _DataUnfinished;
-    public event Action<int,int> _diceNumEvent;
-    public event Action<TileController> _buyChangeDataGround;
-    public event Action<TileController> _buyChangeDataSea;
+    public event Action<TileController> _clickChangeDataGround;     // 토지 클릭 UI 이벤트
+    public event Action<TileController> _clickChangeDataSea;        // 관광지 클릭 UI 이벤트
+    public event Action<TileController> _DataUnfinished;            // 미완성 클릭,구매 UI 이벤트
+    public event Action<int,int> _diceNumEvent;                     // 주사위 텍스트 변화 이벤트
+    public event Action<TileController> _buyChangeDataGround;       // 토지 구매 UI 이벤트
+    public event Action<TileController> _buyChangeDataSea;          // 관광지 구매 UI 이벤트
 
 
     private void Awake()
@@ -59,6 +59,10 @@ public class UIManagerP : MonoBehaviour
         for (int i=0; i< _tileBuyUI.Length; i++)
         {
             _tileBuyUI[i] = Instantiate(_tileBuyUI[i], _tileUIParent);
+            if (i == 0)
+            {
+                Debug.Log("버튼 생성");
+            }
         }
     }
 
