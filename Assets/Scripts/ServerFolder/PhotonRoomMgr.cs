@@ -110,7 +110,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         foreach (RoomInfo roomInfo in roomList)
         {
             var roomBtn = Instantiate(roomPrefab, roomListPanel); //룸 리스트 패널 하에 버튼 하나 생성
-            roomBtn.GetComponentInChildren<Text>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
+            roomBtn.GetComponentInChildren<TextMeshProUGUI>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
             roomBtn.GetComponent<Button>().onClick.AddListener(()=>PhotonNetwork.JoinRoom(roomInfo.Name));
         }
     }
