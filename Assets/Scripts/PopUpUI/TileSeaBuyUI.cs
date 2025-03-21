@@ -9,14 +9,12 @@ public class TileSeaBuyUI : MonoBehaviour
     [Header("땅 이름")] public TextMeshProUGUI _tileName;
     [Header("타일 땅 값")] public TextMeshProUGUI _tileLandPrice;
 
-    [Separator]
     [Header("1장 보유 통행료")] public TextMeshProUGUI _tileOnePrice;
     [Header("2장 보유 통행료")] public TextMeshProUGUI _tileTwoPrice;
     [Header("3장 보유 통행료")] public TextMeshProUGUI _tileThreePrice;
     [Header("4장 보유 통행료")] public TextMeshProUGUI _tileFourPrice;
     [Header("현재 보유중인 장수")] public TextMeshProUGUI _tileSheet;
 
-    [Separator]
     [Header("총 구매 비용")] public TextMeshProUGUI _tileToll;
     [Header("보유 현금")] public TextMeshProUGUI _playerMoney;
     [Header("닫기 버튼")]  public Button _closeButton; // 닫기 버튼
