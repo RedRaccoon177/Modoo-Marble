@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour//임시 클래스
+public class PlayerTestMw : MonoBehaviour//임시 클래스
 {
     public event Action OnDataChanged; 
 
