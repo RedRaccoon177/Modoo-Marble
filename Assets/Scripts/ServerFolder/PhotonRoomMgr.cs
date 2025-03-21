@@ -17,14 +17,15 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     public GameObject roomPanels;
     public GameObject serverPanel;
 
-  
+    public GameObject LodingPanel;
+
 
     //서버연결
     public void isServer()
     {
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
-        //serverPanel.gameObject.SetActive(true);
+        LodingPanel.gameObject.SetActive(true);
        
     }
 
@@ -65,6 +66,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 
     public override void OnConnectedToMaster()
     {
+        LodingPanel.gameObject.SetActive(false);
         Debug.Log("서버 연결 완료");
         PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
         PhotonNetwork.JoinLobby();
