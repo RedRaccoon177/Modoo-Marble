@@ -29,10 +29,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         //¼­¹ö
         PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
-
-        _playerManager = FindObjectOfType<PlayerManager>();
-        _mapInfo = FindObjectOfType<MapManager>();
-        _turnBasedManager = FindObjectOfType<TurnBasedManager>();
+       
     }
 
     private void Update()

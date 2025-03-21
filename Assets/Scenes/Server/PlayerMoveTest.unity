@@ -1244,9 +1244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4472ef4f5f059f644ba54bc11c6568c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerfabs: {fileID: 8889200667527840210, guid: c61ecd58777cafd468a8938ed98ec90e, type: 3}
-  playerTurnText: {fileID: 330392143}
-  currentTurnText: {fileID: 1903234479}
+  playerfabs: {fileID: 2251393183922970900, guid: d09971626ac887942bb3bfa6af682e20, type: 3}
+  playerTurnText: {fileID: 0}
+  currentTurnText: {fileID: 0}
 --- !u!114 &1859514316
 MonoBehaviour:
   m_ObjectHideFlags: 0
