@@ -6,17 +6,19 @@ using UnityEngine.UI;
 using Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 //ΩÃ±€≈Ê
 public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 {
-    public InputField createRoomInput;
-    public InputField joinRoomInput;
-    public GameObject roomPrefab;
+    public TMP_InputField createRoomInput;
+    public TMP_InputField joinRoomInput;
+
     public Transform roomListPanel;
+
     public GameObject roomPanels;
     public GameObject serverPanel;
-
+    public GameObject roomPrefab;
     public GameObject LodingPanel;
 
 
