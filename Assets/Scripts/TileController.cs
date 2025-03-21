@@ -9,6 +9,8 @@ public partial class TileController : MonoBehaviour
     [Header("보조 타일 타입")] public GameObject subTileParent;
     [Header("보조 타일 타입")] public GameObject UnderPrefab;
     [Header("보조 타일 타입")] public GameObject BuildPostions;
+    [Header("보조 타일 타입")] public GameObject[] InGameTilePrefabs;
+
 }
 
 public partial class TileController : MonoBehaviour

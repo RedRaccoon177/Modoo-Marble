@@ -14,7 +14,7 @@ public enum TileType
 }
 public enum SubTileType
 {
-    Field_1,
+    Field_1 = 0,
     Field_2,
     Field_3,
     Hill_1,
@@ -38,6 +38,11 @@ public enum SubTileType
     River_4,
     Pond_1,
     Pond_2,
+    Warer_1,
+    Warer_2,
+    Snow_1,
+    Snow_2,
+    Snow_3,
 
     #region
     //Bangkok = 1,

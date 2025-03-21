@@ -59,19 +59,15 @@ public class MapManager : MonoBehaviour
             // 프리팹을 생성하고 위치를 설정
             GameObject _temp = Instantiate(_tilePrefab);
 
-            //GameObject _temp2 = Instantiate(_tileBuyUI, _tileParent);
             ChangeTilePos(i, _temp);
             _temp.transform.position = _tiledates[i]._tilePos;
             // TileController를 가져와서 데이터 적용
             TileController tileScript = _temp.GetComponent<TileController>();
-            
-            //TileBuyUI tileBuyUI = _temp2.GetComponent<TileBuyUI>();
 
             if (tileScript != null)
             {
                 tileScript.SetTileData(_tiledates[i]); // 데이터 적용
-                
-                //tileBuyUI.SetTileData(_tiledates[i]);
+                TileSetting(tileScript, _temp); // 타일타입에 맞춰 자식 객체 활성화.
             }
             else
             {
@@ -80,6 +76,130 @@ public class MapManager : MonoBehaviour
 
             // 생성된 타일을 배열에 저장
             _tiles[i] = _temp;
+        }
+    }
+
+    void TileSetting(TileController tile, GameObject tiles)
+    {
+        switch((int)tile._subTileType)
+        {
+            case 0:
+                Debug.Log(" 테스트 값");
+                tile.InGameTilePrefabs[0].SetActive(true);
+                break;
+
+            case 1:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[1].SetActive(true);
+                break;
+
+            case 2:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[2].SetActive(true);
+                break;
+
+            case 3:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[6].gameObject.SetActive(true);
+                break;
+
+            case 4:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[7].SetActive(true);
+                break;
+
+            case 5:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[8].SetActive(true);
+                break;
+
+            case 6:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[9].SetActive(true);
+                break;
+
+            case 7:
+                Debug.Log(" 다른 타입값!!");
+                break;
+
+            case 8:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[5].SetActive(true);
+                break;
+
+            case 9:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[7].SetActive(true);
+                break;
+
+            case 10:
+                Debug.Log(" 다른 타입값!!");
+                break;
+
+            case 11:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[18].SetActive(true);
+                break;
+
+            case 12:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[26].SetActive(true);
+                break;
+
+            case 13:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[27].SetActive(true);
+                break;
+
+            case 14:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[28].SetActive(true);
+                break;
+
+            case 15:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[14].SetActive(true);
+                break;
+
+            case 16:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[15].SetActive(true);
+                break;
+
+            case 17:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[16].SetActive(true);
+                break;
+
+            case 18:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[22].SetActive(true);
+                break;
+
+            case 19:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[23].SetActive(true);
+                break;
+
+            case 20:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[24].SetActive(true);
+                break;
+
+            case 21:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[25].SetActive(true);
+                break;
+
+            case 22:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[20].SetActive(true);
+                break;
+
+            case 23:
+                Debug.Log(" 다른 타입값!!");
+                tile.InGameTilePrefabs[21].SetActive(true);
+                break;
         }
     }
 
