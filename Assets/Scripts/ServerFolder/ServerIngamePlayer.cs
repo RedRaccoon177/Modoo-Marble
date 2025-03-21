@@ -1,10 +1,13 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon;
+using UnityEngine.UI;
+using Photon.Realtime;
+using System;
 
-public class GameManager : MonoBehaviourPunCallbacks  
+public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 {
     int _playerPosIndex;
 
@@ -23,13 +26,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     //서버
     [SerializeField] GameObject playerfabs;
 
-
-
     private void Start()
     {
-        //서버
-        PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
-
         _playerManager = FindObjectOfType<PlayerManager>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
@@ -37,38 +35,37 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        try
+        {
+            Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
+            //내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
+            if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space) && photonView.IsMine)
+            {
+                Debug.Log("여기들어옴");
+                var ddd = _turnBasedManager.Dice();
+                asd(ddd);
+            }
+        }
+        catch (Exception dd)
+        {
+            Debug.Log(dd);
+        }
 
-        //Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
-        ////내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
-        //if (Input.GetKeyDown(KeyCode.Space) && photonView.IsMine)
-        //{
-        //    Debug.Log("여기들어옴");
-        //    photonView.RPC("RpcMovePlayer", RpcTarget.All, _turnBasedManager.Dice());
-        //}
-
-
-
-        //기존코드
-        //if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바 입력 감지
-        //{
-        //    if (_playerMoveCor == null) // 현재 이동 중이 아니면 실행
-        //    {
-        //        _playerMoveCor = StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
-        //    }
-        //}
     }
-    public void asd()
+
+    public void asd(int DiceNum)
     {
         Debug.Log("RpcMovePlayer 들어옴");
-        photonView.RPC("RpcMovePlayer", RpcTarget.All, _turnBasedManager.Dice());
+
+        photonView.RPC("RpcMovePlayer", RpcTarget.All, DiceNum);
     }
 
     [PunRPC]
     public void RpcMovePlayer(int num)
     {
-    
+
         Debug.Log("RpcMovePlayer 213들어옴");
-        StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
+        StartCoroutine(MovePlayer(num));
     }
 
 
@@ -114,4 +111,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         _playerManager.IncreaseMoney(1000);
     }
+
+
+
+
+
+
 }

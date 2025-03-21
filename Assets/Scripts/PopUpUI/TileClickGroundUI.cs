@@ -17,7 +17,6 @@ public class TileClickGroundUI : MonoBehaviour
     [Header("독점")] public TextMeshProUGUI Monopolize;
     [Header("기타")] public TextMeshProUGUI Etc;
 
-    [Separator]
     [Header("통행료")] public TextMeshProUGUI _tileToll;
     [Header("닫기 버튼")] public Button _closeBtn;
 

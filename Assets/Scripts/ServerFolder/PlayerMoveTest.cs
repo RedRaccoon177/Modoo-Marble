@@ -6,6 +6,7 @@ using Photon;
 using System.Runtime.CompilerServices;
 using UnityEngine.UI;
 using Photon.Realtime;
+using TMPro;
 
 
 
@@ -15,7 +16,7 @@ using Photon.Realtime;
 public class PlayerMoveTest : Singleton<PlayerMoveTest>
 {
     static public int currentTurn = 1;
-    public GameObject playerfabs;
+    //public GameObject playerfabs;
 
     static public int CurrentTurn
     {
@@ -39,17 +40,17 @@ public class PlayerMoveTest : Singleton<PlayerMoveTest>
 
 
 
-    public Text playerTurnText;
-    public Text currentTurnText;
+    public TextMeshProUGUI playerTurnText;
+    public TextMeshProUGUI currentTurnText;
 
     private void Start()
     {
-        PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+        //PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
         if (PhotonNetwork.IsMasterClient)
         {
-            CurrentTurn = PhotonNetwork.IsMasterClient ? 1 : 1;
+            CurrentTurn =  1;
         }
 
     }

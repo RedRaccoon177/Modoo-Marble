@@ -15,7 +15,7 @@ public class CameraMove : MonoBehaviour
         maxMX = 2;
         minMX = -2;
         mainCam = Camera.main;
-        Cursor.lockState = CursorLockMode.Confined; // 마우스 화면 밖으로 못나가게
+        //Cursor.lockState = CursorLockMode.Confined; // 마우스 화면 밖으로 못나가게
     }
     private void Update()
     {
