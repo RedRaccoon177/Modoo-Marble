@@ -1,0 +1,101 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+using Photon;
+using System.Runtime.CompilerServices;
+using UnityEngine.UI;
+using Photon.Realtime;
+
+
+
+//마스터 턴이있고
+//턴이 지나면 마스터가 턴을 +1함
+//내턴일때만 사용가능
+public class PlayerMoveTest : Singleton<PlayerMoveTest>
+{
+    static public int currentTurn = 1;
+    public GameObject playerfabs;
+
+    static public int CurrentTurn
+    {
+        get
+        {
+            return currentTurn;
+        }
+        set
+        {
+            if (value <= 0)
+            {
+                currentTurn = 1;
+            }
+            else
+            {
+                currentTurn = value;
+            }
+        }
+    }
+
+
+
+
+    public Text playerTurnText;
+    public Text currentTurnText;
+
+    private void Start()
+    {
+        PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+
+        playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CurrentTurn = PhotonNetwork.IsMasterClient ? 1 : 1;
+        }
+
+    }
+
+
+    private void Update()
+    {
+        //지금 누구 턴?
+        currentTurnText.text = currentTurn.ToString();
+    }
+
+
+   
+
+    public void endTurn()
+    {
+        //내턴일때만 턴넘김 
+        if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
+        {
+
+            try
+            {
+                if (photonView == null)
+                {
+                    Debug.LogError("photonView가 null입니다!");
+                    return;
+                }
+                photonView.RPC("NextTurn", RpcTarget.All);
+
+            }
+            catch (System.Exception DD)
+            {
+                Debug.Log(DD);
+            }
+        }
+    }
+
+    [PunRPC]
+    void NextTurn()
+    {
+        CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1);
+    }
+   
+
+     
+
+
+
+}
