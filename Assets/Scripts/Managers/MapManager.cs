@@ -84,122 +84,120 @@ public class MapManager : MonoBehaviour
         switch((int)tile._subTileType)
         {
             case 0:
-                Debug.Log(" 테스트 값");
                 tile.InGameTilePrefabs[0].SetActive(true);
                 break;
 
             case 1:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[1].SetActive(true);
                 break;
 
             case 2:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[2].SetActive(true);
                 break;
 
             case 3:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[6].gameObject.SetActive(true);
                 break;
 
             case 4:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[7].SetActive(true);
                 break;
 
             case 5:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[8].SetActive(true);
                 break;
 
             case 6:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[9].SetActive(true);
                 break;
 
             case 7:
-                Debug.Log(" 다른 타입값!!");
                 break;
 
             case 8:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[5].SetActive(true);
                 break;
 
             case 9:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[7].SetActive(true);
                 break;
 
             case 10:
-                Debug.Log(" 다른 타입값!!");
                 break;
 
             case 11:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[18].SetActive(true);
                 break;
 
             case 12:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[26].SetActive(true);
                 break;
 
             case 13:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[27].SetActive(true);
                 break;
 
             case 14:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[28].SetActive(true);
                 break;
 
             case 15:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[14].SetActive(true);
                 break;
 
             case 16:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[15].SetActive(true);
                 break;
 
             case 17:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[16].SetActive(true);
                 break;
 
             case 18:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[22].SetActive(true);
                 break;
 
             case 19:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[23].SetActive(true);
                 break;
 
             case 20:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[24].SetActive(true);
                 break;
 
             case 21:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[25].SetActive(true);
                 break;
 
             case 22:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[20].SetActive(true);
                 break;
 
             case 23:
-                Debug.Log(" 다른 타입값!!");
                 tile.InGameTilePrefabs[21].SetActive(true);
                 break;
+
+            case 24:
+                tile.InGameTilePrefabs[29].SetActive(true);
+                break;
+
+            case 25:
+                tile.InGameTilePrefabs[30].SetActive(true);
+                break;
+
+            case 26:
+                tile.InGameTilePrefabs[31].SetActive(true);
+                break;
+
+            case 27:
+                tile.InGameTilePrefabs[32].SetActive(true);
+                break;
+
+            case 28:
+                tile.InGameTilePrefabs[21].SetActive(true);
+                break;
+
+
         }
     }
 

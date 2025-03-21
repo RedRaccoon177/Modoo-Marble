@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 32London
   m_EditorClassIdentifier: 
-  _subTileType: 32
+  _subTileType: 9
   subUnderTilePrefab: 0
   _tileKey: 32
   _tileName: "\uB2E4\uB9C8\uC2A4\uCFE0\uC2A4"
