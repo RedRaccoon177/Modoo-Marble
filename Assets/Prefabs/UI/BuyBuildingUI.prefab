@@ -2251,6 +2251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333378eec127b0d4ca832d7633a91be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tollPriceText: {fileID: 3574236908453778370}
+  _totalBuyPriceText: {fileID: 1134954735165419776}
+  _playerTotalMoneyText: {fileID: 1008203119972701063}
   _buyTileLandBtn: {fileID: 8466414446144477073}
   _buyTilePensionBtn: {fileID: 6856578354912691859}
   _buyTileCondoBtn: {fileID: 912535915725009261}
