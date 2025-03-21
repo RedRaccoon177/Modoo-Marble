@@ -13,12 +13,12 @@ public class UIManagerP : MonoBehaviour
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
     [SerializeField] Transform canvus;
-    public event Action<TileController> _clickChangeDataGround;
-    public event Action<TileController> _clickChangeDataSea;
-    public event Action<TileController> _DataUnfinished;
-    public event Action<int,int> _diceNumEvent;
-    public event Action<TileController> _buyChangeDataGround;
-    public event Action<TileController> _buyChangeDataSea;
+    public event Action<TileController> _clickChangeDataGround;     // 토지 클릭 UI 이벤트
+    public event Action<TileController> _clickChangeDataSea;        // 관광지 클릭 UI 이벤트
+    public event Action<TileController> _DataUnfinished;            // 미완성 클릭,구매 UI 이벤트
+    public event Action<int,int> _diceNumEvent;                     // 주사위 텍스트 변화 이벤트
+    public event Action<TileController> _buyChangeDataGround;       // 토지 구매 UI 이벤트
+    public event Action<TileController> _buyChangeDataSea;          // 관광지 구매 UI 이벤트
 
 
     private void Awake()
@@ -35,11 +35,12 @@ public class UIManagerP : MonoBehaviour
         CreateBuyUI();      // 구매할 때 나타나는 UI 
         OffBuyUIPanel();    // 구매할 때 나타나는 UI 비활성화
     }
-    public void OnBuyUIPanel(TileType _tileType)
-    {
-        OffBuyUIPanel();
-        OnBuyUI(_tileType);
-    }
+    /// <summary>
+    /// 패널 활성화 및 구매 UI 활성화 
+    /// </summary>
+    /// <param name="_tileType"></param>
+
+    /// 구매 Ui비활성화
     public void OffBuyUIPanel()
     {
         // 판넬 비활성화 전에 자식 객체들 먼저 비활성화
@@ -49,15 +50,29 @@ public class UIManagerP : MonoBehaviour
         }
         _tileUIParent.gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// 구매 Ui생성 함수
+    /// </summary>
     public void CreateBuyUI()
     {
         for (int i=0; i< _tileBuyUI.Length; i++)
         {
             _tileBuyUI[i] = Instantiate(_tileBuyUI[i], _tileUIParent);
+            if (i == 0)
+            {
+                Debug.Log("버튼 생성");
+            }
         }
     }
+
+    /// <summary>
+    /// 타입에 알맞은 구매 Ui활성화
+    /// </summary>
+    /// <param name="_tileType"></param>
     public void OnBuyUI(TileType _tileType)
     {
+        OffBuyUIPanel();
         _tileUIParent.gameObject.SetActive(true);
         for (int i = 0; i < _clickTileUI.Length; i++)
         {
@@ -75,6 +90,12 @@ public class UIManagerP : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 타입에 알맞은 이벤트 실행
+    /// </summary>
+    /// <param name="_currentTile"></param>
+    /// <param name="_tileType"></param>
     public void InvokeBuyUI(TileController _currentTile,TileType _tileType)
     {
         if (_tileType == TileType.Ground)
@@ -90,6 +111,7 @@ public class UIManagerP : MonoBehaviour
             _DataUnfinished.Invoke(_currentTile);
         }
     }
+
     /// <summary>
     ///  타일 클릭시 나타나는 UI 생성
     /// </summary>
@@ -138,13 +160,13 @@ public class UIManagerP : MonoBehaviour
     /// </summary>
     /// <param name="_tileController"></param>
     /// <param name="tileType"></param>
-    public void InvokeClickUI(TileController _currentTile, TileType tileType)
+    public void InvokeClickUI(TileController _currentTile, TileType _tileType)
     {
-        if (tileType == TileType.Ground)
+        if (_tileType == TileType.Ground)
         {
             _clickChangeDataGround?.Invoke(_currentTile);
         }
-        else if (tileType == TileType.Sea)
+        else if (_tileType == TileType.Sea)
         {
             _clickChangeDataSea?.Invoke(_currentTile);
         }

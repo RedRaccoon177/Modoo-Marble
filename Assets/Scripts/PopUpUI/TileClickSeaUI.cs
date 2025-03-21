@@ -1,12 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileClickSea : MonoBehaviour
 {
-    public TextMeshProUGUI AreaName;
+    [Header("°ü±¤Áö ÀÌ¸§")] public TextMeshProUGUI AreaName;
 
-    public TextMeshProUGUI GroundPrice;
+    [Header("°ü±¤Áö °¡°Ý")] public TextMeshProUGUI GroundPrice;
 
+    [Header("¹æ¹®È½¼ö")]
     public TextMeshProUGUI Visit1;
     public TextMeshProUGUI Visit2;
     public TextMeshProUGUI Visit3;
@@ -14,9 +16,11 @@ public class TileClickSea : MonoBehaviour
 
     public TextMeshProUGUI VisitNumber;
     public TextMeshProUGUI CurrentToll;
+    [Header("´Ý±â ¹öÆ°")] public Button closeButton;
 
     private void Awake()
     {
+        closeButton.onClick.AddListener(()=>UIManagerP.instance.OffClickUI());
         UIManagerP.instance._clickChangeDataSea += SetTileData;
     }
 

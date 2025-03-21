@@ -69,16 +69,17 @@ public class TileBuyUI : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("버튼 Awake");
         UIManagerP.instance._buyChangeDataGround += SetTileData;
+        // 초기 색상 설정
+        UpdateCheckImages();
+        // 버튼 클릭 이벤트 연결
+        BindButtonEvents();
     }
 
     void Start()
     {
-        // 초기 색상 설정
-        UpdateCheckImages();
-
-        // 버튼 클릭 이벤트 연결
-        BindButtonEvents();
+        Debug.Log("버튼 Start");
     }
 
     /// <summary>
