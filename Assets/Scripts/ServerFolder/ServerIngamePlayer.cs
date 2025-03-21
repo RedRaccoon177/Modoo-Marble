@@ -22,13 +22,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     //플레이어 정보
     PlayerManager _playerManager;
 
-    [Header("서버")]
-    //서버
-    [SerializeField] GameObject playerfabs;
 
     private void Start()
     {
-        _playerManager = FindObjectOfType<PlayerManager>();
+        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
+        //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _playerManager = GetComponent<PlayerManager>();
+
+        //_playerManager = FindObjectOfType<PlayerManager>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
 
@@ -37,39 +38,34 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        try
+
+        Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
+        //내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
+        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
-            //내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
-            if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
+            if (photonView.IsMine)
             {
-                if (photonView.IsMine)
-                {
 
-                    Debug.Log("여기들어옴");
-                    //var ddd = _turnBasedManager.Dice();
+                Debug.Log("여기들어옴");
+                //var ddd = _turnBasedManager.Dice();
 
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 5);
-                }
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, 5);
             }
         }
-        catch (Exception dd)
-        {
-            Debug.Log(dd);
-        }
 
-        //if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.W) && photonView.IsMine)
+
+
+        //기존코드
+        //if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바 입력 감지
         //{
-        //    photonView.RPC("playerMove", RpcTarget.All);
+        //    if (_playerMoveCor == null) // 현재 이동 중이 아니면 실행
+        //    {
+        //        _playerMoveCor = StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
+        //    }
         //}
 
     }
 
-    [PunRPC]
-    void playerMove()
-    {
-        transform.Translate(2, 0, 0);
-    }
 
 
 
@@ -79,7 +75,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     {
        
         StartCoroutine(MovePlayer(num));
-        Debug.Log("RpcMovePlayer 213들어옴 + " + num);
+        Debug.Log("RpcMovePlayer 들어옴 + " + num);
         
 
     }
@@ -90,21 +86,24 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="num"> num 숫자가 될때까지 한칸씩 이동함</param>
     /// <returns></returns>
+   
     IEnumerator MovePlayer(int num)
     {
         int count = 0;  // 실제 이동한 횟수
 
-
         while (count < num) // 주사위 값(num)만큼 반복
         {
-            count++;
-            _playerManager.transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
 
-            yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다음 이동
-        }
-
-        while (count < num) // 주사위 값(num)만큼 반복
-        {
+            // 만약 맵의 끝(39번 타일)을 넘으면 0번으로 돌아감
+            if ((_playerPosIndex + count) >= 39)
+            {
+                _playerPosIndex -= 40;
+            }
+            // 시작 지점(0번 타일)에 도착하면 보너스 처리
+            else if (_playerPosIndex + count == 0)
+            {
+                StartPointPass();
+            }
             count++;
             transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
 
@@ -114,12 +113,18 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
-        // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
-        //TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        //UIManagerP.instance.OnBuyUI(currentTile._tileType);
-        //UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
-        //_playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
+        //**월요일에 각각 저장이 되는지 봐야댐 
+        if (photonView.IsMine)
+        {
+            // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
+            TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
+            UIManagerP.instance.OnBuyUI(currentTile._tileType);
+            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+        }
+        _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
+
+
 
     public void StartPointPass()
     {

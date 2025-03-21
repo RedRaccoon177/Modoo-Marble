@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4272352469388200783}
   - component: {fileID: 2277945479922585874}
   - component: {fileID: -2912739541552410938}
-  - component: {fileID: -6788419309275237882}
+  - component: {fileID: -1865150445158536963}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerfabs: {fileID: 0}
---- !u!114 &-6788419309275237882
+--- !u!114 &-1865150445158536963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
