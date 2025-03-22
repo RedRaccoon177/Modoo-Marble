@@ -1,4 +1,4 @@
-//최동오
+// 최동오
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,127 +8,119 @@ using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
 
-//로그인창
-//임시 나중에 리스트로 담아서 해야될듯 지금은 기능 구현 우선
+// 로그인과 회원가입, 닉네임 설정 등을 관리하는 클래스
 public class FirebaseLoginMgr : MonoBehaviour
 {
-    //유저 
+    // 현재 로그인한 유저 정보
     static public FirebaseUser user;
+    // 파이어베이스 인증 객체
     static public FirebaseAuth auth;
 
-    //임시
-    //로그인용
+    // 로그인용 입력필드 및 경고 텍스트
     [Header("로그인용")]
-    [SerializeField] private InputField LoginIdInputField;
-    [SerializeField] private InputField LoginPasswordInputField;
-    [SerializeField] Text LoginwarningText;
-    //회원가입용
+    [SerializeField] private InputField LoginIdInputField;       // 로그인 이메일 입력필드
+    [SerializeField] private InputField LoginPasswordInputField; // 로그인 비밀번호 입력필드
+    [SerializeField] Text LoginwarningText;                      // 로그인 경고 메시지
+
+    // 회원가입용 입력필드 및 경고 텍스트
     [Header("회원가입용")]
-    [SerializeField] private InputField CreateIdInputField;
-    [SerializeField] private InputField CreatePasswordInputField;
-    [SerializeField] Text CreatewarningText;
+    [SerializeField] private InputField CreateIdInputField;       // 회원가입 이메일 입력필드
+    [SerializeField] private InputField CreatePasswordInputField; // 회원가입 비밀번호 입력필드
+    [SerializeField] Text CreatewarningText;                      // 회원가입 경고 메시지
+
+    // 닉네임 설정용 입력필드 및 경고 텍스트
     [Header("닉네임 설정용")]
-    [SerializeField] private InputField NickNameInputField;
-    [SerializeField] Text NickNamewarningText;
-    //nickField.text = user.DisplayName; 따로만들자 
+    [SerializeField] private InputField NickNameInputField; // 닉네임 입력필드
+    [SerializeField] Text NickNamewarningText;              // 닉네임 설정 경고 메시지
 
+    // UI 패널 관리용 오브젝트들
     [Header("큰테두리Ui")]
-    [SerializeField] private GameObject SceneChanege;
-    [SerializeField] private GameObject LoginUiPanel;
-    [SerializeField] private GameObject CreateUiIdPanel;
-    [SerializeField] private GameObject NickNameUiPanel;
-
-
-
-
+    [SerializeField] private GameObject SceneChanege;       // 씬 전환 UI
+    [SerializeField] private GameObject LoginUiPanel;       // 로그인 UI 전체 패널
+    [SerializeField] private GameObject CreateUiIdPanel;    // 회원가입 UI 패널
+    [SerializeField] private GameObject NickNameUiPanel;    // 닉네임 설정 UI 패널
 
     private void Awake()
     {
-        //안전코드 auth연결
-        //비동기식 ContinueWith
-        //파이어베이스 초기화
+        // 파이어베이스 초기화 (비동기 방식)
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
-            DependencyStatus dependencyStatus = task.Result;
+            DependencyStatus dependencyStatus = task.Result; // 결과 상태 가져오기
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
+                // 인증 인스턴스 가져오기
                 auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
             }
         });
+        // 경고 텍스트 초기화
         CreatewarningText.text = "";
         LoginwarningText.text = "";
     }
 
-    //지금은 3개 만들자 헷갈린다
-    //회원가입패널로 넘어감
+    // 회원가입 패널로 전환
     public void CreateIdPanel()
     {
-        //회원가입패널
         CreateUiIdPanel.gameObject.SetActive(true);
         LoginUiPanel.gameObject.SetActive(false);
         NickNameUiPanel.gameObject.SetActive(false);
-
     }
 
+    // 회원가입 패널 닫고 로그인 패널로 전환
     public void CreateIdPanelFalse()
     {
-        LoginUiPanel.gameObject.SetActive(true); 
+        LoginUiPanel.gameObject.SetActive(true);
         CreateUiIdPanel.gameObject.SetActive(false);
     }
 
-    //닉네임패널로 넘어감
+    // 닉네임 설정 패널로 전환
     public void NickNamePanel()
     {
-        //회원가입패널
         CreateUiIdPanel.gameObject.SetActive(false);
         LoginUiPanel.gameObject.SetActive(false);
         NickNameUiPanel.gameObject.SetActive(true);
-
     }
 
-    //로그인패널로 넘어감
+    // 로그인 패널로 전환
     public void LoginPanel()
     {
-        //회원가입패널
         CreateUiIdPanel.gameObject.SetActive(false);
         LoginUiPanel.gameObject.SetActive(true);
         NickNameUiPanel.gameObject.SetActive(false);
-
     }
 
-
-
-    //회원가입
+    // 회원가입 버튼 눌렀을 때 호출
     public void CreateId()
     {
         StartCoroutine(CreateIdCor(CreateIdInputField.text, CreatePasswordInputField.text));
     }
 
-    //로그인
+    // 로그인 버튼 눌렀을 때 호출
     public void Login()
     {
         StartCoroutine(LoginCor(LoginIdInputField.text, LoginPasswordInputField.text));
     }
 
-    //로그아웃
+    // 로그아웃
     public void Logout()
     {
-        auth.SignOut();
+        auth.SignOut(); // 인증 객체에서 로그아웃 실행
         Debug.Log("로그 아웃");
     }
 
+    // 닉네임 생성 버튼 눌렀을 때 호출
     public void CreateNickName()
     {
         StartCoroutine(CreateNickNameCor(NickNameInputField.text));
-
     }
+
+    // 닉네임 설정 코루틴
     IEnumerator CreateNickNameCor(string NickName)
     {
         if (user != null)
         {
-            //닉네임
+            // 닉네임 정보를 UserProfile로 생성
             UserProfile profile = new UserProfile { DisplayName = NickName };
-            //파이어베이스에 닉네임 정보 올림
+            // 닉네임 서버에 등록 요청
             Task ProfileTask = user.UpdateUserProfileAsync(profile);
 
             yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
@@ -145,30 +137,21 @@ public class FirebaseLoginMgr : MonoBehaviour
                 NickNamewarningText.text = "";
                 Debug.Log("닉네임 : " + user.DisplayName);
                 var dd = string.IsNullOrEmpty(user.DisplayName);
-                //닉네임이 있으면
-                if (dd != true)
+                if (dd != true) // 닉네임이 존재할 경우
                 {
                     NickNameUiPanel.gameObject.SetActive(false);
                     SceneChanege.gameObject.SetActive(true);
                 }
-                
-                
-
-
-               
             }
-
         }
-       
     }
 
-
-    //동기식 회원가입 코루틴
+    // 회원가입 처리 코루틴
     IEnumerator CreateIdCor(string email, string password)
     {
         var createIdTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
-        //회원가입 성공할때 까지
-        yield return new WaitUntil(predicate: () => createIdTask.IsCompleted);
+        yield return new WaitUntil(() => createIdTask.IsCompleted);
+
         if (createIdTask.Exception != null)
         {
             Debug.LogWarning(message: "다음과 같은 이유로 회원가입 실패:" + createIdTask.Exception);
@@ -198,20 +181,19 @@ public class FirebaseLoginMgr : MonoBehaviour
         else
         {
             Debug.Log("회원가입 완료");
-            user = createIdTask.Result.User;
+            user = createIdTask.Result.User; // 유저 정보 저장
             CreatewarningText.text = "";
             LoginUiPanel.gameObject.SetActive(true);
             CreateUiIdPanel.gameObject.SetActive(false);
         }
-
     }
 
-    //동기식 로그인 코루틴 
+    // 로그인 처리 코루틴
     IEnumerator LoginCor(string email, string password)
     {
         var loginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
-        //로그인 성공할때 까지
-        yield return new WaitUntil(predicate: ()=> loginTask.IsCompleted);
+        yield return new WaitUntil(predicate: () => loginTask.IsCompleted);
+
         if (loginTask.Exception != null)
         {
             Debug.LogWarning(message: "다음과 같은 이유로 로그인 실패:" + loginTask.Exception);
@@ -226,6 +208,7 @@ public class FirebaseLoginMgr : MonoBehaviour
                 case AuthError.MissingPassword:
                     message = "패스워드 누락";
                     break;
+
                 case AuthError.WrongPassword:
                     message = "패스워드 틀림";
                     break;
@@ -249,27 +232,17 @@ public class FirebaseLoginMgr : MonoBehaviour
             LoginUiPanel.gameObject.SetActive(false);
             Debug.Log(user.DisplayName);
 
-
-            //닉네임이 없을경우 닉네임 생성
+            // 닉네임이 없다면 닉네임 설정 패널로 이동
             if (string.IsNullOrEmpty(user.DisplayName) == true)
             {
                 Debug.Log("닉네임이 없습니다");
                 NickNamePanel();
                 CreateNickName();
-                //ServerPanel.gameObject.SetActive(true);
             }
             else
             {
                 SceneChanege.gameObject.SetActive(true);
-
             }
         }
-
-
-
     }
-
-
-
-
 }
