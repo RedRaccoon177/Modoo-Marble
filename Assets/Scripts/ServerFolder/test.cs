@@ -19,19 +19,18 @@ public class test : MonoBehaviourPunCallbacks
     //겟차일드 찾고 
     //그거에 텍스를 찾아서 변경
 
-    //public async Task LoadPlayerMoney()
-    //{
-    //    FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 2000000);//일단 돈을 넣어준거임
-    //    playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
-    //}
+    public async Task LoadPlayerMoney()
+    {
+        //FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 2000000);//일단 돈을 넣어준거임
+        playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
+    }
 
     private async void Start()
     {
+        await LoadPlayerMoney();
         UpdatePlayerList();
-
-        //await LoadPlayerMoney();
     }
-   
+
 
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -51,7 +50,7 @@ public class test : MonoBehaviourPunCallbacks
             var dd = Instantiate(TestPlayerImage, roomListPanel); //룸 리스트 패널 하에 하나 생성
             dd.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].NickName;
 
-            //dd.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].UserId;
+            dd.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = playerMoney.ToString();
 
             var player = PhotonNetwork.PlayerList[i];
             bool isLocalPlayer = player == PhotonNetwork.LocalPlayer;
