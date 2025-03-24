@@ -124,7 +124,8 @@ public partial class TileController : MonoBehaviour
             default: return Color.white;
         }
     }
-
+   
+    //주인 변경***
     public void ChangeTileData(TileController tile)
     {
         Debug.Log("ChangeTileData 호출됨!"); // 디버깅 로그 추가

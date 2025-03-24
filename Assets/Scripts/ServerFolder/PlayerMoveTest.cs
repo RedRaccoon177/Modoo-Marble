@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine.UI;
 using Photon.Realtime;
 using TMPro;
+using System.Security.Cryptography;
 
 
 
@@ -45,11 +46,39 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+            //ss.GetComponent<MeshRenderer>().material.color = Color.red;
+            photonView.RPC("dsds", RpcTarget.All,ss, Color.red); 
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+            ss.GetComponent<MeshRenderer>().material.color = Color.blue;
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
+        {
+            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+            ss.GetComponent<MeshRenderer>().material.color = Color.green;
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 4)
+        {
+            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+            ss.GetComponent<MeshRenderer>().material.color = Color.yellow;
+        }
+
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
       
 
+    }
+
+    [PunRPC]
+    void dsds(GameObject ss, Color color)
+    {
+        Debug.Log("ddd");
+        ss.GetComponent<MeshRenderer>().material.color = color;
     }
 
 

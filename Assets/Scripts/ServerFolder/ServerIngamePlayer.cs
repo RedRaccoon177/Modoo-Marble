@@ -47,9 +47,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             {
 
                 Debug.Log("여기들어옴");
-                //var ddd = _turnBasedManager.Dice();
+                var ddd = _turnBasedManager.Dice();
 
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, 5);
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
             }
         }
 
@@ -86,7 +86,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     /// </summary>
     /// <param name="num"> num 숫자가 될때까지 한칸씩 이동함</param>
     /// <returns></returns>
-   
+
     IEnumerator MovePlayer(int num)
     {
         int count = 0;  // 실제 이동한 횟수
@@ -114,13 +114,16 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _playerPosIndex += count;
 
         //**월요일에 각각 저장이 되는지 봐야댐 
+        // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
+        //도착했을때 타일 정보 가져옴
+        TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
         if (photonView.IsMine)
         {
-            // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
-            TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
+            //타일 정보 ui 띄움
             UIManagerP.instance.OnBuyUI(currentTile._tileType);
-            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
         }
+        //타일 정보 값변경
+        UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
