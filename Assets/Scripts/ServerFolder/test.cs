@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -13,12 +14,22 @@ public class test : MonoBehaviourPunCallbacks
     public GameObject TestPlayerImage;
     public int readyCount = 0;
 
+    int playerMoney;//돈을 담아줄것
+
     //겟차일드 찾고 
     //그거에 텍스를 찾아서 변경
 
-    private void Start()
+    //public async Task LoadPlayerMoney()
+    //{
+    //    FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 2000000);//일단 돈을 넣어준거임
+    //    playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
+    //}
+
+    private async void Start()
     {
         UpdatePlayerList();
+
+        //await LoadPlayerMoney();
     }
    
 
@@ -39,6 +50,8 @@ public class test : MonoBehaviourPunCallbacks
         {
             var dd = Instantiate(TestPlayerImage, roomListPanel); //룸 리스트 패널 하에 하나 생성
             dd.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].NickName;
+
+            //dd.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].UserId;
 
             var player = PhotonNetwork.PlayerList[i];
             bool isLocalPlayer = player == PhotonNetwork.LocalPlayer;

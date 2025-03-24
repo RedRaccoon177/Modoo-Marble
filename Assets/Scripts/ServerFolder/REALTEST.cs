@@ -2,14 +2,15 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class REALTEST : MonoBehaviour
 {
-    public Text playerNickNameText;
-    public Text playerMoneyText;
-    public Text playerTurn;
+    public TextMeshProUGUI playerNickNameText;
+    public TextMeshProUGUI playerMoneyText;
+    public TextMeshProUGUI playerTurn;
 
     int playerMoney = 0;
 
@@ -20,8 +21,8 @@ public class REALTEST : MonoBehaviour
     {
         FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money",10001);
         playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
-        //playerNickNameText.text = FirebaseLoginMgr.user.DisplayName;
-        //playerMoneyText.text = playerMoney.ToString();
+        playerNickNameText.text = FirebaseLoginMgr.user.DisplayName;
+        playerMoneyText.text = playerMoney.ToString();
     }
 
     private async void Update()
