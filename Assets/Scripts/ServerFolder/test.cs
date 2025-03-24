@@ -136,7 +136,7 @@ public class test : MonoBehaviourPunCallbacks
             if (readyCount >= PhotonNetwork.PlayerList.Length - 1)
             {
                 Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
-                PhotonNetworkMgr.Instance.changeScene("PlayerMoveTest");
+                PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
             }
         }
 

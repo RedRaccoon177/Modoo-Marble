@@ -6,14 +6,15 @@ using Photon;
 using System.Runtime.CompilerServices;
 using UnityEngine.UI;
 using Photon.Realtime;
+using TMPro;
 
 
 
 //마스터 턴이있고
 //턴이 지나면 마스터가 턴을 +1함
 //내턴일때만 사용가능
-public class PlayerMoveTest : Singleton<PlayerMoveTest>
-{
+public class PlayerMoveTest : MonoBehaviourPunCallbacks
+{ 
     static public int currentTurn = 1;
     public GameObject playerfabs;
 
@@ -39,18 +40,15 @@ public class PlayerMoveTest : Singleton<PlayerMoveTest>
 
 
 
-    public Text playerTurnText;
-    public Text currentTurnText;
+    public TextMeshProUGUI playerTurnText;
+    public TextMeshProUGUI currentTurnText;
 
     private void Start()
     {
         PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CurrentTurn = PhotonNetwork.IsMasterClient ? 1 : 1;
-        }
+      
 
     }
 
