@@ -17,7 +17,7 @@ using System.Security.Cryptography;
 public class PlayerMoveTest : MonoBehaviourPunCallbacks
 { 
     static public int currentTurn = 1;
-    public GameObject playerfabs;
+    public GameObject[] playerfabs;
 
     static public int CurrentTurn
     {
@@ -48,39 +48,27 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
-            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
-            //ss.GetComponent<MeshRenderer>().material.color = Color.red;
-            photonView.RPC("dsds", RpcTarget.All,ss, Color.red); 
+            PhotonNetwork.Instantiate(playerfabs[0].name, Vector3.zero, Quaternion.identity);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
-            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
-            ss.GetComponent<MeshRenderer>().material.color = Color.blue;
+            PhotonNetwork.Instantiate(playerfabs[1].name, Vector3.zero, Quaternion.identity);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
         {
-            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
-            ss.GetComponent<MeshRenderer>().material.color = Color.green;
+            PhotonNetwork.Instantiate(playerfabs[2].name, Vector3.zero, Quaternion.identity);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 4)
         {
-            var ss = PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
-            ss.GetComponent<MeshRenderer>().material.color = Color.yellow;
+            PhotonNetwork.Instantiate(playerfabs[3].name, Vector3.zero, Quaternion.identity);
         }
-
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
       
 
     }
 
-    [PunRPC]
-    void dsds(GameObject ss, Color color)
-    {
-        Debug.Log("ddd");
-        ss.GetComponent<MeshRenderer>().material.color = color;
-    }
-
+    
 
     private void Update()
     {
