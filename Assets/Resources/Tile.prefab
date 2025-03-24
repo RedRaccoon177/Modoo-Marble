@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 3460822718031046038}
   - component: {fileID: 4859121585563102265}
   - component: {fileID: -7105071037113260314}
-  - component: {fileID: -3646209404686483779}
+  - component: {fileID: -64542540165084391}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5567bde15492354ca10efdb3c2b5f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3646209404686483779
+--- !u!114 &-64542540165084391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

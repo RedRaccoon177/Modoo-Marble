@@ -28,18 +28,16 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _playerManager = GetComponent<PlayerManager>();
-
-        //_playerManager = FindObjectOfType<PlayerManager>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
 
         _playerPosIndex = 0;
+       
     }
 
     private void Update()
     {
         Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
-        //내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
         if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
             if (photonView.IsMine)
@@ -49,15 +47,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
             }
         }
-
-        //기존코드
-        //if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바 입력 감지
-        //{
-        //    if (_playerMoveCor == null) // 현재 이동 중이 아니면 실행
-        //    {
-        //        _playerMoveCor = StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
-        //    }
-        //}
     }
 
     [PunRPC]
@@ -97,14 +86,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
-        //**월요일에 각각 저장이 되는지 봐야댐 
-        if (photonView.IsMine)
-        {
-            // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
-            TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-            UIManagerP.instance.OnBuyUI(currentTile._tileType);
-            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
-        }
+        // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
+        TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
+        UIManagerP.instance.OnBuyUI(currentTile._tileType);
+        UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 

@@ -1,19 +1,15 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
+using Photon.Pun;
 
 //이원형, 함승윤
-public class MapManager : MonoBehaviour
+public class MapManager : MonoBehaviourPun
 {
     // 타일 종류를 저장하는 배열 (각 타일 타입에 해당하는 프리팹을 할당)
     [Header("타일 프리팹")]
     [SerializeField] GameObject _tilePrefab;
-
-    //[Header("타일 구매 UI")]
-    //[SerializeField] GameObject _tileBuyUI;
-    //[Header("타일 UI 생성될 곳")]
-    //[SerializeField] Transform _tileParent;
 
     // 생성된 타일 오브젝트를 저장하는 배열
     [Header("실제 땅")]
@@ -21,13 +17,18 @@ public class MapManager : MonoBehaviour
 
     // 타일의 초기 데이터 (위치, 타입 등)
     [Header("타일 초기 데이터")]
-    [SerializeField] TileInfoData[] _tiledates = new TileInfoData[40];
+    [SerializeField] public TileInfoData[] _tiledates = new TileInfoData[40];
 
     void Start()
     {
-        CreatMap();
+        _tiles = new GameObject[40]; // 모든 클라이언트가 배열 초기화
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreateMap(); // 방장만 타일 생성
+        }
     }
-    //Vector3 tilePos;
+
     public void ChangeTilePos(int num, GameObject gameObject)
     {
         gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);
@@ -53,37 +54,21 @@ public class MapManager : MonoBehaviour
     /// <summary>
     /// 맵을 생성하는 함수
     /// </summary>
-    public void CreatMap()
+    public void CreateMap()
     {
         for (int i = 0; i < _tiledates.Length; i++)
         {
-            Vector3 spawnPos = _tiledates[i]._tilePos;
-            Quaternion spawnRot = Quaternion.identity;
+            GameObject _temp = PhotonNetwork.Instantiate("Tile", _tiledates[i]._tilePos, Quaternion.identity);
 
-            GameObject _temp = PhotonNetwork.Instantiate("Tile", spawnPos, spawnRot);
-
-            //GameObject _temp2 = Instantiate(_tileBuyUI, _tileParent);
             ChangeTilePos(i, _temp);
-            _temp.transform.position = _tiledates[i]._tilePos;
-            // TileController를 가져와서 데이터 적용
-            TileController tileScript = _temp.GetComponent<TileController>();
-            
-            //TileBuyUI tileBuyUI = _temp2.GetComponent<TileBuyUI>();
 
+            TileController tileScript = _temp.GetComponent<TileController>();
             if (tileScript != null)
             {
-                tileScript.SetTileData(_tiledates[i]); // 데이터 적용
-                
-                //tileBuyUI.SetTileData(_tiledates[i]);
-            }
-            else
-            {
-                Debug.LogError($"TileController가 프리팹 {_tilePrefab.name} 안에 없습니다! 프리팹 확인 필요.");
+                tileScript.SetTileData(_tiledates[i]);
             }
 
-            // 생성된 타일을 배열에 저장
             _tiles[i] = _temp;
         }
     }
-
 }

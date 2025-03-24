@@ -8,6 +8,7 @@ using Photon.Realtime;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class TileBuyUI : MonoBehaviour
 {
@@ -248,10 +249,9 @@ public class TileBuyUI : MonoBehaviour
                 ? (_buildingChecks[i] ? _playerKey : 0)
                 : owner; // 기존 소유자 유지
 
-            _currentTile.SetOwner(i, newOwner);
+            //_currentTile.SetOwner(i, newOwner);
+            _currentTile.photonView.RPC("SetOwner", RpcTarget.All, i, newOwner);
         }
-
-        //OnTileValueChange?.Invoke(_currentTile);
     }
 
     /// <summary>

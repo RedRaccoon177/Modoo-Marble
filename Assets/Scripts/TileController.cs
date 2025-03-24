@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -44,15 +45,37 @@ public partial class TileController : MonoBehaviourPun
 
     void Start()
     {
-        _ground = transform.GetChild(0).gameObject;
-        _Sea = transform.GetChild(1).gameObject;
-        if (_tileType == TileType.Ground)
+        StartCoroutine(SetupTileIfNotMaster());
+    }
+
+    IEnumerator SetupTileIfNotMaster()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (!PhotonNetwork.IsMasterClient)
         {
-            _ground.SetActive(true);
-        }
-        else if (_tileType == TileType.Sea)
-        {
-            _Sea.SetActive(true);
+            MapManager map = FindObjectOfType<MapManager>();
+
+            if (map != null)
+            {
+                foreach (var data in map._tiledates)
+                {
+                    if (Vector3.Distance(transform.position, data._tilePos) < 0.1f)
+                    {
+                        SetTileData(data); // 참가자도 타일 정보 직접 설정
+                        Debug.Log($"[참가자] SetTileData 직접 호출됨 → tileKey: {data._tileKey}");
+
+                        // 타일 배열 등록
+                        if (data._tileKey >= 0 && data._tileKey < map._tiles.Length)
+                        {
+                            map._tiles[data._tileKey] = this.gameObject;
+                            Debug.Log($"[참가자] _tiles[{data._tileKey}] 등록 완료");
+                        }
+
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -154,6 +177,7 @@ public partial class TileController : MonoBehaviourPun
     /// <summary>
     /// 건물 인덱스별 소유주 설정
     /// </summary>
+    [PunRPC]
     public void SetOwner(int index, int owner)
     {
         switch (index)
@@ -166,34 +190,6 @@ public partial class TileController : MonoBehaviourPun
             default:
                 Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
                 break;
-        }
-
-        photonView.RPC("RPC_ChangeTileData", RpcTarget.All,
-            _tileKey,
-            _tileLandOwner,
-            _tilePensionOwner,
-            _tileCondoOwner,
-            _tileHotelOwner
-        );
-    }
-
-    [PunRPC]
-    void RPC_ChangeTileData(int tileKey, int land, int pension, int condo, int hotel)
-    {
-        if (_tileKey != tileKey) return; // 내 타일이 아니면 무시
-
-        Debug.Log($"[RPC] 타일 {tileKey} 정보 수신 → 동기화 시작");
-
-        try
-        {
-            _tileLandOwner = land;
-            _tilePensionOwner = pension;
-            _tileCondoOwner = condo;
-            _tileHotelOwner = hotel;
-        }
-        catch (Exception ww)
-        {
-            Debug.Log(ww);
         }
     }
 }
