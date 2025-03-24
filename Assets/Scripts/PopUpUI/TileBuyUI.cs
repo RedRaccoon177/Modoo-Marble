@@ -3,6 +3,8 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 using System.ComponentModel;
+using Photon.Pun;
+using Photon.Realtime;
 
 public partial class TileBuyUI : MonoBehaviour
 {
@@ -33,30 +35,42 @@ public partial class TileBuyUI : MonoBehaviour
 
     // 타일 정보 (UI에 표시되는 텍스트)
     [Header("땅 이름")] public TextMeshProUGUI _tileName;                   // 땅의 이름 표시
-    [Header("타일 땅 가격")] public TextMeshProUGUI _tileLandPrice;         // 땅 가격 표시
-    [Header("펜션 건물 가격")] public TextMeshProUGUI _tilePensionPrice;    // 펜션 가격 표시
-    [Header("콘도 건물 가격")] public TextMeshProUGUI _tileCondoPrice;      // 콘도 가격 표시
-    [Header("호텔 건물 가격")] public TextMeshProUGUI _tileHotelPrice;      // 호텔 가격 표시
+    
+    [Header("타일 땅,건물들 가격")] 
+    public TextMeshProUGUI _tileLandPrice;         // 땅 가격 표시
+    public TextMeshProUGUI _tilePensionPrice;    // 펜션 가격 표시
+    public TextMeshProUGUI _tileCondoPrice;      // 콘도 가격 표시
+    public TextMeshProUGUI _tileHotelPrice;      // 호텔 가격 표시
 
-    // 추가 정보
-    [Header("통행료")] public TextMeshProUGUI _tileToll;               // 통행료 표시
-    [Header("총 구매 비용")] public TextMeshProUGUI _tileTotalCost;    // 총 구매 비용 표시
-    [Header("보유 현금")] public TextMeshProUGUI _playerMoney;         // 현재 플레이어 보유 현금 표시
+    [Header("통행료")] 
+    public TextMeshProUGUI _tileToll;            
+
+    [Header("총 구매 비용")] 
+    public TextMeshProUGUI _tileTotalCost; 
+
+    [Header("보유 현금")] 
+    public TextMeshProUGUI _playerMoney;
 
     // 타일 소유주 정보
-    [Header("타일 땅 소유주")] public int _tileLandOwner;           // 땅 소유주 ID
-    [Header("타일 1번 건물 소유주")] public int _tilePensionOwner;  // 펜션 소유주 ID
-    [Header("타일 2번 건물 소유주")] public int _tileCondoOwner;    // 콘도 소유주 ID
-    [Header("타일 3번 건물 소유주")] public int _tileHotelOwner;    // 호텔 소유주 ID
-    [Header("랜드마크 소유주")] public int _tileLandMarkOwner;      // 랜드마크 소유주 ID
+    [Header("타일 땅, 건물 소유주")] 
+    public int _tileLandOwner;           // 땅 소유주 ID
+    public int _tilePensionOwner;        // 펜션 소유주 ID
+    public int _tileCondoOwner;          // 콘도 소유주 ID
+    public int _tileHotelOwner;          // 호텔 소유주 ID
+    public int _tileLandMarkOwner;       // 랜드마크 소유주 ID
 
     [Header("플레이어 현재 보유 금액 (게임 내에서 변할 수 있음)")]
     public double _currentMoney;
     public double _cancelRememberMoney;
 
     //플레이어의 고유 번호
-    int _playerKey = 1;
-    int _enemyKey = 2;
+    int _playerKey;
+    int _enemyKey0 = -1;
+    int _enemyKey1 = -1;
+    int _enemyKey2 = -1;
+
+    //내꺼 받아오는 거 한번하고
+    //나머지 플레이어들 다 받아오기
 
     // 타일 정보 변경 이벤트
     public event Action<TileController> OnTileValueChange;
@@ -80,7 +94,40 @@ public partial class TileBuyUI : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("버튼 Start");
+        SetPlayerKeys();
+    }
+
+    /// <summary>
+    /// 네트워크로 플레이어 정보 저장
+    /// </summary>
+    void SetPlayerKeys()
+    {
+        int enemyIndex = 0;
+
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player == PhotonNetwork.LocalPlayer)
+            {
+                _playerKey = player.ActorNumber;
+            }
+            else
+            {
+                switch (enemyIndex)
+                {
+                    case 0:
+                        _enemyKey0 = player.ActorNumber;
+                        break;
+                    case 1:
+                        _enemyKey1 = player.ActorNumber;
+                        break;
+                    case 2:
+                        _enemyKey2 = player.ActorNumber;
+                        break;
+                }
+                enemyIndex++;
+            }
+        }
+        Debug.Log($"내 번호: {_playerKey}, 적들: {_enemyKey0}, {_enemyKey1}, {_enemyKey2}");
     }
 
     /// <summary>
@@ -396,7 +443,7 @@ public partial class TileBuyUI : MonoBehaviour
         //이미 적이 구매한 토지일 경우
         else if (_tileLandOwner != 0)
         {
-            _currentTile._tileLandOwner = _isLandCheck ? _playerKey : _enemyKey;
+            _currentTile._tileLandOwner = _isLandCheck ? _playerKey : _enemyKey0;
         }
         // 은행꺼였을 경우
         else
@@ -410,7 +457,7 @@ public partial class TileBuyUI : MonoBehaviour
         }
         else if(_tilePensionOwner != 0)
         {
-            _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : _enemyKey;
+            _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : _enemyKey0;
         }
         else
         {
@@ -423,7 +470,7 @@ public partial class TileBuyUI : MonoBehaviour
         }
         else if (_tileCondoOwner != 0)
         {
-            _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : _enemyKey;
+            _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : _enemyKey0;
         }
         else
         {
@@ -436,7 +483,7 @@ public partial class TileBuyUI : MonoBehaviour
         }
         else if (_tileHotelOwner != 0)
         {
-            _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : _enemyKey;
+            _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : _enemyKey0;
         }
         else
         {

@@ -38,22 +38,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-
         Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
         //내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
         if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
             if (photonView.IsMine)
             {
-
                 Debug.Log("여기들어옴");
-                //var ddd = _turnBasedManager.Dice();
-
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, 5);
+                var ddd = _turnBasedManager.Dice();
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
             }
         }
-
-
 
         //기존코드
         //if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바 입력 감지
@@ -63,37 +58,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         //        _playerMoveCor = StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
         //    }
         //}
-
     }
-
-
-
-
 
     [PunRPC]
     public void RpcMovePlayer(int num)
     {
-       
         StartCoroutine(MovePlayer(num));
         Debug.Log("RpcMovePlayer 들어옴 + " + num);
-        
-
     }
-
 
     /// <summary>
     /// 플레이어 이동 : num 숫자가 될때까지 한칸씩 이동함
     /// </summary>
     /// <param name="num"> num 숫자가 될때까지 한칸씩 이동함</param>
     /// <returns></returns>
-   
     IEnumerator MovePlayer(int num)
     {
         int count = 0;  // 실제 이동한 횟수
 
         while (count < num) // 주사위 값(num)만큼 반복
         {
-
             // 만약 맵의 끝(39번 타일)을 넘으면 0번으로 돌아감
             if ((_playerPosIndex + count) >= 39)
             {
@@ -124,16 +108,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
-
-
     public void StartPointPass()
     {
         _playerManager.IncreaseMoney(1000);
     }
-
-
-
-
-
-
 }

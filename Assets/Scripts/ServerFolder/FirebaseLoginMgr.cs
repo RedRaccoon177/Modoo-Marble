@@ -230,7 +230,7 @@ public class FirebaseLoginMgr : MonoBehaviour
             user = loginTask.Result.User;
             LoginwarningText.text = "";
             LoginUiPanel.gameObject.SetActive(false);
-            Debug.Log(user.DisplayName);
+            Debug.Log("유저의 닉네임:" + user.DisplayName);
 
             // 닉네임이 없다면 닉네임 설정 패널로 이동
             if (string.IsNullOrEmpty(user.DisplayName) == true)

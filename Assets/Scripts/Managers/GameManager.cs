@@ -32,28 +32,6 @@ public class GameManager : MonoBehaviourPunCallbacks
        
     }
 
-    private void Update()
-    {
-
-        //Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
-        ////내턴일때만 PhotonNetwork.LocalPlayer.ActorNumber == playerMoveTest.currentTurn
-        //if (Input.GetKeyDown(KeyCode.Space) && photonView.IsMine)
-        //{
-        //    Debug.Log("여기들어옴");
-        //    photonView.RPC("RpcMovePlayer", RpcTarget.All, _turnBasedManager.Dice());
-        //}
-
-
-
-        //기존코드
-        //if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바 입력 감지
-        //{
-        //    if (_playerMoveCor == null) // 현재 이동 중이 아니면 실행
-        //    {
-        //        _playerMoveCor = StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
-        //    }
-        //}
-    }
     public void asd()
     {
         Debug.Log("RpcMovePlayer 들어옴");
