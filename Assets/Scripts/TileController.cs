@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public partial class TileController : MonoBehaviour
+public partial class TileController : MonoBehaviourPun
 {
     [Header("보조 타일 타입")] public SubTileType _subTileType;
     [Header("보조 타일 타입")] public UnderTilePrefab subUnderTilePrefab;
@@ -11,7 +12,7 @@ public partial class TileController : MonoBehaviour
     [Header("보조 타일 타입")] public GameObject BuildPostions;
 }
 
-public partial class TileController : MonoBehaviour
+public partial class TileController : MonoBehaviourPun
 {
     [Header("타일 키값")] public int _tileKey;
     [Header("타일 이름")] public string _tileName;
@@ -132,13 +133,31 @@ public partial class TileController : MonoBehaviour
         _tilePensionOwner = tile._tilePensionOwner;
         _tileCondoOwner = tile._tileCondoOwner;
         _tileHotelOwner = tile._tileHotelOwner;
+
+        photonView.RPC("RPC_ChangeTileData",
+            RpcTarget.AllBuffered,
+            _tileKey,
+            tile._tileLandOwner,
+            tile._tilePensionOwner,
+            tile._tileCondoOwner,
+            tile._tileHotelOwner
+        );
+    }
+
+    [PunRPC]
+    void RPC_ChangeTileData(int key, int land, int pension, int condo, int hotel)
+    {
+        if (_tileKey != key) return; // 자기 타일만 반응
+
+        _tileLandOwner = land;
+        _tilePensionOwner = pension;
+        _tileCondoOwner = condo;
+        _tileHotelOwner = hotel;
     }
 
     /// <summary>
     /// 타일 가격 가져오기
     /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
     public double GetPrice(int index)
     {
         switch (index)
@@ -189,6 +208,4 @@ public partial class TileController : MonoBehaviour
                 break;
         }
     }
-
-
 }
