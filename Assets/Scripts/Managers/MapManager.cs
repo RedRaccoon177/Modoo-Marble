@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 //이원형, 함승윤
 public class MapManager : MonoBehaviour
@@ -8,6 +10,8 @@ public class MapManager : MonoBehaviour
     // 타일 종류를 저장하는 배열 (각 타일 타입에 해당하는 프리팹을 할당)
     [Header("타일 프리팹")]
     [SerializeField] GameObject _tilePrefab;
+    GameObject _cityname;
+    GameObject _bonusStage;
 
     //[Header("타일 구매 UI")]
     //[SerializeField] GameObject _tileBuyUI;
@@ -24,12 +28,13 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
+        _cityname = _tilePrefab.transform.GetChild(5).GetChild(0).gameObject;
+        _bonusStage = _tilePrefab.transform.GetChild(5).GetChild(1).gameObject;
         CreatMap();
     }
-    //Vector3 tilePos;
-    public void ChangeTilePos(int num, GameObject gameObject)
+    public void ChangeTilePos(int num, GameObject gameObject, TileController tileScript)
     {
-        gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);
+        gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);;
         if (10 < num && num < 20)
         {
             gameObject.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
@@ -47,6 +52,58 @@ public class MapManager : MonoBehaviour
             gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.8f);
             gameObject.transform.GetChild(4).gameObject.SetActive(false);
         }
+
+        switch(tileScript._tileType)
+        {
+            case TileType.Start:
+                _cityname.SetActive(false);
+                _bonusStage.SetActive(true);
+                _bonusStage.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+
+            case TileType.Ground:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                //Debug.Log(tileScript._tileName);
+                break;
+
+            case TileType.Item:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+
+            case TileType.Island:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+
+            case TileType.Olympics:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+
+            case TileType.Travel:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+
+            case TileType.revenue:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+
+            case TileType.casino:
+                _cityname.SetActive(true);
+                _bonusStage.SetActive(false);
+                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
+                break;
+        }
     }
 
     /// <summary>
@@ -59,14 +116,14 @@ public class MapManager : MonoBehaviour
             // 프리팹을 생성하고 위치를 설정
             GameObject _temp = Instantiate(_tilePrefab);
 
-            ChangeTilePos(i, _temp);
-            _temp.transform.position = _tiledates[i]._tilePos;
             // TileController를 가져와서 데이터 적용
             TileController tileScript = _temp.GetComponent<TileController>();
+            tileScript.SetTileData(_tiledates[i]); // 데이터 적용
+            _temp.transform.position = _tiledates[i]._tilePos;
+            ChangeTilePos(i, _temp, tileScript);
 
             if (tileScript != null)
             {
-                tileScript.SetTileData(_tiledates[i]); // 데이터 적용
                 TileSetting(tileScript, _temp); // 타일타입에 맞춰 자식 객체 활성화.
             }
             else
