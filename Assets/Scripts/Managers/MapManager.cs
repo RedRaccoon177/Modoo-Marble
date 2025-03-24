@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,8 +57,10 @@ public class MapManager : MonoBehaviour
     {
         for (int i = 0; i < _tiledates.Length; i++)
         {
-            // 프리팹을 생성하고 위치를 설정
-            GameObject _temp = Instantiate(_tilePrefab);
+            Vector3 spawnPos = _tiledates[i]._tilePos;
+            Quaternion spawnRot = Quaternion.identity;
+
+            GameObject _temp = PhotonNetwork.Instantiate("Tile", spawnPos, spawnRot);
 
             //GameObject _temp2 = Instantiate(_tileBuyUI, _tileParent);
             ChangeTilePos(i, _temp);

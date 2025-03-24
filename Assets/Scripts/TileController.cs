@@ -42,17 +42,6 @@ public partial class TileController : MonoBehaviourPun
     GameObject _ground;
     GameObject _Sea;
 
-    void Awake()
-    {
-        TileBuyUI tileBuyUI = FindObjectOfType<TileBuyUI>(); // (가능하면 개선 필요)
-        if (tileBuyUI != null)
-        {
-            tileBuyUI.OnTileValueChange -= ChangeTileData;
-            tileBuyUI.OnTileValueChange += ChangeTileData;
-        }
-    }
-
-
     void Start()
     {
         _ground = transform.GetChild(0).gameObject;
@@ -126,35 +115,6 @@ public partial class TileController : MonoBehaviourPun
         }
     }
 
-    public void ChangeTileData(TileController tile)
-    {
-        Debug.Log("ChangeTileData 호출됨!"); // 디버깅 로그 추가
-        _tileLandOwner = tile._tileLandOwner;
-        _tilePensionOwner = tile._tilePensionOwner;
-        _tileCondoOwner = tile._tileCondoOwner;
-        _tileHotelOwner = tile._tileHotelOwner;
-
-        photonView.RPC("RPC_ChangeTileData",
-            RpcTarget.AllBuffered,
-            _tileKey,
-            tile._tileLandOwner,
-            tile._tilePensionOwner,
-            tile._tileCondoOwner,
-            tile._tileHotelOwner
-        );
-    }
-
-    [PunRPC]
-    void RPC_ChangeTileData(int key, int land, int pension, int condo, int hotel)
-    {
-        if (_tileKey != key) return; // 자기 타일만 반응
-
-        _tileLandOwner = land;
-        _tilePensionOwner = pension;
-        _tileCondoOwner = condo;
-        _tileHotelOwner = hotel;
-    }
-
     /// <summary>
     /// 타일 가격 가져오기
     /// </summary>
@@ -206,6 +166,34 @@ public partial class TileController : MonoBehaviourPun
             default:
                 Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
                 break;
+        }
+
+        photonView.RPC("RPC_ChangeTileData", RpcTarget.All,
+            _tileKey,
+            _tileLandOwner,
+            _tilePensionOwner,
+            _tileCondoOwner,
+            _tileHotelOwner
+        );
+    }
+
+    [PunRPC]
+    void RPC_ChangeTileData(int tileKey, int land, int pension, int condo, int hotel)
+    {
+        if (_tileKey != tileKey) return; // 내 타일이 아니면 무시
+
+        Debug.Log($"[RPC] 타일 {tileKey} 정보 수신 → 동기화 시작");
+
+        try
+        {
+            _tileLandOwner = land;
+            _tilePensionOwner = pension;
+            _tileCondoOwner = condo;
+            _tileHotelOwner = hotel;
+        }
+        catch (Exception ww)
+        {
+            Debug.Log(ww);
         }
     }
 }

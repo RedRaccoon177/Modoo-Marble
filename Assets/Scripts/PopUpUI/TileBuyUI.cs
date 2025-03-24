@@ -251,7 +251,7 @@ public class TileBuyUI : MonoBehaviour
             _currentTile.SetOwner(i, newOwner);
         }
 
-        OnTileValueChange?.Invoke(_currentTile);
+        //OnTileValueChange?.Invoke(_currentTile);
     }
 
     /// <summary>
