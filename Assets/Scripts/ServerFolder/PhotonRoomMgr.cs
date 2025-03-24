@@ -6,25 +6,28 @@ using UnityEngine.UI;
 using Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 //싱글톤
 public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 {
-    public InputField createRoomInput;
-    public InputField joinRoomInput;
-    public GameObject roomPrefab;
+    public TMP_InputField createRoomInput;
+    public TMP_InputField joinRoomInput;
+
     public Transform roomListPanel;
+
     public GameObject roomPanels;
     public GameObject serverPanel;
+    public GameObject roomPrefab;
+    public GameObject LodingPanel;
 
-  
 
     //서버연결
     public void isServer()
     {
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
-        //serverPanel.gameObject.SetActive(true);
+        LodingPanel.gameObject.SetActive(true);
        
     }
 
@@ -65,6 +68,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 
     public override void OnConnectedToMaster()
     {
+        LodingPanel.gameObject.SetActive(false);
         Debug.Log("서버 연결 완료");
         PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
         PhotonNetwork.JoinLobby();
@@ -106,7 +110,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         foreach (RoomInfo roomInfo in roomList)
         {
             var roomBtn = Instantiate(roomPrefab, roomListPanel); //룸 리스트 패널 하에 버튼 하나 생성
-            roomBtn.GetComponentInChildren<Text>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
+            roomBtn.GetComponentInChildren<TextMeshProUGUI>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
             roomBtn.GetComponent<Button>().onClick.AddListener(()=>PhotonNetwork.JoinRoom(roomInfo.Name));
         }
     }

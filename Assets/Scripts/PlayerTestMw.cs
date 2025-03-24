@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerTestMw : MonoBehaviour//임시 클래스
 {
-    public event Action OnDataChanged; 
+    public event Action OnDataChanged;
 
     [SerializeField] private string nickname;//임시값
 
@@ -13,24 +13,24 @@ public class PlayerTestMw : MonoBehaviour//임시 클래스
 
     public string Nickname => nickname;
     public int Money => money;
-    public int TotalMoney => money + extraMoney; 
+    public int TotalMoney => money + extraMoney;
     public int Rank { get; private set; }
 
     public void UpdateMoney(int newMoney)
     {
         money = newMoney;
-        OnDataChanged?.Invoke(); 
+        OnDataChanged?.Invoke();
     }
 
     public void UpdateExtraMoney(int newExtraMoney)
     {
         extraMoney = newExtraMoney;
-        OnDataChanged?.Invoke(); 
+        OnDataChanged?.Invoke();
     }
 
     public void UpdateRank(int newRank)
     {
         Rank = newRank;
-        OnDataChanged?.Invoke(); 
+        OnDataChanged?.Invoke();
     }
 }

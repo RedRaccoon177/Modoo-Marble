@@ -7,6 +7,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using System.Threading.Tasks;
+using TMPro;
 
 //로그인창
 //임시 나중에 리스트로 담아서 해야될듯 지금은 기능 구현 우선
@@ -16,27 +17,34 @@ public class FirebaseLoginMgr : MonoBehaviour
     static public FirebaseUser user;
     static public FirebaseAuth auth;
 
-    //임시
-    //로그인용
+
+    //로그인용(TMP로 최신화 했음)
     [Header("로그인용")]
-    [SerializeField] private InputField LoginIdInputField;
-    [SerializeField] private InputField LoginPasswordInputField;
-    [SerializeField] Text LoginwarningText;
+    [SerializeField] private TMP_InputField LoginIdInputField;
+    [SerializeField] private TMP_InputField LoginPasswordInputField;
+    [SerializeField] TextMeshProUGUI LoginwarningText;
     //회원가입용
     [Header("회원가입용")]
-    [SerializeField] private InputField CreateIdInputField;
-    [SerializeField] private InputField CreatePasswordInputField;
-    [SerializeField] Text CreatewarningText;
+    [SerializeField] private TMP_InputField CreateIdInputField;
+    [SerializeField] private TMP_InputField CreatePasswordInputField;
+    [SerializeField] TextMeshProUGUI CreatewarningText;
     [Header("닉네임 설정용")]
-    [SerializeField] private InputField NickNameInputField;
-    [SerializeField] Text NickNamewarningText;
-    //nickField.text = user.DisplayName; 따로만들자 
+    [SerializeField] private TMP_InputField NickNameInputField;
+    [SerializeField] TextMeshProUGUI NickNamewarningText;
+
 
     [Header("큰테두리Ui")]
     [SerializeField] private GameObject SceneChanege;
     [SerializeField] private GameObject LoginUiPanel;
     [SerializeField] private GameObject CreateUiIdPanel;
     [SerializeField] private GameObject NickNameUiPanel;
+
+
+
+
+   
+
+
 
 
 
