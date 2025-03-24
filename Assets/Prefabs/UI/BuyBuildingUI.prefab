@@ -2184,13 +2184,13 @@ RectTransform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8981950903209360532}
   - {fileID: 8445386151211376337}
   - {fileID: 5446703628813555870}
   - {fileID: 5312755761526759675}
   - {fileID: 472329464678631117}
   - {fileID: 2803763767753110267}
   - {fileID: 2515193832812140390}
+  - {fileID: 8981950903209360532}
   - {fileID: 9174767439803725354}
   - {fileID: 3601616507804586032}
   - {fileID: 5347667476277263202}
@@ -2251,29 +2251,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333378eec127b0d4ca832d7633a91be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buyTileLandBtn: {fileID: 8466414446144477073}
-  _buyTilePensionBtn: {fileID: 6856578354912691859}
-  _buyTileCondoBtn: {fileID: 912535915725009261}
-  _buyTileHotelBtn: {fileID: 7746184815601710086}
+  _buildingButtons:
+  - {fileID: 8466414446144477073}
+  - {fileID: 6856578354912691859}
+  - {fileID: 912535915725009261}
+  - {fileID: 7746184815601710086}
+  _checkImages:
+  - {fileID: 4382871832675711618}
+  - {fileID: 8739657694658219274}
+  - {fileID: 5345829785071345657}
+  - {fileID: 1626368821886721557}
   _buyBtn: {fileID: 682818754718960036}
   _cancelBtn: {fileID: 2166266912701654780}
-  _islandCheckImage: {fileID: 2269877332811921073}
-  _isPensionCheckImage: {fileID: 4443169050696662865}
-  _isCondoCheckImage: {fileID: 4565647698651670063}
-  _isHotelCheckImage: {fileID: 4766803146945383556}
   _tileName: {fileID: 512685250681404288}
-  _tileLandPrice: {fileID: 6621626229428078917}
-  _tilePensionPrice: {fileID: 4891085817742832565}
-  _tileCondoPrice: {fileID: 544313708003812566}
-  _tileHotelPrice: {fileID: 6305471841633091903}
+  _buildingPricesText:
+  - {fileID: 6621626229428078917}
+  - {fileID: 4891085817742832565}
+  - {fileID: 544313708003812566}
+  - {fileID: 6305471841633091903}
   _tileToll: {fileID: 3574236908453778370}
   _tileTotalCost: {fileID: 1134954735165419776}
   _playerMoney: {fileID: 1008203119972701063}
-  _tileLandOwner: 0
-  _tilePensionOwner: 0
-  _tileCondoOwner: 0
-  _tileHotelOwner: 0
-  _tileLandMarkOwner: 0
   _currentMoney: 0
   _cancelRememberMoney: 0
 --- !u!1 &4639574736957484156

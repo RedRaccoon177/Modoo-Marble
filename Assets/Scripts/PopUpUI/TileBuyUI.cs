@@ -5,531 +5,284 @@ using UnityEngine.UI;
 using System.ComponentModel;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections;
 
-public partial class TileBuyUI : MonoBehaviour
+public class TileBuyUI : MonoBehaviour
 {
     #region UI 변수들
-    [Header("구매 체크 버튼 (땅, 건물)")]
-    public Button _buyTileLandBtn;    // 땅 구매 버튼
-    public Button _buyTilePensionBtn; // 펜션 구매 버튼
-    public Button _buyTileCondoBtn;   // 콘도 구매 버튼
-    public Button _buyTileHotelBtn;   // 호텔 구매 버튼
+    [Header("구매 체크 버튼 및 체크 이미지")]
+    public Button[] _buildingButtons;           // 순서: Land, Pension, Condo, Hotel
+    public Image[] _checkImages;                // 체크 여부에 따라 색상 변경
 
-    // 실제 구매 버튼
-    public Button _buyBtn;
+    [Header("UI 구성요소")]
+    public Button _buyBtn;                      // 구매 버튼
+    public Button _cancelBtn;                   // 취소 버튼
 
-    //취소 버튼
-    public Button _cancelBtn;
+    [Header("땅 이름")]
+    public TextMeshProUGUI _tileName;           // 타일의 이름 표시
 
-    [Header("토지, 펜션, 콘도, 호텔 구매 여부 체크")]
-    private bool _isLandCheck = false;      // 토지 구매 여부 체크
-    private bool _isPensionCheck = false;   // 펜션 구매 여부 체크
-    private bool _isCondoCheck = false;     // 콘도 구매 여부 체크
-    private bool _isHotelCheck = false;     // 호텔 구매 여부 체크
+    [Header("타일 땅,건물들 가격")]
+    public TextMeshProUGUI[] _buildingPricesText; // 각 건물의 가격 텍스트
 
-    [Header("체크 이미지들 색 변화를 위해")]
-    public Image _islandCheckImage;
-    public Image _isPensionCheckImage;       
-    public Image _isCondoCheckImage;
-    public Image _isHotelCheckImage;
+    [Header("통행료")]
+    public TextMeshProUGUI _tileToll;           // 통행료 텍스트
 
-    // 타일 정보 (UI에 표시되는 텍스트)
-    [Header("땅 이름")] public TextMeshProUGUI _tileName;                   // 땅의 이름 표시
-    
-    [Header("타일 땅,건물들 가격")] 
-    public TextMeshProUGUI _tileLandPrice;         // 땅 가격 표시
-    public TextMeshProUGUI _tilePensionPrice;    // 펜션 가격 표시
-    public TextMeshProUGUI _tileCondoPrice;      // 콘도 가격 표시
-    public TextMeshProUGUI _tileHotelPrice;      // 호텔 가격 표시
+    [Header("총 구매 비용")]
+    public TextMeshProUGUI _tileTotalCost;      // 총 가격 텍스트
 
-    [Header("통행료")] 
-    public TextMeshProUGUI _tileToll;            
-
-    [Header("총 구매 비용")] 
-    public TextMeshProUGUI _tileTotalCost; 
-
-    [Header("보유 현금")] 
-    public TextMeshProUGUI _playerMoney;
-
-    // 타일 소유주 정보
-    [Header("타일 땅, 건물 소유주")] 
-    public int _tileLandOwner;           // 땅 소유주 ID
-    public int _tilePensionOwner;        // 펜션 소유주 ID
-    public int _tileCondoOwner;          // 콘도 소유주 ID
-    public int _tileHotelOwner;          // 호텔 소유주 ID
-    public int _tileLandMarkOwner;       // 랜드마크 소유주 ID
+    [Header("보유 현금")]
+    public TextMeshProUGUI _playerMoney;        // 플레이어의 현재 자산
 
     [Header("플레이어 현재 보유 금액 (게임 내에서 변할 수 있음)")]
     public double _currentMoney;
-    public double _cancelRememberMoney;
+    public double _cancelRememberMoney;         // 취소 시 복구할 금액
 
-    //플레이어의 고유 번호
-    int _playerKey;
-    int _enemyKey0 = -1;
-    int _enemyKey1 = -1;
-    int _enemyKey2 = -1;
+    [Header("토지, 펜션, 콘도, 호텔 구매 여부 체크")]
+    private bool[] _buildingChecks = new bool[4]; // 건물 구매 여부
 
-    //내꺼 받아오는 거 한번하고
-    //나머지 플레이어들 다 받아오기
+    [Header("타일 땅, 건물 소유주")]
+    private int[] _tileOwners = new int[4];     // 건물 소유자 정보
 
-    // 타일 정보 변경 이벤트
-    public event Action<TileController> OnTileValueChange;
+    public event Action<TileController> OnTileValueChange; // 변경 이벤트
 
-    // 현재 선택된 타일 저장
-    private TileController _currentTile;
+    TileController _currentTile;                // 현재 타일 정보 참조
 
-    // HandleBankOwnership 함수 참 거짓으로 중복 실행 방지
-    bool _FHandleBankOwnership = false;
+    bool _FHandleBankOwnership = false;         // 은행처리 중복 방지
+
+    [Header("플레이어들의 고유 번호 지정")]
+    int _playerKey;                             // 나의 고유 ActorNumber
+    int[] _enemyKeys;                           // 상대방들 ActorNumber
     #endregion
 
     void Awake()
     {
-        Debug.Log("버튼 Awake");
+        // UI 이벤트 연결
         UIManagerP.instance._buyChangeDataGround += SetTileData;
-        // 초기 색상 설정
-        UpdateCheckImages();
-        // 버튼 클릭 이벤트 연결
-        BindButtonEvents();
-    }
-
-    void Start()
-    {
-        SetPlayerKeys();
+        UpdateCheckImages(); // 색상 초기화
+        BindButtonEvents();  // 버튼 이벤트 연결
+        SetPlayerAndEnemies();
     }
 
     /// <summary>
-    /// 네트워크로 플레이어 정보 저장
+    /// 나와 적 구분해서 고유번호 저장
     /// </summary>
-    void SetPlayerKeys()
+    void SetPlayerAndEnemies()
     {
-        int enemyIndex = 0;
+        //// 룸 인원 수 체크
+        //if (PhotonNetwork.PlayerList.Length < 2 || PhotonNetwork.PlayerList.Length > 4)
+        //{
+        //    Debug.LogWarning("플레이어 수가 유효하지 않습니다! (2~4명만 지원)");
+        //    return;
+        //}
 
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            if (player == PhotonNetwork.LocalPlayer)
-            {
-                _playerKey = player.ActorNumber;
-            }
-            else
-            {
-                switch (enemyIndex)
-                {
-                    case 0:
-                        _enemyKey0 = player.ActorNumber;
-                        break;
-                    case 1:
-                        _enemyKey1 = player.ActorNumber;
-                        break;
-                    case 2:
-                        _enemyKey2 = player.ActorNumber;
-                        break;
-                }
-                enemyIndex++;
-            }
-        }
-        Debug.Log($"내 번호: {_playerKey}, 적들: {_enemyKey0}, {_enemyKey1}, {_enemyKey2}");
+        // 현재 로컬 플레이어의 고유 ActorNumber를 저장
+        _playerKey = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        // 모든 플레이어 목록 중에서
+        _enemyKeys = PhotonNetwork.PlayerList
+            .Where(p => p.ActorNumber != _playerKey)      // 나(로컬 플레이어)가 아닌 플레이어만 필터링하고
+            .Select(p => p.ActorNumber)                   // 각 플레이어의 고유 ActorNumber만 추출해서
+            .ToArray();                                   // 배열로 만들어 적 목록(_enemyKeys)에 저장
+
     }
 
     /// <summary>
-    /// 버튼 클릭 이벤트 연결
+    /// 각 버튼의 클릭 이벤트 연결
     /// </summary>
     void BindButtonEvents()
     {
-        _buyTileLandBtn.onClick.AddListener(() => ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice));
+        for (int i = 0; i < _buildingButtons.Length; i++)
+        {
+            int index = i; // 람다 캡처 방지
+            _buildingButtons[i].onClick.AddListener(() => ToggleButtonState(index));
+        }
 
-        _buyTilePensionBtn.onClick.AddListener(() => ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice));
-
-        _buyTileCondoBtn.onClick.AddListener(() => ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice));
-
-        _buyTileHotelBtn.onClick.AddListener(() => ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice));
-
-        _buyBtn.onClick.AddListener(() => BuyButtonClick());
-
-        _cancelBtn.onClick.AddListener(() => CancelBtnClick());
+        _buyBtn.onClick.AddListener(BuyButtonClick);
+        _cancelBtn.onClick.AddListener(CancelBtnClick);
     }
 
-    #region 구매 체크 이미지 색상 변경 false 빨강 / true 초록
+    #region 구매 체크 이미지 및 버튼 상태 갱신
     /// <summary>
-    /// 버튼 상태를 변경하고 체크 이미지 색상 업데이트 + Buy 버튼 상태 업데이트
+    /// 건물 구매 여부 상태 전환 + UI 색상 및 Buy 버튼 갱신
     /// </summary>
-    /// <param name="isChecked"></param>
-    /// <param name="image"></param>
-    /// <param name="playerMoney"></param>
-    /// <param name="price"></param>
-    void ToggleButtonState(ref bool isChecked, Image image, ref double playerMoney, double price)
+    void ToggleButtonState(int index)
     {
-        // isChecked가 참이면 구매 한 것일 테니 클릭하여 구매 안하겠다고 하는 것이다. 돈을 돌려줘라.
-        if (isChecked)
-        {
-            playerMoney += price;
+        double price = _currentTile.GetPrice(index);
 
-            isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
-            UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
-            UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
-            if (_FHandleBankOwnership == true)
-            {
-                TileBuyCheckBtnCheck(_currentTile);
-            }
-        }
-        else
-        {
-            if (playerMoney - price >= 0)
-            {
-                playerMoney -= price;
-                isChecked = !isChecked; // 현재 상태 반전 (true <-> false)
-                UpdateImageColor(image, isChecked); // 변경된 상태에 따라 이미지 색상 변경
-                UpdateBuyButtonState(); // Buy 버튼 상태 업데이트
-                if (_FHandleBankOwnership == true)
-                {
-                    TileBuyCheckBtnCheck(_currentTile);
-                }
-            }
-            else
-            {
-                Debug.Log("마이너스 금지");
-            }
-        }
+        if (_buildingChecks[index]) _currentMoney += price;
+        else if (_currentMoney >= price) _currentMoney -= price;
+        else { Debug.Log("마이너스 금지"); return; }
+
+        _buildingChecks[index] = !_buildingChecks[index];
+
+        UpdateImageColor(_checkImages[index], _buildingChecks[index]);
+        UpdateBuyButtonState();
+
+        if (_FHandleBankOwnership) TileBuyCheckBtnCheck();
     }
 
     /// <summary>
-    /// Buy 버튼을 _isLandCheck 값에 따라 활성화/비활성화
+    /// Buy 버튼 활성화 조건: 토지 주인이 내가 아니고, 토지가 체크됨
     /// </summary>
     void UpdateBuyButtonState()
     {
-        if (_tileLandOwner != _playerKey) _buyBtn.interactable = _isLandCheck; // _isLandCheck가 true면 활성화, false면 비활성화
+        _buyBtn.interactable = _tileOwners[0] != _playerKey && _buildingChecks[0];
     }
 
     /// <summary>
-    /// 특정 체크 이미지의 색상을 변경
+    /// 이미지 색상: 초록은 구매 체크, 빨강은 미체크
     /// </summary>
-    /// <param name="image"></param>
-    /// <param name="isChecked"></param>
     void UpdateImageColor(Image image, bool isChecked)
     {
-        image.color = isChecked ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f); // 초록색 or 빨간색
+        image.color = isChecked ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f);
     }
 
     /// <summary>
-    /// 모든 체크 이미지 초기 색상 설정
+    /// 체크 이미지들 초기화
     /// </summary>
     void UpdateCheckImages()
     {
-        UpdateImageColor(_islandCheckImage, _isLandCheck);
-        UpdateImageColor(_isPensionCheckImage, _isPensionCheck);
-        UpdateImageColor(_isCondoCheckImage, _isCondoCheck);
-        UpdateImageColor(_isHotelCheckImage, _isHotelCheck);
+        for (int i = 0; i < _checkImages.Length; i++) UpdateImageColor(_checkImages[i], _buildingChecks[i]);
     }
     #endregion
 
     /// <summary>
-    /// 각 타일 데이터 가져와서 정보 삽입
+    /// 타일 선택 시 정보 갱신 및 UI 세팅
     /// </summary>
-    /// <param name="data"></param>
     public void SetTileData(TileController data)
     {
-        _FHandleBankOwnership = false;
-
-        // 데이터가 없으면 바로 리턴 (안전장치)
         if (data == null) return;
 
+        _FHandleBankOwnership = false;
         _currentTile = data;
 
-        // UI에 타일 정보 업데이트
         _tileName.text = data._tileName;
-        _tileLandPrice.text = data._tileLandPrice.ToString();
-        _tilePensionPrice.text = data._tilePensionPrice.ToString();
-        _tileCondoPrice.text = data._tileCondoPrice.ToString();
-        _tileHotelPrice.text = data._tileHotelPrice.ToString();
 
-        _tileLandOwner = data._tileLandOwner;
-        _tilePensionOwner = data._tilePensionOwner;
-        _tileCondoOwner = data._tileCondoOwner;
-        _tileHotelOwner = data._tileHotelOwner;
-
-        // 현재 플레이어 정보를 가져옴
-        PlayerManager playerManager = FindObjectOfType<PlayerManager>();
-        if (playerManager == null)
+        for (int i = 0; i < 4; i++)
         {
-            Debug.LogError("PlayerManager를 찾을 수 없습니다!");
-            return;
+            _buildingPricesText[i].text = data.GetPrice(i).ToString();
+            _tileOwners[i] = data.GetOwner(i);
         }
 
-        //타일 버튼 체크 초기화
-        ResetButtonStates();
+        PlayerManager pm = FindObjectOfType<PlayerManager>();
+        if (pm == null) return;
 
-        // 소유 상태에 따라 버튼 활성화 여부 결정
-        UpdateTilePurchaseButtons(data, playerManager);
+        ResetButtonStates();
+        _currentMoney = _cancelRememberMoney = pm.GetMoney();
+
+        int landOwner = _tileOwners[0];
+
+        if (landOwner == 0) HandleBankOwnership();
+        else if (landOwner == _playerKey) HandlePlayerOwnership();
+        else HandleEnemyOwnership(pm);
     }
 
     /// <summary>
-    /// 모든 버튼 상태 초기화 (초기값: false)
+    /// 버튼 상태 초기화 후 Buy 버튼 갱신
     /// </summary>
     void ResetButtonStates()
     {
-        // 모든 체크 상태를 false로 초기화
-        _isLandCheck = false;
-        _isPensionCheck = false;
-        _isCondoCheck = false;
-        _isHotelCheck = false;
+        for (int i = 0; i < 4; i++)
+        {
+            _buildingChecks[i] = false;
+            _buildingButtons[i].interactable = true;
+        }
 
-        // 모든 체크 이미지 색상을 빨간색으로 초기화
         UpdateCheckImages();
-
-        // Buy 버튼 상태 초기화
         UpdateBuyButtonState();
-
-        // 버튼 클릭 이벤트 초기화 후 다시 연결
-        Button[] buyButtons = { _buyTileLandBtn, _buyTilePensionBtn, _buyTileCondoBtn, _buyTileHotelBtn };
-        Image[] checkImages = { _islandCheckImage, _isPensionCheckImage, _isCondoCheckImage, _isHotelCheckImage };
-
-        for (int i = 0; i < buyButtons.Length; i++)
-        {
-            buyButtons[i].onClick.RemoveAllListeners();
-            buyButtons[i].interactable = true; // 버튼 초기화 (클릭 가능하게)
-
-            int index = i; // 람다 캡처 문제 방지
-
-            buyButtons[i].onClick.AddListener(() =>
-            {
-                switch (index)
-                {
-                    case 0: ToggleButtonState(ref _isLandCheck, _islandCheckImage, ref _currentMoney, _currentTile._tileLandPrice); break;
-                    case 1: ToggleButtonState(ref _isPensionCheck, _isPensionCheckImage, ref _currentMoney, _currentTile._tilePensionPrice); break;
-                    case 2: ToggleButtonState(ref _isCondoCheck, _isCondoCheckImage, ref _currentMoney, _currentTile._tileCondoPrice); break;
-                    case 3: ToggleButtonState(ref _isHotelCheck, _isHotelCheckImage, ref _currentMoney, _currentTile._tileHotelPrice); break;
-                }
-            });
-        }
     }
 
     /// <summary>
-    /// 타일의 소유 상태 구분
+    /// 은행 소유일 경우, 자금 충분하면 자동 체크
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="playerManager"></param>
-    void UpdateTilePurchaseButtons(TileController data, PlayerManager playerManager)
+    void HandleBankOwnership()
     {
-        if (data == null || playerManager == null) return;
-
-        // 현재 플레이어가 보유한 돈을 가져옴
-        _currentMoney = playerManager.GetMoney();
-        _cancelRememberMoney = _currentMoney;
-
-        // 소유 상태에 따라 구매 가능 여부를 체크
-        switch (data._tileLandOwner)
+        for (int i = 0; i < 4; i++)
         {
-            case 0: // 은행 소유 → 플레이어가 구매 가능
-                HandleBankOwnership(data);
-                break;
-            case 1: // 자신 소유 → 건물 추가 구매 가능 여부 판단
-                HandlePlayerOwnership(data);
-                break;
-            case 2: // 적 소유 → 통행료 차감 후 구매 가능 여부 판단
-                HandleEnemyOwnership(data, playerManager);
-                break;
-        }
-    }
-
-    /// <summary>
-    /// 은행 소유일 경우 함수
-    /// </summary>
-    /// <param name="data"></param>
-    void HandleBankOwnership(TileController data)
-    {
-
-        if (_currentMoney >= data._tileLandPrice)
-        {
-            Debug.Log($" HandleBankOwnership 실행됨 (현재 보유 금액: {_currentMoney})");
-
-            // 토지 구매 버튼 강제 클릭 (토글 상태 변경을 위해)
-            _buyTileLandBtn.onClick.Invoke();
-
-            if (_currentMoney >= data._tilePensionPrice)
-            {
-                _buyTilePensionBtn.onClick.Invoke();
-            }
+            if (_currentMoney >= _currentTile.GetPrice(i))
+                _buildingButtons[i].onClick.Invoke();
             else
-            {
-                _buyTilePensionBtn.interactable = false;
-            }
-
-            if (_currentMoney >= data._tileCondoPrice)
-            {
-                _buyTileCondoBtn.onClick.Invoke();
-            }
-            else
-            {
-                _buyTileCondoBtn.interactable = false;
-            }
-
-            if (_currentMoney >= data._tileHotelPrice)
-            {
-                _buyTileHotelBtn.onClick.Invoke();
-            }
-            else
-            {
-                _buyTileHotelBtn.interactable = false;
-            }
-        }
-        else
-        {
-            _buyTileLandBtn.interactable = false;
-            _buyTilePensionBtn.interactable = false;
-            _buyTileCondoBtn.interactable = false;
-            _buyTileHotelBtn.interactable = false;
+                _buildingButtons[i].interactable = false;
         }
 
         _FHandleBankOwnership = true;
+
+        // 버튼 처리 이후 1프레임 대기 후 상태 갱신
+        StartCoroutine(DelayUpdateBuyButtonState());
     }
 
     /// <summary>
-    /// 첫번째 비교 이후 두번째 부터는 버튼 클릭 시 체크용
+    /// UI 상태 갱신을 한 프레임 뒤에 실행 (Buy 버튼 문제 해결용)
     /// </summary>
-    /// <param name="data"></param>
-    void TileBuyCheckBtnCheck(TileController data)
+    IEnumerator DelayUpdateBuyButtonState()
     {
-        if (!_isPensionCheck && _currentMoney >= data._tilePensionPrice)
-        {
-            _buyTilePensionBtn.interactable = true;
-        }
-        else if (_isPensionCheck)
-        {
-            _buyTilePensionBtn.interactable = true;
-        }
-        else
-        {
-            _buyTilePensionBtn.interactable = false;
-        }
+        yield return null;
+        UpdateBuyButtonState();
+    }
 
-        if (!_isCondoCheck && _currentMoney >= data._tileCondoPrice)
+    /// <summary>
+    /// 두 번째 건물부터 자금 부족 시 버튼 비활성화 처리
+    /// </summary>
+    void TileBuyCheckBtnCheck()
+    {
+        for (int i = 1; i < 4; i++)
         {
-            _buyTileCondoBtn.interactable = true;
-        }
-        else if (_isCondoCheck)
-        {
-            _buyTileCondoBtn.interactable = true;
-        }
-        else
-        {
-            _buyTileCondoBtn.interactable = false;
-        }
-
-        if (!_isHotelCheck && _currentMoney >= data._tileHotelPrice)
-        {
-            _buyTileHotelBtn.interactable = true;
-        }
-        else if (_isHotelCheck)
-        {
-            _buyTileHotelBtn.interactable = true;
-        }
-        else
-        {
-            _buyTileHotelBtn.interactable = false;
+            double price = _currentTile.GetPrice(i);
+            _buildingButtons[i].interactable = !_buildingChecks[i] && _currentMoney >= price || _buildingChecks[i];
         }
     }
 
     /// <summary>
-    /// 구매 버튼 클릭
+    /// 구매 버튼 눌렀을 때 처리
     /// </summary>
     void BuyButtonClick()
     {
-        if (_currentTile == null) return; // 현재 선택된 타일이 없으면 리턴
+        if (_currentTile == null) return;
 
-        //자신이 이미 구매한 토지일 경우 자신꺼
-        if(_tileLandOwner == _playerKey)
+        for (int i = 0; i < 4; i++)
         {
-            _currentTile._tileLandOwner = _playerKey;
-        }
-        //이미 적이 구매한 토지일 경우
-        else if (_tileLandOwner != 0)
-        {
-            _currentTile._tileLandOwner = _isLandCheck ? _playerKey : _enemyKey0;
-        }
-        // 은행꺼였을 경우
-        else
-        {
-            _currentTile._tileLandOwner = _isLandCheck ? _playerKey : 0;
+            int owner = _tileOwners[i];
+            int newOwner = owner == 0
+                ? (_buildingChecks[i] ? _playerKey : 0)
+                : owner; // 기존 소유자 유지
+
+            _currentTile.SetOwner(i, newOwner);
         }
 
-        if(_tilePensionOwner == _playerKey)
-        {
-            _currentTile._tilePensionOwner = _playerKey;
-        }
-        else if(_tilePensionOwner != 0)
-        {
-            _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : _enemyKey0;
-        }
-        else
-        {
-            _currentTile._tilePensionOwner = _isPensionCheck ? _playerKey : 0;
-        }
-
-        if (_tileCondoOwner == _playerKey)
-        { 
-            _currentTile._tileCondoOwner = _playerKey;
-        }
-        else if (_tileCondoOwner != 0)
-        {
-            _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : _enemyKey0;
-        }
-        else
-        {
-            _currentTile._tileCondoOwner = _isCondoCheck ? _playerKey : 0;
-        }
-
-        if(_tileHotelOwner == _playerKey)
-        {
-            _currentTile._tileHotelOwner = _playerKey;
-        }
-        else if (_tileHotelOwner != 0)
-        {
-            _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : _enemyKey0;
-        }
-        else
-        {
-            _currentTile._tileHotelOwner = _isHotelCheck ? _playerKey : 0;
-        }
-
-        OnTileValueChange?.Invoke(_currentTile); // 정확한 타일 데이터 전달
+        OnTileValueChange?.Invoke(_currentTile);
     }
 
     /// <summary>
-    /// 취소 버튼 클릭 했을 때
+    /// 취소 시 금액 원상복구 + UI 닫기
     /// </summary>
     void CancelBtnClick()
     {
         _currentMoney = _cancelRememberMoney;
         UIManagerP.instance.OffBuyUIPanel();
-        //TODO:Panel 비활성화 시키기
     }
 
-    #region 추후에 진행
-
+    #region 추후 기능
     /// <summary>
-    /// 플레이어 자신의 땅일 경우 함수
+    /// 플레이어가 이미 소유한 땅일 경우 건물만 구매 가능
     /// </summary>
-    /// <param name="data"></param>
-    private void HandlePlayerOwnership(TileController data)
+    void HandlePlayerOwnership()
     {
-        _buyTileLandBtn.interactable = false;
-        _buyTilePensionBtn.interactable = 
-            data._tilePensionOwner == 0 && _currentMoney >= data._tilePensionPrice;
-        _buyTileCondoBtn.interactable =
-            data._tileCondoOwner == 0 && _currentMoney >= data._tileCondoPrice;
-        _buyTileHotelBtn.interactable = 
-            data._tileHotelOwner == 0 && _currentMoney >= data._tileHotelPrice;
+        _buildingButtons[0].interactable = false;
+
+        for (int i = 1; i < 4; i++)
+        {
+            _buildingButtons[i].interactable = _tileOwners[i] == 0 && _currentMoney >= _currentTile.GetPrice(i);
+        }
     }
 
     /// <summary>
-    /// 적 소유의 땅일 경우 함수
+    /// 적이 소유한 땅일 경우: 건물 비활성화, 금액만 갱신
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="playerManager"></param>
-    private void HandleEnemyOwnership(TileController data, PlayerManager playerManager)
+    void HandleEnemyOwnership(PlayerManager pm)
     {
-        // 통행료를 가져와서 차감
-        _currentMoney = playerManager.GetMoney();
-
+        _currentMoney = pm.GetMoney();
     }
     #endregion
 }

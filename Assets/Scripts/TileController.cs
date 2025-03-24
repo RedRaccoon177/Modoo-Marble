@@ -133,4 +133,62 @@ public partial class TileController : MonoBehaviour
         _tileCondoOwner = tile._tileCondoOwner;
         _tileHotelOwner = tile._tileHotelOwner;
     }
+
+    /// <summary>
+    /// 타일 가격 가져오기
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public double GetPrice(int index)
+    {
+        switch (index)
+        {
+            case 0: return _tileLandPrice;
+            case 1: return _tilePensionPrice;
+            case 2: return _tileCondoPrice;
+            case 3: return _tileHotelPrice;
+            case 4: return _tileLandMarkPrice;
+            default:
+                Debug.LogWarning("잘못된 가격 인덱스 요청: " + index);
+                return 0;
+        }
+    }
+
+    /// <summary>
+    /// 건물 인덱스별 소유주 반환
+    /// </summary>
+    public int GetOwner(int index)
+    {
+        switch (index)
+        {
+            case 0: return _tileLandOwner;
+            case 1: return _tilePensionOwner;
+            case 2: return _tileCondoOwner;
+            case 3: return _tileHotelOwner;
+            case 4: return _tileLandMarkOwner;
+            default:
+                Debug.LogWarning("잘못된 소유주 인덱스 요청: " + index);
+                return -1;
+        }
+    }
+
+    /// <summary>
+    /// 건물 인덱스별 소유주 설정
+    /// </summary>
+    public void SetOwner(int index, int owner)
+    {
+        switch (index)
+        {
+            case 0: _tileLandOwner = owner; break;
+            case 1: _tilePensionOwner = owner; break;
+            case 2: _tileCondoOwner = owner; break;
+            case 3: _tileHotelOwner = owner; break;
+            case 4: _tileLandMarkOwner = owner; break;
+            default:
+                Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
+                break;
+        }
+    }
+
+
 }
