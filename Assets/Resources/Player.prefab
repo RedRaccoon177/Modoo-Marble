@@ -144,7 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2765f14450e7d8e459618064b8471d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerfabs: {fileID: 0}
 --- !u!114 &-1865150445158536963
 MonoBehaviour:
   m_ObjectHideFlags: 0
