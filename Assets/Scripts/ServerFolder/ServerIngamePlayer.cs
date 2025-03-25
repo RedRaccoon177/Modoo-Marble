@@ -14,12 +14,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     int _playerNickName;
 
     // 게임 안에서 사용되는 돈 , 데이터 베이스 에서 돈을 가져올거임(300만원)
-    public double _money = 100000000; // 임시 값
+    public double _money = 10000000; // 임시 값
 
     int _mapTurn; // 맵을 몇 바퀴 돌앗는지
     PhotonView _view;
     List<TileController> _playerGroundLists; // 가지고 있는 토지 리스트
-    int _playerPosIndex = 0;
+    int _playerPosIndex =0;
 
     // 플레이어 move 2번 실행 방지하기 위해 코루틴 담아두는 변수 
     Coroutine _playerMoveCor;
@@ -30,12 +30,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     TurnBasedManager _turnBasedManager;
 
     PlayerManager _playerManager;
-    //bool _isTurn = tr;
-    bool _isTurn = true;
+
 
     private void Start()
     {
-        _playerGroundLists = new List<TileController>();
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -43,45 +41,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
-
+       
     }
 
     private void Update()
     {
-        Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
-        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
+        if (_playerNum == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
-            if (photonView.IsMine && _isTurn == true)
+            if (photonView.IsMine)
             {
-                _isTurn = false;
                 Debug.Log("여기들어옴");
-                var ddd = _turnBasedManager.Dice();
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
+                var moveDice = _turnBasedManager.Dice();
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, moveDice);
             }
         }
-        //주사위 중복 방지
-        if (PhotonNetwork.LocalPlayer.ActorNumber != PlayerMoveTest.CurrentTurn)
-        {
-            _isTurn = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
-        {
-            PrintPlayerGroundLists();
-        }
-
     }
 
     [PunRPC]
     public void RpcMovePlayer(int num)
     {
-        if (_playerMoveCor != null)
-        {
-            StopCoroutine(_playerMoveCor);
-        }
-        else
-        {
-            _playerMoveCor = StartCoroutine(MovePlayer(num));
-        }
+        StartCoroutine(MovePlayer(num));
         Debug.Log("RpcMovePlayer 들어옴 + " + num);
     }
 
@@ -117,7 +96,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-
+        
         if (photonView.IsMine)
         {
             UIManagerP.instance.OnBuyUI(currentTile._tileType);
@@ -126,15 +105,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
-    public void IncreaseMoneyRPC(double money)
+    public void StartPointPass()
     {
-        _view.RPC("IncreaseMoney", RpcTarget.All, money);
+        _playerManager.IncreaseMoney(1000);
     }
-    public void DecreaseMoneyRPC(double money)
-    {
-        _view.RPC("DecreaseMoney", RpcTarget.All, money);
-    }
-
 
     [PunRPC]
     public void IncreaseMoney(double money)
@@ -160,13 +134,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     }
     public void PrintPlayerGroundLists()
     {
-        Debug.Log("시작!");
         foreach (var item in _playerGroundLists)
         {
-            Debug.Log(item._tileName);
+            Debug.Log(item);
         }
     }
-    // 내 소유의 모든 건물 총 비용 
     public double TotalLandCost()
     {
         double _totalPrice = 0;
