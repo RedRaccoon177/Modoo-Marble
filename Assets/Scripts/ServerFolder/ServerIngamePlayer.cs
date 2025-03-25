@@ -10,7 +10,7 @@ using System;
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 {
     bool _isLoan; // 대출여부
-    int _playerNum;
+    public int _playerNum;
     int _playerNickName;
 
     // 게임 안에서 사용되는 돈 , 데이터 베이스 에서 돈을 가져올거임(300만원)
@@ -139,7 +139,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                 if (currentTile._tileType == TileType.Ground)
                 {
-                    UIManagerP.instance.OnFactorUI(currentTile);
+                    UIManagerP.instance.OnFactorUI(currentTile,this);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
             }

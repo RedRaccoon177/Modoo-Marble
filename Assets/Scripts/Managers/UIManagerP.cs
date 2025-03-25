@@ -46,9 +46,12 @@ public class UIManagerP : MonoBehaviour
     /// <param name="_tileType"></param>
 
 
-    public void OnFactorUI(TileController currentTile)
+    public void OnFactorUI(TileController currentTile, ServerIngamePlayer player)
     {
         //_factorUI.transform.position = _target;
+        var _facScr = _factorUI.GetComponent<FactorUI>();
+        _facScr._currentTile = currentTile;
+        _facScr._player = player;
         _factorUI.SetActive(true);
     }
     public void OffFactorUI()
