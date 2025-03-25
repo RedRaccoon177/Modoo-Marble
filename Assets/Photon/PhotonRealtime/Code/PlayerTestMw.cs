@@ -278,7 +278,7 @@ namespace Photon.Realtime
         /// </summary>
         public override string ToString()
         {
-            return string.Format("#{0:00} '{1}'",this.ActorNumber, this.NickName);
+            return string.Format("#{0:00} '{1}'", this.ActorNumber, this.NickName);
         }
 
         /// <summary>
