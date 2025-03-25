@@ -17,6 +17,7 @@ MonoBehaviour:
   _tileKey: 11
   _tileName: "\uD06C\uB77C\uCFE0\uD504"
   _tilePos: {x: 13.4, y: 0, z: -1.3}
+  _tileLocalScale: {x: 1.2, y: 0.18, z: 1.8}
   _tileType: 0
   _tileLandOwner: 0
   _tilePensionOwner: 0

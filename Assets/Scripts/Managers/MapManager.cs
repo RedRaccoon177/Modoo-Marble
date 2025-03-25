@@ -19,6 +19,9 @@ public class MapManager : MonoBehaviourPun
     [Header("타일 초기 데이터")]
     [SerializeField] public TileInfoData[] _tiledates = new TileInfoData[40];
 
+
+    Quaternion _rotation = Quaternion.identity;
+    Vector3 _localScale = Vector3.zero;
     void Start()
     {
         _tiles = new GameObject[40]; // 모든 클라이언트가 배열 초기화
@@ -29,28 +32,6 @@ public class MapManager : MonoBehaviourPun
         }
     }
 
-    public void ChangeTilePos(int num, GameObject gameObject)
-    {
-        gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);
-        if (10 < num && num < 20)
-        {
-            gameObject.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-        }
-        else if (20 < num && num < 30)
-        {
-            gameObject.transform.rotation = Quaternion.Euler(0f, -180f, 0f);
-        }
-        else if (30 < num && num < 40)
-        {
-            gameObject.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-        }
-        else if (num == 10 || num == 20 || num == 30 || num == 0)
-        {
-            gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.8f);
-            gameObject.transform.GetChild(4).gameObject.SetActive(false);
-        }
-    }
-
     /// <summary>
     /// 맵을 생성하는 함수
     /// </summary>
@@ -58,10 +39,19 @@ public class MapManager : MonoBehaviourPun
     {
         for (int i = 0; i < _tiledates.Length; i++)
         {
-            GameObject _temp = PhotonNetwork.Instantiate("Tile", _tiledates[i]._tilePos, Quaternion.identity);
-
-            ChangeTilePos(i, _temp);
-
+            if (10 < i && i < 20)
+            {
+                _rotation = Quaternion.Euler(0f, 90f, 0f);
+            }
+            else if (20 < i && i < 30)
+            {
+                _rotation = Quaternion.Euler(0f, -180f, 0f);
+            }
+            else if (30 < i && i < 40)
+            {
+                _rotation = Quaternion.Euler(0f, -90f, 0f);
+            }
+            GameObject _temp = PhotonNetwork.Instantiate("Tile", _tiledates[i]._tilePos, _rotation);
             TileController tileScript = _temp.GetComponent<TileController>();
             if (tileScript != null)
             {

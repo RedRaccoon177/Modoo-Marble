@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 25Santorini
   m_EditorClassIdentifier: 
-  _subTileType: 4
+  _subTileType: 25
   subUnderTilePrefab: 0
   _tileKey: 25
-  _tileName: "\uBC1C\uD560\uB77C"
+  _tileName: "\uC0B0\uD1A0\uB9AC\uB2C8"
   _tilePos: {x: 6.5, y: 0, z: -13.41}
-  _tileType: 0
+  _tileLocalScale: {x: 1.2, y: 0.18, z: 1.8}
+  _tileType: 1
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

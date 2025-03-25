@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 28Haeundae
   m_EditorClassIdentifier: 
-  _subTileType: 24
+  _subTileType: 28
   subUnderTilePrefab: 0
   _tileKey: 28
-  _tileName: "\uC6B8\uD504\uC2A4\uBCA0\uC778"
+  _tileName: "\uD574\uC6B4\uB300"
   _tilePos: {x: 2.6, y: 0, z: -13.41}
-  _tileType: 0
+  _tileLocalScale: {x: 1.2, y: 0.18, z: 1.8}
+  _tileType: 1
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0
