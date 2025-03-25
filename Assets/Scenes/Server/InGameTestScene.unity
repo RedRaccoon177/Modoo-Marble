@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 226626473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8359f90acfbbf8f42af710e7e8c062cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 337a3932822193c41a59a21ac804b23d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 3699882789391996105, guid: 22d25cf25389a3a408fd3bbdc89f3cfb, type: 3}
@@ -1042,6 +1042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d8de08018a013d40b3271dd8699ed7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameralist: []
 --- !u!1 &1162664317
 GameObject:
   m_ObjectHideFlags: 0
