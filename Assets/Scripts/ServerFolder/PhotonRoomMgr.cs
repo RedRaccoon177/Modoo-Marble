@@ -105,7 +105,10 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         Debug.Log("리스트들어옴");
         foreach (Transform child in roomListPanel)
         {
-            Destroy(child.gameObject);
+            if (PhotonNetwork.PlayerList.Length == 0)
+            {
+                Destroy(child.gameObject);
+            }
         }
         foreach (RoomInfo roomInfo in roomList)
         {
