@@ -83,7 +83,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             // 시작 지점(0번 타일)에 도착하면 보너스 처리
             else if (_playerPosIndex + count == 0)
             {
-                StartPointPass();
+                //StartPointPass();
             }
             count++;
             transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
