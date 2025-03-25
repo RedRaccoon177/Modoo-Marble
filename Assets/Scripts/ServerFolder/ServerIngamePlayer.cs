@@ -148,6 +148,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _money -= money;
     }
 
+    [PunRPC]
+    public void MoneyReturn(double money)
+    {
+        _money = money;
+    }
+
     public double GetMoney()
     {
         return _money;
