@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _money: 10000000
+  _SeaBuyCount: 0
+  _ownedSeaTiles: []
 --- !u!114 &-1865150445158536963
 MonoBehaviour:
   m_ObjectHideFlags: 0

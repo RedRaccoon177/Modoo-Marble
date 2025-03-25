@@ -28,6 +28,7 @@ public class UIManagerP : MonoBehaviour
             instance = this;
         }
     }
+
     private void Start()
     {
         CreateClickUI();    // 타일 클릭시 나타나는 UI 생성
@@ -35,11 +36,11 @@ public class UIManagerP : MonoBehaviour
         CreateBuyUI();      // 구매할 때 나타나는 UI 
         OffBuyUIPanel();    // 구매할 때 나타나는 UI 비활성화
     }
+
     /// <summary>
     /// 패널 활성화 및 구매 UI 활성화 
     /// </summary>
     /// <param name="_tileType"></param>
-
     /// 구매 Ui비활성화
     public void OffBuyUIPanel()
     {
