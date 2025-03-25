@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,8 +12,9 @@ public class TileClick : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        UIManagerP.instance.OnClickUI(_tileController._tileType);
+        Debug.Log("클릭 활성화");
         UIManagerP.instance.InvokeClickUI(_tileController, _tileController._tileType);
+        UIManagerP.instance.OnClickUI(_tileController._tileType);
     }
 
 }

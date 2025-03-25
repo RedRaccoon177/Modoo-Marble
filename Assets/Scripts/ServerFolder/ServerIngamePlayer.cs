@@ -19,7 +19,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     int _mapTurn; // 맵을 몇 바퀴 돌앗는지
     PhotonView _view;
     List<TileController> _playerGroundLists; // 가지고 있는 토지 리스트
-    int _playerPosIndex =0;
+    int _playerPosIndex = 0;
 
     // 플레이어 move 2번 실행 방지하기 위해 코루틴 담아두는 변수 
     Coroutine _playerMoveCor;
@@ -42,12 +42,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
-       
+
     }
 
     private void Update()
     {
-        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
+            { // 마우스 왼쪽 버튼 클릭 시
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                {
+                    Debug.Log("Hit: " + hit.collider.gameObject.name); // 레이가 부딪힌 객체의 이름 출력
+                }
+                else
+                {
+                    Debug.Log("No hit"); // 레이가 아무것도 감지하지 못했을 경우
+                }
+            }
+        if (_playerNum == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
             if (photonView.IsMine && _isTurn == true)
             {
@@ -107,11 +121,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        
-        if (photonView.IsMine)
+        if (currentTile.GetOwner(0) == 0 || currentTile.GetOwner(0) == _playerNum)
         {
-            UIManagerP.instance.OnBuyUI(currentTile._tileType);
-            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+            if (photonView.IsMine)
+            {
+                UIManagerP.instance.OnBuyUI(currentTile._tileType);
+                UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+            }
+        }
+        else
+        {
+            double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
+            if (_money > currentTileTollPrice)
+            {
+                _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+                UIManagerP.instance.OnFactorUI();
+            }
+            else
+            {
+                Debug.Log("나 돈 없어");
+            }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
