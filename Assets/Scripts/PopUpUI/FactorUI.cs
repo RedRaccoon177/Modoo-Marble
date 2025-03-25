@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,18 +21,24 @@ public class FactorUI : MonoBehaviour
     {
         _factorBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorUI());
         _factorBtn.onClick.AddListener(Factor);
-        _factorBtn.onClick.AddListener(() => UIManagerP.instance.OnBuyUI(TileType.Ground));
+        _factorBtn.onClick.AddListener(StartBuyProcess);
         _cancelBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorUI());
     }
 
-    
+    private void StartBuyProcess()
+    {
+        UIManagerP.instance.OnBuyUI(TileType.Ground);
+        UIManagerP.instance.InvokeBuyUI(_currentTile, TileType.Ground);
+    }
+
+
     public void Factor()
     {
         for (int i=0; i< 4; i ++)
         {
             if (_currentTile.GetOwner(i) != 0)
             {
-                _currentTile.SetOwner(i, _player._playerNum);
+                _currentTile.photonView.RPC("SetOwner",RpcTarget.All, i,_player._playerNum);
             }
         }
     }

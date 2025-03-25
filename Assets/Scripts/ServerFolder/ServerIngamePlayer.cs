@@ -131,7 +131,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             }
         }
         // 주인 = 다른 사람
-        else
+        else if(currentTile.GetOwner(0) != _playerNum && photonView.IsMine)
         {
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
             if (_money > currentTileTollPrice)
@@ -139,8 +139,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                 if (currentTile._tileType == TileType.Ground)
                 {
-                    UIManagerP.instance.OnFactorUI(currentTile,this);
-                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                    if (photonView.IsMine)
+                    {
+                        UIManagerP.instance.OnFactorUI(currentTile, this);
+                    }
                 }
             }
             else
