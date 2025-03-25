@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 24Berlin
   m_EditorClassIdentifier: 
-  _subTileType: 24
+  _subTileType: 11
   subUnderTilePrefab: 0
   _tileKey: 24
-  _tileName: "\uBCA0\uB97C\uB9B0"
+  _tileName: "\uB77C\uADF8\uB098\uB85C\uD06C"
   _tilePos: {x: 7.8, y: 0, z: -13.41}
   _tileType: 0
   _tileLandOwner: 0

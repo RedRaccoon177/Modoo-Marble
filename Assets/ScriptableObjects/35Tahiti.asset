@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 35Tahiti
   m_EditorClassIdentifier: 
-  _subTileType: 35
+  _subTileType: 14
   subUnderTilePrefab: 0
   _tileKey: 35
-  _tileName: "\uD0C0\uD788\uD2F0"
+  _tileName: "\uBE14\uB7EC\uB4DC\uD5E4\uC774\uBE10"
   _tilePos: {x: -0.4, y: 0, z: -6.5}
-  _tileType: 1
+  _tileType: 0
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

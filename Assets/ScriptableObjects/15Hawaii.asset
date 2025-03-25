@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 15Hawaii
   m_EditorClassIdentifier: 
-  _subTileType: 15
+  _subTileType: 27
   subUnderTilePrefab: 0
   _tileKey: 15
-  _tileName: "\uD558\uC640\uC774"
+  _tileName: "\uC2E4\uD53C\uC544"
   _tilePos: {x: 13.4, y: 0, z: -6.5}
-  _tileType: 1
+  _tileType: 0
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0

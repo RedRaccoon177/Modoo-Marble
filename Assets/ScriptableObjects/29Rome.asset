@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 29Rome
   m_EditorClassIdentifier: 
-  _subTileType: 29
+  _subTileType: 1
   subUnderTilePrefab: 0
   _tileKey: 29
-  _tileName: "\uB85C\uB9C8"
+  _tileName: "\uD504\uB9AC\uC9C0\uC544"
   _tilePos: {x: 1.3, y: 0, z: -13.41}
   _tileType: 0
   _tileLandOwner: 0
