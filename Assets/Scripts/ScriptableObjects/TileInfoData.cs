@@ -91,6 +91,7 @@ public partial class TileInfoData : ScriptableObject
     [Header("타일 키값")] public int _tileKey;
     [Header("타일 이름")] public string _tileName;
     [Header("타일 위치")] public Vector3 _tilePos;
+    [Header("타일 크기")] public Vector3 _tileLocalScale;
     [Header("타일 타입")] public TileType _tileType;
 
     [Header("타일 땅 소유주")] public int _tileLandOwner;

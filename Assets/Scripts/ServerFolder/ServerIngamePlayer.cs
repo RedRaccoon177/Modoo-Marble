@@ -9,6 +9,16 @@ using System;
 
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 {
+    bool _isLoan; // 대출여부
+    int _playerNum;
+    int _playerNickName;
+
+    // 게임 안에서 사용되는 돈 , 데이터 베이스 에서 돈을 가져올거임(300만원)
+    public double _money = 10000000; // 임시 값
+
+    int _mapTurn; // 맵을 몇 바퀴 돌앗는지
+    PhotonView _view;
+    List<TileController> _playerGroundLists; // 가지고 있는 토지 리스트
     int _playerPosIndex =0;
 
     // 플레이어 move 2번 실행 방지하기 위해 코루틴 담아두는 변수 
@@ -27,18 +37,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _playerManager = GetComponent<PlayerManager>();
+        _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
+        _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
-
         _playerPosIndex = 0;
        
     }
 
     private void Update()
     {
-        Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
-        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
+        if (_playerNum == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
             if (photonView.IsMine)
             {
@@ -97,5 +106,45 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     public void StartPointPass()
     {
         _playerManager.IncreaseMoney(1000);
+    }
+
+    [PunRPC]
+    public void IncreaseMoney(double money)
+    {
+        _money += money;
+    }
+
+    [PunRPC]
+    public void DecreaseMoney(double money)
+    {
+        _money -= money;
+    }
+
+    public double GetMoney()
+    {
+        return _money;
+    }
+    public void PrintPlayerGroundLists()
+    {
+        foreach (var item in _playerGroundLists)
+        {
+            Debug.Log(item);
+        }
+    }
+    public double TotalLandCost()
+    {
+        double _totalPrice = 0;
+        foreach (var tile in _playerGroundLists)
+        {
+            _totalPrice += tile._tileLandPrice;
+            _totalPrice += tile._tilePensionPrice;
+            _totalPrice += tile._tileCondoPrice;
+            _totalPrice += tile._tileHotelPrice;
+        }
+        return _totalPrice;
+    }
+    public void AddPlayerGroundLists(TileController tileController)
+    {
+        _playerGroundLists.Add(tileController);
     }
 }

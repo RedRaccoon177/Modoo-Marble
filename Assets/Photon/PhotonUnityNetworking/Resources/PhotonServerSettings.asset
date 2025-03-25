@@ -53,6 +53,8 @@ MonoBehaviour:
   - RPC_TileDataPush
   - RPC_SetTileData
   - CreatMap
+  - DecreaseMoney
+  - IncreaseMoney
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

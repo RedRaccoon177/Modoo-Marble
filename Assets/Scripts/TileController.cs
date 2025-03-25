@@ -18,6 +18,7 @@ public partial class TileController : MonoBehaviourPun
     [Header("타일 키값")] public int _tileKey;
     [Header("타일 이름")] public string _tileName;
     [Header("타일 위치")] public Vector3 _tilePos;
+    [Header("타일 크기")] public Vector3 _tileLocalScale;
     [Header("타일 타입")] public TileType _tileType;
 
     [Header("타일 땅 소유주")] public int _tileLandOwner;
@@ -88,6 +89,7 @@ public partial class TileController : MonoBehaviourPun
         _tileName = data._tileName;
         _tilePos = data._tilePos;
         transform.position = _tilePos;
+        transform.localScale= data._tileLocalScale;
         _tileType = data._tileType;
         _subTileType = data._subTileType;
 
@@ -192,4 +194,5 @@ public partial class TileController : MonoBehaviourPun
                 break;
         }
     }
+
 }
