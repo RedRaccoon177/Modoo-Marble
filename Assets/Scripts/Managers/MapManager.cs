@@ -28,13 +28,72 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        _cityname = _tilePrefab.transform.GetChild(5).GetChild(0).gameObject;
-        _bonusStage = _tilePrefab.transform.GetChild(5).GetChild(1).gameObject;
-        CreatMap();
+         CreatMap();
     }
-    public void ChangeTilePos(int num, GameObject gameObject, TileController tileScript)
+
+    public void ChangeTilePos(int num, GameObject gameObject)
     {
-        gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f);;
+        _cityname = gameObject.transform.GetChild(5).GetChild(0).gameObject;
+        _bonusStage = gameObject.transform.GetChild(5).GetChild(1).gameObject;
+
+        switch(gameObject.GetComponent<TileController>()._tileType)
+        {
+            case TileType.Start:
+                _bonusStage.SetActive(true);
+                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _cityname.SetActive(false);
+                break;
+
+            case TileType.Sea:
+                _cityname.SetActive(true);
+                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _bonusStage.SetActive(false);
+                break;
+
+            case TileType.Ground:
+                _cityname.SetActive(true);
+                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _bonusStage.SetActive(false);
+                break;
+        
+            case TileType.Item:
+                _cityname.SetActive(true);
+                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _bonusStage.SetActive(false);
+                break;
+        
+            case TileType.Island:
+                _bonusStage.SetActive(true);
+                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _cityname.SetActive(false);
+                break;
+        
+            case TileType.Olympics:
+                _bonusStage.SetActive(true);
+                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _cityname.SetActive(false);
+                break;
+        
+            case TileType.Travel:
+                _bonusStage.SetActive(true);
+                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _cityname.SetActive(false);
+                break;
+        
+            case TileType.revenue:
+                _cityname.SetActive(true);
+                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _bonusStage.SetActive(false);
+                break;
+        
+            case TileType.casino:
+                _cityname.SetActive(true);
+                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
+                _bonusStage.SetActive(false);
+                break;
+        }
+
+        gameObject.transform.localScale = new Vector3(1.2f, 0.18f, 1.8f); ;
         if (10 < num && num < 20)
         {
             gameObject.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
@@ -52,58 +111,6 @@ public class MapManager : MonoBehaviour
             gameObject.transform.localScale = new Vector3(1.8f, 0.18f, 1.8f);
             gameObject.transform.GetChild(4).gameObject.SetActive(false);
         }
-
-        switch(tileScript._tileType)
-        {
-            case TileType.Start:
-                _cityname.SetActive(false);
-                _bonusStage.SetActive(true);
-                _bonusStage.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-
-            case TileType.Ground:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                //Debug.Log(tileScript._tileName);
-                break;
-
-            case TileType.Item:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-
-            case TileType.Island:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-
-            case TileType.Olympics:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-
-            case TileType.Travel:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-
-            case TileType.revenue:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-
-            case TileType.casino:
-                _cityname.SetActive(true);
-                _bonusStage.SetActive(false);
-                _cityname.GetComponent<TextMeshProUGUI>().text = tileScript._tileName;
-                break;
-        }
     }
 
     /// <summary>
@@ -120,7 +127,7 @@ public class MapManager : MonoBehaviour
             TileController tileScript = _temp.GetComponent<TileController>();
             tileScript.SetTileData(_tiledates[i]); // 데이터 적용
             _temp.transform.position = _tiledates[i]._tilePos;
-            ChangeTilePos(i, _temp, tileScript);
+            ChangeTilePos(i, _temp);
 
             if (tileScript != null)
             {
