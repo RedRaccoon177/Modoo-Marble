@@ -23,7 +23,6 @@ public class MapManager : MonoBehaviourPun
     GameObject _cityname;
     GameObject _bonusStage;
 
-
     Quaternion _rotation = Quaternion.identity;
     Vector3 _localScale = Vector3.zero;
     void Start()
@@ -56,6 +55,8 @@ public class MapManager : MonoBehaviourPun
                 _rotation = Quaternion.Euler(0f, -90f, 0f);
             }
             GameObject _temp = PhotonNetwork.Instantiate("Tile", _tiledates[i]._tilePos, _rotation);
+
+
             TileController tileScript = _temp.GetComponent<TileController>();
             if (tileScript != null)
             {
@@ -64,6 +65,7 @@ public class MapManager : MonoBehaviourPun
 
             TileNameSetting(i, _temp);
             TileSetting(tileScript, _temp);
+
             _tiles[i] = _temp;
         }
     }
@@ -130,7 +132,7 @@ public class MapManager : MonoBehaviourPun
                 break;
         }
     }
- 
+
     void TileSetting(TileController tile, GameObject tiles)
     {
         switch ((int)tile._subTileType)
