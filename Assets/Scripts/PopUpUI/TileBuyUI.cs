@@ -55,6 +55,8 @@ public class TileBuyUI : MonoBehaviour
     [Header("플레이어들의 고유 번호 지정")]
     int _playerKey;                             // 나의 고유 ActorNumber
     int[] _enemyKeys;                           // 상대방들 ActorNumber
+
+    PlayerMoveTest _playerMoveTest;
     #endregion
 
     void Awake()
@@ -66,18 +68,12 @@ public class TileBuyUI : MonoBehaviour
         SetPlayerAndEnemies();
     }
 
+
     /// <summary>
     /// 나와 적 구분해서 고유번호 저장
     /// </summary>
     void SetPlayerAndEnemies()
     {
-        //// 룸 인원 수 체크
-        //if (PhotonNetwork.PlayerList.Length < 2 || PhotonNetwork.PlayerList.Length > 4)
-        //{
-        //    Debug.LogWarning("플레이어 수가 유효하지 않습니다! (2~4명만 지원)");
-        //    return;
-        //}
-
         // 현재 로컬 플레이어의 고유 ActorNumber를 저장
         _playerKey = PhotonNetwork.LocalPlayer.ActorNumber;
 
@@ -86,7 +82,6 @@ public class TileBuyUI : MonoBehaviour
             .Where(p => p.ActorNumber != _playerKey)      // 나(로컬 플레이어)가 아닌 플레이어만 필터링하고
             .Select(p => p.ActorNumber)                   // 각 플레이어의 고유 ActorNumber만 추출해서
             .ToArray();                                   // 배열로 만들어 적 목록(_enemyKeys)에 저장
-
     }
 
     /// <summary>
@@ -167,17 +162,17 @@ public class TileBuyUI : MonoBehaviour
             _tileOwners[i] = data.GetOwner(i);
         }
 
-        PlayerManager pm = FindObjectOfType<PlayerManager>();
-        if (pm == null) return;
+        ServerIngamePlayer _playerData = FindObjectOfType<ServerIngamePlayer>();
+        if (_playerData == null) return;
 
         ResetButtonStates();
-        _currentMoney = _cancelRememberMoney = pm.GetMoney();
+        _currentMoney = _cancelRememberMoney = _playerData.GetMoney();
 
         int landOwner = _tileOwners[0];
 
         if (landOwner == 0) HandleBankOwnership();
         else if (landOwner == _playerKey) HandlePlayerOwnership();
-        else HandleEnemyOwnership(pm);
+        else HandleEnemyOwnership(_playerData);
     }
 
     /// <summary>
@@ -202,10 +197,8 @@ public class TileBuyUI : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            if (_currentMoney >= _currentTile.GetPrice(i))
-                _buildingButtons[i].onClick.Invoke();
-            else
-                _buildingButtons[i].interactable = false;
+            if (_currentMoney >= _currentTile.GetPrice(i)) _buildingButtons[i].onClick.Invoke();
+            else _buildingButtons[i].interactable = false;
         }
 
         _FHandleBankOwnership = true;
@@ -249,9 +242,23 @@ public class TileBuyUI : MonoBehaviour
                 ? (_buildingChecks[i] ? _playerKey : 0)
                 : owner; // 기존 소유자 유지
 
-            //_currentTile.SetOwner(i, newOwner);
             _currentTile.photonView.RPC("SetOwner", RpcTarget.All, i, newOwner);
         }
+
+        ServerIngamePlayer[] playerDatas = FindObjectsOfType<ServerIngamePlayer>();
+        foreach (var _playerData in playerDatas)
+        {
+            if (_playerData.photonView.OwnerActorNr == _playerKey)
+            {
+                _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
+                break;
+            }
+        }
+
+        _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
+        _playerMoveTest.endTurn();
+
+        UIManagerP.instance.OffBuyUIPanel();
     }
 
     /// <summary>
@@ -261,6 +268,9 @@ public class TileBuyUI : MonoBehaviour
     {
         _currentMoney = _cancelRememberMoney;
         UIManagerP.instance.OffBuyUIPanel();
+
+        _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
+        _playerMoveTest.endTurn();
     }
 
     #region 추후 기능
@@ -280,7 +290,7 @@ public class TileBuyUI : MonoBehaviour
     /// <summary>
     /// 적이 소유한 땅일 경우: 건물 비활성화, 금액만 갱신
     /// </summary>
-    void HandleEnemyOwnership(PlayerManager pm)
+    void HandleEnemyOwnership(ServerIngamePlayer pm)
     {
         _currentMoney = pm.GetMoney();
     }
