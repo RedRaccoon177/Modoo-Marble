@@ -31,6 +31,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     PlayerManager _playerManager;
 
+    public int OwnerActorNumber => photonView.OwnerActorNr;
 
     private void Start()
     {
@@ -41,7 +42,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
-       
+
     }
 
     private void Update()
@@ -83,7 +84,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             // 시작 지점(0번 타일)에 도착하면 보너스 처리
             else if (_playerPosIndex + count == 0)
             {
-                StartPointPass();
+                //StartPointPass();
             }
             count++;
             transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
@@ -122,10 +123,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _money -= money;
     }
 
+    [PunRPC]
+    public void MoneyReturn(double money)
+    {
+        _money = money;
+    }
+
     public double GetMoney()
     {
         return _money;
     }
+
     public void PrintPlayerGroundLists()
     {
         foreach (var item in _playerGroundLists)

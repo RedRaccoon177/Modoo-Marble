@@ -9,8 +9,6 @@ using Photon.Realtime;
 using TMPro;
 using System.Security.Cryptography;
 
-
-
 //마스터 턴이있고
 //턴이 지나면 마스터가 턴을 +1함
 //내턴일때만 사용가능
@@ -38,9 +36,6 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
         }
     }
 
-
-
-
     public TextMeshProUGUI playerTurnText;
     public TextMeshProUGUI currentTurnText;
 
@@ -64,11 +59,7 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
         }
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
-      
-
     }
-
-    
 
     private void Update()
     {
@@ -76,15 +67,11 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
         currentTurnText.text = currentTurn.ToString();
     }
 
-
-   
-
     public void endTurn()
     {
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {
-
             try
             {
                 if (photonView == null)
@@ -95,9 +82,9 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
                 photonView.RPC("NextTurn", RpcTarget.All);
 
             }
-            catch (System.Exception DD)
+            catch (System.Exception error)
             {
-                Debug.Log(DD);
+                Debug.Log(error);
             }
         }
     }
@@ -107,10 +94,4 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
     {
         CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1);
     }
-   
-
-     
-
-
-
 }
