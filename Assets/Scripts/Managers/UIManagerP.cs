@@ -96,7 +96,7 @@ public class UIManagerP : MonoBehaviour
     /// </summary>
     /// <param name="_currentTile"></param>
     /// <param name="_tileType"></param>
-    public void InvokeBuyUI(TileController _currentTile,TileType _tileType)
+    public void InvokeBuyUI(TileController _currentTile, TileType _tileType)
     {
         if (_tileType == TileType.Ground)
         {

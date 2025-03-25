@@ -19,7 +19,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     TurnBasedManager _turnBasedManager;
 
-    //플레이어 정보
     PlayerManager _playerManager;
 
 
@@ -43,8 +42,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             if (photonView.IsMine)
             {
                 Debug.Log("여기들어옴");
-                var ddd = _turnBasedManager.Dice();
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
+                var moveDice = _turnBasedManager.Dice();
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, moveDice);
             }
         }
     }
@@ -88,9 +87,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        UIManagerP.instance.OnBuyUI(currentTile._tileType);
-        UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
-
+        
+        if (photonView.IsMine)
+        {
+            UIManagerP.instance.OnBuyUI(currentTile._tileType);
+            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+        }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
