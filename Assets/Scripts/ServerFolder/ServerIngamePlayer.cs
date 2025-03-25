@@ -14,7 +14,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     int _playerNickName;
 
     // 게임 안에서 사용되는 돈 , 데이터 베이스 에서 돈을 가져올거임(300만원)
-    public double _money = 10000000; // 임시 값
+    public double _money; // 임시 값
 
     int _mapTurn; // 맵을 몇 바퀴 돌앗는지
     PhotonView _view;
@@ -37,6 +37,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _money = 10000000;
         _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
@@ -47,25 +48,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-            if (Input.GetMouseButtonDown(0))
-            { // 마우스 왼쪽 버튼 클릭 시
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                {
-                    Debug.Log("Hit: " + hit.collider.gameObject.name); // 레이가 부딪힌 객체의 이름 출력
-                }
-                else
-                {
-                    Debug.Log("No hit"); // 레이가 아무것도 감지하지 못했을 경우
-                }
-            }
         if (_playerNum == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
             if (photonView.IsMine && _isTurn == true)
             {
-                _isTurn = false;
+               // _isTurn = false;
                 Debug.Log("여기들어옴");
                 var ddd = _turnBasedManager.Dice();
                 photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
@@ -121,7 +108,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
         // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        if (currentTile.GetOwner(0) == 0 || currentTile.GetOwner(0) == _playerNum)
+
+        // 주인 없을때
+        if (currentTile.GetOwner(0) == 0)
         {
             if (photonView.IsMine)
             {
@@ -129,17 +118,34 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
         }
+        // 주인 = 나, 타일 타입 = 그라운드
+        else if (currentTile.GetOwner(0) == _playerNum)
+        {
+            if (currentTile._tileType == TileType.Ground)
+            {
+                if (photonView.IsMine)
+                {
+                    UIManagerP.instance.OnBuyUI(currentTile._tileType);
+                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                }
+            }
+        }
+        // 주인 = 다른 사람
         else
         {
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
             if (_money > currentTileTollPrice)
             {
                 _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
-                UIManagerP.instance.OnFactorUI();
+                if (currentTile._tileType == TileType.Ground)
+                {
+                    UIManagerP.instance.OnFactorUI(currentTile);
+                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                }
             }
             else
             {
-                Debug.Log("나 돈 없어");
+                Debug.Log("파산");
             }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화

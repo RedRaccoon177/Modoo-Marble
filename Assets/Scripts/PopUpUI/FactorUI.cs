@@ -9,9 +9,11 @@ public class FactorUI : MonoBehaviour
     public Button _factorBtn;
     [Header("취소 버튼")]
     public Button _cancelBtn;
+
     private void Awake()
     {
         _factorBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorUI());
+        _factorBtn.onClick.AddListener(() => UIManagerP.instance.OnBuyUI(TileType.Ground));
         _cancelBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorUI());
     }
 }

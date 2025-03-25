@@ -46,7 +46,7 @@ public class UIManagerP : MonoBehaviour
     /// <param name="_tileType"></param>
 
 
-    public void OnFactorUI()
+    public void OnFactorUI(TileController currentTile)
     {
         //_factorUI.transform.position = _target;
         _factorUI.SetActive(true);
