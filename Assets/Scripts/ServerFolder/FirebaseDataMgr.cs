@@ -32,12 +32,7 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
             Destroy(gameObject);
         }
     }
-    private void Update()
-    {
-       Debug.Log(FirebaseLoginMgr.user.DisplayName + "ÀÇ µ· : " + userMoney);
-    }
-
-
+   
 
 
     private void Start()

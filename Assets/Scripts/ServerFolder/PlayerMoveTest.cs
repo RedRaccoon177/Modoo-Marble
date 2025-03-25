@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine.UI;
 using Photon.Realtime;
 using TMPro;
+using System.Security.Cryptography;
 
 
 
@@ -16,7 +17,7 @@ using TMPro;
 public class PlayerMoveTest : MonoBehaviourPunCallbacks
 { 
     static public int currentTurn = 1;
-    public GameObject playerfabs;
+    public GameObject[] playerfabs;
 
     static public int CurrentTurn
     {
@@ -45,13 +46,29 @@ public class PlayerMoveTest : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        PhotonNetwork.Instantiate(playerfabs.name, Vector3.zero, Quaternion.identity);
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        {
+            PhotonNetwork.Instantiate(playerfabs[0].name, Vector3.zero, Quaternion.identity);
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        {
+            PhotonNetwork.Instantiate(playerfabs[1].name, Vector3.zero, Quaternion.identity);
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
+        {
+            PhotonNetwork.Instantiate(playerfabs[2].name, Vector3.zero, Quaternion.identity);
+        }
+        else if (PhotonNetwork.LocalPlayer.ActorNumber == 4)
+        {
+            PhotonNetwork.Instantiate(playerfabs[3].name, Vector3.zero, Quaternion.identity);
+        }
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
       
 
     }
 
+    
 
     private void Update()
     {

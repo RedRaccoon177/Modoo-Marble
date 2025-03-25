@@ -47,12 +47,7 @@ MonoBehaviour:
   - FplayerMove
   - RpcMovePlayer
   - asd
-  - RPC_ChangeTileData
-  - SetOwner
-  - CreateMap
-  - RPC_TileDataPush
-  - RPC_SetTileData
-  - CreatMap
+  - dsds
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
