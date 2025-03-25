@@ -30,6 +30,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     TurnBasedManager _turnBasedManager;
 
     PlayerManager _playerManager;
+    bool _isTurn = true;
 
 
     private void Start()
@@ -46,14 +47,24 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (_playerNum == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
+        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
-            if (photonView.IsMine)
+            if (photonView.IsMine && _isTurn == true)
             {
+                _isTurn = false;
                 Debug.Log("여기들어옴");
-                var moveDice = _turnBasedManager.Dice();
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, moveDice);
+                var ddd = _turnBasedManager.Dice();
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
             }
+        }
+        //주사위 중복 방지
+        if (PhotonNetwork.LocalPlayer.ActorNumber != PlayerMoveTest.CurrentTurn)
+        {
+            _isTurn = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
+        {
+            PrintPlayerGroundLists();
         }
     }
 
