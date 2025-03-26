@@ -6,112 +6,185 @@ using Photon;
 using UnityEngine.UI;
 using Photon.Realtime;
 using System;
+using System.Linq;
 
+/// <summary>
+/// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
+/// </summary>
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 {
     bool _isLoan; // 대출여부
-    int _playerNum;
+    public int _playerNum;
     int _playerNickName;
 
-    // 게임 안에서 사용되는 돈 , 데이터 베이스 에서 돈을 가져올거임(300만원)
-    public double _money = 10000000; // 임시 값
+    // 게임 내 자금 (초기값은 테스트용)
+    public double _money = 10000000;
 
-    int _mapTurn; // 맵을 몇 바퀴 돌앗는지
+    int _mapTurn; // 맵 회전 수
     PhotonView _view;
-    List<TileController> _playerGroundLists; // 가지고 있는 토지 리스트
-    int _playerPosIndex =0;
+    List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅 소유 리스트
+    int _playerPosIndex = 0; // 현재 타일 인덱스
 
-    // 플레이어 move 2번 실행 방지하기 위해 코루틴 담아두는 변수 
-    Coroutine _playerMoveCor;
+    Coroutine _playerMoveCor; // 플레이어 이동 코루틴
 
-    // 맵 정보 가져오기(배열로 관리)
     MapManager _mapInfo;
-
     TurnBasedManager _turnBasedManager;
-
     PlayerManager _playerManager;
-    bool _isTurn = true;
 
+    bool _isTurn = true; // 현재 턴인지 여부
+
+    public int _SeaBuyCount = 0; // 관광지 보유 수
+
+    public List<TileController> _ownedSeaTiles = new List<TileController>(); // 보유 중인 Sea 타입 타일들
 
     private void Start()
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _money = 10000000;
         _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
-       
     }
 
     private void Update()
     {
+        // 자신의 턴이고 스페이스바를 누르면 이동 시작
         if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
         {
-            if (photonView.IsMine && _isTurn == true)
+            if (photonView.IsMine && _isTurn)
             {
-                _isTurn = false;
-                Debug.Log("여기들어옴");
+                //_isTurn = false;
                 var ddd = _turnBasedManager.Dice();
                 photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
             }
         }
-        //주사위 중복 방지
+
+        // 턴이 넘어갔으면 다시 가능하도록 설정
         if (PhotonNetwork.LocalPlayer.ActorNumber != PlayerMoveTest.CurrentTurn)
         {
             _isTurn = true;
         }
+
+        // 디버그용: Q 키로 소유한 땅 목록 출력
         if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
         {
             PrintPlayerGroundLists();
         }
     }
 
+    /// <summary>
+    /// 플레이어가 소유한 Sea 타일을 추가한다
+    /// </summary>
+    public void AddSeaTile(TileController tile)
+    {
+        if (tile._tileType == TileType.Sea && !_ownedSeaTiles.Contains(tile))
+        {
+            _ownedSeaTiles.Add(tile);
+        }
+    }
+
+    /// <summary>
+    /// 현재 소유 중인 Sea 타입 타일을 다시 찾아와 리스트를 갱신한다
+    /// </summary>
+    public void RefreshOwnedSeaTiles()
+    {
+        int myActorNumber = photonView.OwnerActorNr;
+
+        _ownedSeaTiles = FindObjectsOfType<TileController>()
+            .Where(t => t._tileType == TileType.Sea && t._tileLandOwner == myActorNumber)
+            .ToList();
+    }
+
+    /// <summary>
+    /// 현재 보유 중인 관광지 수를 반환한다
+    /// </summary>
+    public int GetOwnedSeaTileCount()
+    {
+        return _ownedSeaTiles.Count;
+    }
+
     [PunRPC]
     public void RpcMovePlayer(int num)
     {
         StartCoroutine(MovePlayer(num));
-        Debug.Log("RpcMovePlayer 들어옴 + " + num);
     }
 
     /// <summary>
-    /// 플레이어 이동 : num 숫자가 될때까지 한칸씩 이동함
+    /// 주사위 값(num)만큼 플레이어를 한 칸씩 이동시킨다
     /// </summary>
-    /// <param name="num"> num 숫자가 될때까지 한칸씩 이동함</param>
-    /// <returns></returns>
     IEnumerator MovePlayer(int num)
     {
-        int count = 0;  // 실제 이동한 횟수
+        int count = 0;
 
-        while (count < num) // 주사위 값(num)만큼 반복
+        while (count < num)
         {
-            // 만약 맵의 끝(39번 타일)을 넘으면 0번으로 돌아감
             if ((_playerPosIndex + count) >= 39)
             {
                 _playerPosIndex -= 40;
             }
-            // 시작 지점(0번 타일)에 도착하면 보너스 처리
+
+            // 도착 지점 처리 (필요 시 추가)
             else if (_playerPosIndex + count == 0)
             {
-                //StartPointPass();
+                // StartPointPass();
             }
+
             count++;
             transform.position = _mapInfo._tiles[_playerPosIndex + count].transform.position;
 
-            yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다음 이동
+            yield return new WaitForSeconds(0.1f);
         }
 
-        // 최종적으로 위치 업데이트
         _playerPosIndex += count;
 
-        // 변경된 타일 정보를 이벤트를 통해 옵저버들에게 알림
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        
-        if (photonView.IsMine)
+
+        // 주인 없을때
+        if (currentTile.GetOwner(0) == 0)
         {
-            UIManagerP.instance.OnBuyUI(currentTile._tileType);
-            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+            Debug.Log("1.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("1.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
+            if (photonView.IsMine)
+            {
+                UIManagerP.instance.OnBuyUI(currentTile._tileType);
+                UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+            }
+        }
+        // 주인 = 나, 타일 타입 = 그라운드
+        else if (currentTile.GetOwner(0) == _playerNum)
+        {
+            Debug.Log("2.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("2.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
+            if (currentTile._tileType == TileType.Ground)
+            {
+                if (photonView.IsMine)
+                {
+                    UIManagerP.instance.OnBuyUI(currentTile._tileType);
+                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                }
+            }
+        }
+        // 주인 = 다른 사람
+        else if(currentTile.GetOwner(0) != _playerNum && photonView.IsMine)
+        {
+            Debug.Log("3.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("3.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
+            double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
+            if (_money > currentTileTollPrice)
+            {
+                _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+                if (currentTile._tileType == TileType.Ground)
+                {
+                    UIManagerP.instance.OnFactorUI(currentTile, this);
+                }
+            }
+            else
+            {
+                Debug.Log("파산");
+            }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
@@ -139,10 +212,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _money = money;
     }
 
+    /// <summary>
+    /// 현재 플레이어의 자금 반환
+    /// </summary>
     public double GetMoney()
     {
         return _money;
     }
+
+    /// <summary>
+    /// 소유한 일반 땅을 모두 출력 (디버깅용)
+    /// </summary>
     public void PrintPlayerGroundLists()
     {
         foreach (var item in _playerGroundLists)
@@ -150,9 +230,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             Debug.Log(item);
         }
     }
+
+    /// <summary>
+    /// 소유한 모든 땅의 총 가격 반환
+    /// </summary>
     public double TotalLandCost()
     {
         double _totalPrice = 0;
+
         foreach (var tile in _playerGroundLists)
         {
             _totalPrice += tile._tileLandPrice;
@@ -160,8 +245,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             _totalPrice += tile._tileCondoPrice;
             _totalPrice += tile._tileHotelPrice;
         }
+
         return _totalPrice;
     }
+
+    /// <summary>
+    /// 일반 타일을 구매했을 때 리스트에 추가
+    /// </summary>
     public void AddPlayerGroundLists(TileController tileController)
     {
         _playerGroundLists.Add(tileController);

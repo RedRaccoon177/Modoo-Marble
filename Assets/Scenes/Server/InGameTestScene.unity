@@ -1130,7 +1130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16
   m_MaxRayIntersections: 0
 --- !u!114 &963194230
 MonoBehaviour:
@@ -1367,6 +1367,7 @@ MonoBehaviour:
   - {fileID: 4188171647600667817, guid: c142aa39862cc174a8b516598dc943e9, type: 3}
   - {fileID: 1081851401116152791, guid: d136d49cdf712a044a43dcb8ae77fcf2, type: 3}
   - {fileID: 2981705093667156229, guid: 4d20f7b1a41c58b4c817c7d0fc81a8ed, type: 3}
+  _factorUI: {fileID: 7262760941442970405, guid: a7725bedf5d351d4aa0cd5cc9cf87edd, type: 3}
   _tileUIParent: {fileID: 131538669}
   canvus: {fileID: 2004488151}
 --- !u!1 &1229561320
@@ -2053,7 +2054,7 @@ GameObject:
   - component: {fileID: 2004488151}
   - component: {fileID: 2004488150}
   - component: {fileID: 2004488149}
-  - component: {fileID: 2004488148}
+  - component: {fileID: 2004488152}
   m_Layer: 5
   m_Name: PlayerCanvas
   m_TagString: Untagged
@@ -2061,23 +2062,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2004488148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2004488147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &2004488149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2149,6 +2133,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2004488152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004488147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
