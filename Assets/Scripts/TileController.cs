@@ -44,6 +44,7 @@ public partial class TileController : MonoBehaviourPun
     [Header("타일 2번 건물 통행료")] public double _tileCondoToll;
     [Header("타일 3번 건물 통행료")] public double _tileHotelToll;
     [Header("랜드마크 통행료")] public double _tileLandMarkToll;
+    [Header("총 통행료")] public double _totalTollPrice;
 
     GameObject _ground;
     GameObject _Sea;
@@ -395,19 +396,21 @@ public partial class TileController : MonoBehaviourPun
 
     public double TotalTollPrice(TileController _tileController)
     {
-        if (_tileLandOwner == 0)
-        {
-            return 0;
-        }
-        else
-        {
-            double _tempNum = 0;
-            _tempNum += _tileLandToll;
-            _tempNum += _tilePensionToll;
-            _tempNum += _tileCondoToll;
-            _tempNum += _tileHotelToll;
-            return _tempNum;
-        }
+        _totalTollPrice = 0;
+        if (_tileLandOwner != 0){ _totalTollPrice += _tileLandToll; }
+        if (_tilePensionOwner != 0) { _totalTollPrice += _tilePensionToll; }
+        if (_tileCondoOwner != 0) { _totalTollPrice += _tileCondoToll; }
+        if (_tileHotelOwner != 0) { _totalTollPrice += _tileHotelToll; }
+        return _totalTollPrice;
+    }
+    public double TotalBuyPrice(TileController _tileController)
+    {
+        _totalTollPrice = 0;
+        if (_tileLandOwner != 0) { _totalTollPrice += _tileLandPrice; }
+        if (_tilePensionOwner != 0) { _totalTollPrice += _tilePensionPrice; }
+        if (_tileCondoOwner != 0) { _totalTollPrice += _tileCondoPrice; }
+        if (_tileHotelOwner != 0) { _totalTollPrice += _tileHotelPrice; }
+        return _totalTollPrice;
     }
 
 }

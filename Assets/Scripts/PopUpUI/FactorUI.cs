@@ -12,7 +12,8 @@ public class FactorUI : MonoBehaviour
     [Header("취소 버튼")]
     public Button _cancelBtn;
     public TileController _currentTile;
-    public ServerIngamePlayer _player;
+    public ServerIngamePlayer _currentPlayer;
+    public ServerIngamePlayer _targetPlayer;
 
 
 
@@ -38,7 +39,12 @@ public class FactorUI : MonoBehaviour
         {
             if (_currentTile.GetOwner(i) != 0)
             {
-                _currentTile.photonView.RPC("SetOwner",RpcTarget.All, i,_player._playerNum);
+                // 주인에게 건설비용 돌려주기
+                _targetPlayer.photonView.RPC("IncreaseMoney", RpcTarget.All, _currentTile.TotalBuyPrice(_currentTile));
+                // 새로운 주인에게 비용 부과
+                _currentPlayer.photonView.RPC("DecreaseMoney", RpcTarget.All, _currentTile.TotalBuyPrice(_currentTile));
+                // 새로운 주인으로 명의 변경
+                _currentTile.photonView.RPC("SetOwner",RpcTarget.All, i, _currentPlayer._playerNum);
             }
         }
     }

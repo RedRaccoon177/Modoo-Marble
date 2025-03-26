@@ -12,7 +12,7 @@ using System.ComponentModel;
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
 /// </summary>
-public class ServerIngamePlayer : MonoBehaviourPunCallbacks
+public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagicCallback
 {
     bool _isLoan; // 대출여부
     public int _playerNum;
@@ -24,9 +24,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     // 게임 내 자금 (초기값은 테스트용)
     public double _money = 10000000;
+    public static Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>();
 
     int _mapTurn; // 맵 회전 수
-    PhotonView _view;
+    public PhotonView _view;
     List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅 소유 리스트
     int _playerPosIndex = 0; // 현재 타일 인덱스
 
@@ -49,7 +50,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _money = 10000000;
-        _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
+        _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
@@ -200,8 +201,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 없을때
         if (currentTile.GetOwner(0) == 0)
         {
-            Debug.Log("1.현재 플레이어 번호 : " + _playerNum);
-            Debug.Log("1.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (photonView.IsMine)
             {
                 //쿨타임
@@ -213,8 +212,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 = 나, 타일 타입 = 그라운드
         else if (currentTile.GetOwner(0) == _playerNum)
         {
-            Debug.Log("2.현재 플레이어 번호 : " + _playerNum);
-            Debug.Log("2.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (currentTile._tileType == TileType.Ground)
             {
                 if (photonView.IsMine)
@@ -227,27 +224,34 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             }
         }
         // 주인 = 다른 사람
-        else if(currentTile.GetOwner(0) != _playerNum && photonView.IsMine)
+        else if(currentTile.GetOwner(0) != _playerNum)
         {
-            Debug.Log("3.현재 플레이어 번호 : " + _playerNum);
-            Debug.Log("3.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
-            if (_money > currentTileTollPrice)
+            if (_view.IsMine == true)
             {
-                _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
-                if (currentTile._tileType == TileType.Ground)
+                if (_money > currentTileTollPrice)
                 {
-                    //쿨타임
-                    StartCoroutine(cooltimedelay(5f));
-                    UIManagerP.instance.OnFactorUI(currentTile, this);
+                    Debug.Log("빠져 나간 돈 : " + currentTileTollPrice);
+                    _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    if (currentTile._tileType == TileType.Ground)
+                    {
+                        StartCoroutine(cooltimedelay(5f));
+                        UIManagerP.instance.OnFactorUI(currentTile, this, FindPlayer(currentTile.GetOwner(0)));
+                    }
                 }
-            }
-            else
-            {
-                Debug.Log("파산");
+                else
+                {
+                    Debug.Log("파산");
+                }
             }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
+    }
+
+    public ServerIngamePlayer FindPlayer(int _actorNum)
+    {
+        return _players[_actorNum];
     }
 
     public void StartPointPass()
@@ -316,5 +320,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     public void AddPlayerGroundLists(TileController tileController)
     {
         _playerGroundLists.Add(tileController);
+    }
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] data = info.photonView.InstantiationData;
+        if (data != null && data.Length > 0)
+        {
+            _playerNum = (int)data[0];
+            Debug.Log(_playerNum + "생성");
+        }
     }
 }
