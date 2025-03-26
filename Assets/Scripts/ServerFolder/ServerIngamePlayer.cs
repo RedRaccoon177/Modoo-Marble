@@ -13,8 +13,9 @@ using System.Linq;
 /// </summary>
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 {
-    bool _isLoan; // 대출 여부
-    int _playerNickName; // 플레이어 닉네임 (사용 안 함)
+    bool _isLoan; // 대출여부
+    public int _playerNum;
+    int _playerNickName;
 
     // 게임 내 자금 (초기값은 테스트용)
     public double _money = 10000000;
@@ -38,6 +39,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
+        //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _money = 10000000;
+        _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
@@ -137,20 +142,51 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
 
-        //TODO: 상대방 토지 일 경우 금액 차감 후 진행
-
-        //TODO: 이미 구매 토지 일 경우 아예 출력방식들이 다 달라야함.
-        //일반 토지는 금액만 차감 후 인수가능 한지 확인 해야 하고
-        //관광지는 그냥 금액만 차감해야 함.
-        //그리고 특수 토지 인경우는 금액 차감말고 다른 거 진행해야 함.
-
-        if (photonView.IsMine)
+        // 주인 없을때
+        if (currentTile.GetOwner(0) == 0)
         {
-            UIManagerP.instance.OnBuyUI(currentTile._tileType);
-            UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+            Debug.Log("1.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("1.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
+            if (photonView.IsMine)
+            {
+                UIManagerP.instance.OnBuyUI(currentTile._tileType);
+                UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+            }
         }
-
-        _playerMoveCor = null;
+        // 주인 = 나, 타일 타입 = 그라운드
+        else if (currentTile.GetOwner(0) == _playerNum)
+        {
+            Debug.Log("2.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("2.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
+            if (currentTile._tileType == TileType.Ground)
+            {
+                if (photonView.IsMine)
+                {
+                    UIManagerP.instance.OnBuyUI(currentTile._tileType);
+                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                }
+            }
+        }
+        // 주인 = 다른 사람
+        else if(currentTile.GetOwner(0) != _playerNum && photonView.IsMine)
+        {
+            Debug.Log("3.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("3.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
+            double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
+            if (_money > currentTileTollPrice)
+            {
+                _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+                if (currentTile._tileType == TileType.Ground)
+                {
+                    UIManagerP.instance.OnFactorUI(currentTile, this);
+                }
+            }
+            else
+            {
+                Debug.Log("파산");
+            }
+        }
+        _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
     }
 
     public void StartPointPass()

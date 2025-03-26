@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -50,6 +51,7 @@ public partial class TileController : MonoBehaviourPun
     GameObject _cityname;
     GameObject _bonusStage;
 
+    
     void Start()
     {
         StartCoroutine(SetupTileIfNotMaster());
@@ -386,6 +388,25 @@ public partial class TileController : MonoBehaviourPun
             default:
                 Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
                 break;
+        }
+    }
+
+   
+
+    public double TotalTollPrice(TileController _tileController)
+    {
+        if (_tileLandOwner == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            double _tempNum = 0;
+            _tempNum += _tileLandToll;
+            _tempNum += _tilePensionToll;
+            _tempNum += _tileCondoToll;
+            _tempNum += _tileHotelToll;
+            return _tempNum;
         }
     }
 
