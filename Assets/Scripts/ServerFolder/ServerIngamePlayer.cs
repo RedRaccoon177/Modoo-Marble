@@ -62,10 +62,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         {
             _isTurn = true;
         }
-        if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
-        {
-            PrintPlayerGroundLists();
-        }
+        //if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
+        //{
+        //    PrintPlayerGroundLists();
+        //}
     }
 
     [PunRPC]
@@ -143,13 +143,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     {
         return _money;
     }
-    public void PrintPlayerGroundLists()
-    {
-        foreach (var item in _playerGroundLists)
-        {
-            Debug.Log(item);
-        }
-    }
+    //public void PrintPlayerGroundLists()
+    //{
+    //    foreach (var item in _playerGroundLists)
+    //    {
+    //        Debug.Log(item);
+    //    }
+    //}
     public double TotalLandCost()
     {
         double _totalPrice = 0;
