@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54455af970e45164e8c5163a05f10269, type: 3}
   m_Name: 35Tahiti
   m_EditorClassIdentifier: 
-  _subTileType: 35
+  _subTileType: 21
   subUnderTilePrefab: 0
   _tileKey: 35
   _tileName: "\uD0C0\uD788\uD2F0"
