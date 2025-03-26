@@ -43,6 +43,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
+        Debug.Log("플레이어 번호 : " + _playerNum);
 
     }
 
@@ -112,6 +113,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 없을때
         if (currentTile.GetOwner(0) == 0)
         {
+            Debug.Log("1.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("1.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (photonView.IsMine)
             {
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
@@ -121,6 +124,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 = 나, 타일 타입 = 그라운드
         else if (currentTile.GetOwner(0) == _playerNum)
         {
+            Debug.Log("2.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("2.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (currentTile._tileType == TileType.Ground)
             {
                 if (photonView.IsMine)
@@ -133,16 +138,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 = 다른 사람
         else if(currentTile.GetOwner(0) != _playerNum && photonView.IsMine)
         {
+            Debug.Log("3.현재 플레이어 번호 : " + _playerNum);
+            Debug.Log("3.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
             if (_money > currentTileTollPrice)
             {
                 _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                 if (currentTile._tileType == TileType.Ground)
                 {
-                    if (photonView.IsMine)
-                    {
-                        UIManagerP.instance.OnFactorUI(currentTile, this);
-                    }
+                    UIManagerP.instance.OnFactorUI(currentTile, this);
                 }
             }
             else

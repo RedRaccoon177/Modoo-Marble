@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using Unity.VisualScripting;
+using System.Reflection;
 
 public class TileBuyUI : MonoBehaviour
 {
@@ -68,7 +69,6 @@ public class TileBuyUI : MonoBehaviour
         SetPlayerAndEnemies();
     }
 
-
     /// <summary>
     /// 나와 적 구분해서 고유번호 저장
     /// </summary>
@@ -125,6 +125,19 @@ public class TileBuyUI : MonoBehaviour
     void UpdateBuyButtonState()
     {
         _buyBtn.interactable = _tileOwners[0] != _playerKey && _buildingChecks[0];
+
+        //내 토지일 경우
+        if (_tileOwners[0] == _playerKey)
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                //다른 토지들를 하나라도 구매 안 했을 경우
+                if (_tileOwners[i] != _playerKey)
+                {
+                    _buyBtn.interactable = true;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -273,18 +286,31 @@ public class TileBuyUI : MonoBehaviour
         _playerMoveTest.endTurn();
     }
 
+
+
     #region 추후 기능
     /// <summary>
     /// 플레이어가 이미 소유한 땅일 경우 건물만 구매 가능
     /// </summary>
     void HandlePlayerOwnership()
     {
-        _buildingButtons[0].interactable = false;
+        // 플레이어가 구매한 토지는 전부 녹색으로 전환
+        for (int i = 0; i < 4; i++)
+        {
+            if (_tileOwners[i] == _playerKey)
+            {
+                _buildingChecks[i] = true;
+                UpdateImageColor(_checkImages[i], _buildingChecks[i]);
+            }
+        }
 
-        for (int i = 1; i < 4; i++)
+
+        for (int i = 0; i < 4; i++)
         {
             _buildingButtons[i].interactable = _tileOwners[i] == 0 && _currentMoney >= _currentTile.GetPrice(i);
         }
+
+        _buyBtn.interactable = true;
     }
 
     /// <summary>
