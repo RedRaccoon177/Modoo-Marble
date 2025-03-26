@@ -40,17 +40,17 @@ public class CameraMove : MonoBehaviour
             mainCam.transform.position = mainCamPos;
         }
 
-        if( Input.GetKeyDown(KeyCode.Q))
+        if( Input.GetKeyDown(KeyCode.E))
+        {
+            ECameraInput();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             QCameraInput();
         }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            //ECameraInput();
-        }
     }
 
-    void QCameraInput()
+    void ECameraInput()
     {
 
         if( cameralist.Count-1 <= cameraNum)
@@ -68,21 +68,29 @@ public class CameraMove : MonoBehaviour
             Debug.Log(cameraNum);
         }
     }
-    void ECameraInput()
+    void QCameraInput()
     {
 
-        if (cameralist.Count - 1 > 0)
+        if (cameraNum < 0)
         {
-            cameralist[cameraNum].gameObject.SetActive(false);
-            cameraNum = cameralist.Count - 1;
+            cameralist[cameralist.Count - 1].gameObject.SetActive(false);
+            cameraNum--;
             cameralist[cameraNum].gameObject.SetActive(true);
             Debug.Log(cameraNum);
         }
-        else if(cameralist.Count - 1 <= cameraNum)
+        else if(cameralist.Count - 1 >= cameraNum)
         {
             cameralist[cameraNum].gameObject.SetActive(false);
             cameraNum--;
-            cameralist[cameraNum].gameObject.SetActive(true);
+            if (cameraNum == -1)
+            {
+                cameralist[cameralist.Count - 1].gameObject.SetActive(true);
+                cameraNum = cameralist.Count - 1;
+            }
+            else
+            {
+                cameralist[cameraNum].gameObject.SetActive(true);
+            }
             Debug.Log(cameraNum);
         }
     }
