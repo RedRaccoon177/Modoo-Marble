@@ -403,5 +403,14 @@ public partial class TileController : MonoBehaviourPun
         if (_tileHotelOwner != 0) { _totalTollPrice += _tileHotelToll; }
         return _totalTollPrice;
     }
+    public double TotalBuyPrice(TileController _tileController)
+    {
+        _totalTollPrice = 0;
+        if (_tileLandOwner != 0) { _totalTollPrice += _tileLandPrice; }
+        if (_tilePensionOwner != 0) { _totalTollPrice += _tilePensionPrice; }
+        if (_tileCondoOwner != 0) { _totalTollPrice += _tileCondoPrice; }
+        if (_tileHotelOwner != 0) { _totalTollPrice += _tileHotelPrice; }
+        return _totalTollPrice;
+    }
 
 }

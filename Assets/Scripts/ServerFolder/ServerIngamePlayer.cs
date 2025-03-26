@@ -20,7 +20,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
 
     // 게임 내 자금 (초기값은 테스트용)
     public double _money = 10000000;
-    Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>();
+    public static Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>();
 
     int _mapTurn; // 맵 회전 수
     public PhotonView _view;
@@ -49,7 +49,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
-        //_playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
     }
 
     private void Update()
@@ -176,12 +175,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 {
                     Debug.Log("빠져 나간 돈 : " + currentTileTollPrice);
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
-
-                    //FindPlayer(_playerNum)._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
-
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     if (currentTile._tileType == TileType.Ground)
                     {
-                        UIManagerP.instance.OnFactorUI(currentTile, this);
+                        UIManagerP.instance.OnFactorUI(currentTile, this, FindPlayer(currentTile.GetOwner(0)));
                     }
                 }
                 else
