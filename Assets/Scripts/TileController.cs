@@ -354,6 +354,20 @@ public partial class TileController : MonoBehaviourPun
                 return 0;
         }
     }
+    public double GetTollPrice(int index)
+    {
+        switch (index)
+        {
+            case 0: return _tileLandToll;
+            case 1: return _tilePensionToll;
+            case 2: return _tileCondoToll;
+            case 3: return _tileHotelToll;
+            case 4: return _tileLandMarkToll;
+            default:
+                Debug.LogWarning("잘못된 가격 인덱스 요청: " + index);
+                return 0;
+        }
+    }
 
     /// <summary>
     /// 건물 인덱스별 소유주 반환
