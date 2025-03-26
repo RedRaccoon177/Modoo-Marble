@@ -17,6 +17,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     public int _playerNum;
     int _playerNickName;
 
+    bool _isCoolFinish = false;
+    Coroutine runningCoroutine;
+    bool test = false;
+
     // 게임 내 자금 (초기값은 테스트용)
     public double _money = 10000000;
 
@@ -37,7 +41,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     public List<TileController> _ownedSeaTiles = new List<TileController>(); // 보유 중인 Sea 타입 타일들
 
-    private void Start()
+    void Start()
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
@@ -49,30 +53,54 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         _playerPosIndex = 0;
     }
 
-    private void Update()
+    void Update()
     {
-        // 자신의 턴이고 스페이스바를 누르면 이동 시작
-        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn && Input.GetKeyDown(KeyCode.Space))
+        //내턴 and 스페이스바 or 쿨타임끝남 
+        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn)
         {
-            if (photonView.IsMine && _isTurn)
+            //내턴 될때 쿹타임 10초 
+            if (runningCoroutine == null)
             {
-                //_isTurn = false;
-                var ddd = _turnBasedManager.Dice();
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
+                runningCoroutine = StartCoroutine(cooltimedelay(5f));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
+            {
+
+                if (photonView.IsMine && _isTurn == true)
+                {
+                    _isTurn = false;
+                    Debug.Log("여기들어옴");
+                    var ddd = _turnBasedManager.Dice();
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
+                }
             }
         }
 
-        // 턴이 넘어갔으면 다시 가능하도록 설정
+        //주사위 중복 방지
+        // 또는 버튼기능클릭시 ****
+        // 구매 쿨타이도 넣어아함 ****
+        // 안전빵으로 쿨타임 메서드 두개만들자
         if (PhotonNetwork.LocalPlayer.ActorNumber != PlayerMoveTest.CurrentTurn)
         {
             _isTurn = true;
+            _isCoolFinish = false;
         }
-
-        // 디버그용: Q 키로 소유한 땅 목록 출력
         if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
         {
             PrintPlayerGroundLists();
         }
+    }
+
+    IEnumerator cooltimedelay(float second)
+    {
+        Debug.Log("10초전");
+        Debug.Log("_isCoolFinish" + _isCoolFinish);
+        yield return new WaitForSeconds(second);
+        _isCoolFinish = true;
+        Debug.Log("10초후");
+        Debug.Log("_isCoolFinish" + _isCoolFinish);
+        runningCoroutine = null; //코루틴 중복 방지
     }
 
     /// <summary>
