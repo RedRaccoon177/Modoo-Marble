@@ -17,9 +17,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     public int _playerNum;
     int _playerNickName;
 
+    //주사위 굴리기전 쿨타임
     bool _isCoolFinish = false;
     Coroutine runningCoroutine;
-    bool test = false;
 
     // 게임 내 자금 (초기값은 테스트용)
     public double _money = 10000000;
@@ -61,7 +61,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null)
             {
-                runningCoroutine = StartCoroutine(cooltimedelay(5f));
+                runningCoroutine = StartCoroutine(Dicecooltimedelay(5f));
             }
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
@@ -92,7 +92,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator cooltimedelay(float second)
+    //팝업창 쿨타임(구매, 취소등)
+    IEnumerator cooltimedelay(float Scond)
+    {
+        yield return new WaitForSeconds(Scond);
+        PlayerMoveTest.Instance.endTurn();
+    }
+
+    //주사위 쿨타임
+    IEnumerator Dicecooltimedelay(float second)
     {
         Debug.Log("10초전");
         Debug.Log("_isCoolFinish" + _isCoolFinish);
@@ -106,13 +114,19 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     /// <summary>
     /// 플레이어가 소유한 Sea 타일을 추가한다
     /// </summary>
-    public void AddSeaTile(TileController tile)
+    [PunRPC]
+    public void AddSeaTile(int viewID)
     {
-        if (tile._tileType == TileType.Sea && !_ownedSeaTiles.Contains(tile))
+        PhotonView view = PhotonView.Find(viewID);
+        if (view == null) return;
+
+        TileController tile = view.GetComponent<TileController>();
+        if (tile != null && tile._tileType == TileType.Sea && !_ownedSeaTiles.Contains(tile))
         {
             _ownedSeaTiles.Add(tile);
         }
     }
+
 
     /// <summary>
     /// 현재 소유 중인 Sea 타입 타일을 다시 찾아와 리스트를 갱신한다
@@ -177,6 +191,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             Debug.Log("1.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (photonView.IsMine)
             {
+                //쿨타임
+                StartCoroutine(cooltimedelay(5f));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
@@ -189,7 +205,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             if (currentTile._tileType == TileType.Ground)
             {
                 if (photonView.IsMine)
-                {
+                {  
+                    //쿨타임
+                    StartCoroutine(cooltimedelay(5f));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
@@ -206,6 +224,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                 if (currentTile._tileType == TileType.Ground)
                 {
+                    //쿨타임
+                    StartCoroutine(cooltimedelay(5f));
                     UIManagerP.instance.OnFactorUI(currentTile, this);
                 }
             }
