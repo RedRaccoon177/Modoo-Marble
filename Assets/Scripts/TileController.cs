@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,10 +25,10 @@ public partial class TileController : MonoBehaviourPun
     [Header("타일 크기")] public Vector3 _tileLocalScale;
     [Header("타일 타입")] public TileType _tileType;
 
-    [Header("타일 땅 소유주")] public int _tileLandOwner;
-    [Header("타일 1번 건물 소유주")] public int _tilePensionOwner;
-    [Header("타일 2번 건물 소유주")] public int _tileCondoOwner;
-    [Header("타일 3번 건물 소유주")] public int _tileHotelOwner;
+    [Header("타일 땅 소유주 및 관광지 1개 소유주")] public int _tileLandOwner;
+    [Header("타일 1번 건물 및 관광지 2개 소유주")] public int _tilePensionOwner;
+    [Header("타일 2번 건물 및 관광지 3개 소유주")] public int _tileCondoOwner;
+    [Header("타일 3번 건물 및 관광지 4개 소유주")] public int _tileHotelOwner;
     [Header("랜드마크 소유주")] public int _tileLandMarkOwner;
 
     [Header("지역 가격 색상 타입")] public int _tilePriceColor;
@@ -50,6 +51,7 @@ public partial class TileController : MonoBehaviourPun
     GameObject _cityname;
     GameObject _bonusStage;
 
+    
     void Start()
     {
         StartCoroutine(SetupTileIfNotMaster());
@@ -386,6 +388,25 @@ public partial class TileController : MonoBehaviourPun
             default:
                 Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
                 break;
+        }
+    }
+
+   
+
+    public double TotalTollPrice(TileController _tileController)
+    {
+        if (_tileLandOwner == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            double _tempNum = 0;
+            _tempNum += _tileLandToll;
+            _tempNum += _tilePensionToll;
+            _tempNum += _tileCondoToll;
+            _tempNum += _tileHotelToll;
+            return _tempNum;
         }
     }
 

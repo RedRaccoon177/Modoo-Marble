@@ -8,7 +8,10 @@ public class UIManagerP : MonoBehaviour
     public GameObject[] _tileBuyUI;
 
     [Header("클릭시 뜨는 UI")] 
-    public GameObject[] _clickTileUI; 
+    public GameObject[] _clickTileUI;
+
+    [Header("인수창 UI")]
+    public GameObject _factorUI;
 
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
@@ -28,17 +31,35 @@ public class UIManagerP : MonoBehaviour
             instance = this;
         }
     }
+
     private void Start()
     {
         CreateClickUI();    // 타일 클릭시 나타나는 UI 생성
         OffClickUI();       // 타일 클릭시 나타나는 UI 비활성화
         CreateBuyUI();      // 구매할 때 나타나는 UI 
         OffBuyUIPanel();    // 구매할 때 나타나는 UI 비활성화
+        _factorUI = Instantiate(_factorUI, canvus);
+        _factorUI.SetActive(false);
     }
+
     /// <summary>
     /// 패널 활성화 및 구매 UI 활성화 
     /// </summary>
     /// <param name="_tileType"></param>
+
+
+    public void OnFactorUI(TileController currentTile, ServerIngamePlayer player)
+    {
+        //_factorUI.transform.position = _target;
+        var _facScr = _factorUI.GetComponent<FactorUI>();
+        _facScr._currentTile = currentTile;
+        _facScr._player = player;
+        _factorUI.SetActive(true);
+    }
+    public void OffFactorUI()
+    {
+        _factorUI.SetActive(false);
+    }
 
     /// 구매 Ui비활성화
     public void OffBuyUIPanel()

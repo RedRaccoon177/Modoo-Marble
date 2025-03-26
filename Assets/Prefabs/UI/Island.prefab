@@ -4273,14 +4273,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tileName: {fileID: 3512663620907630140}
   _tileLandPrice: {fileID: 7539649092285287568}
-  _tileOnePrice: {fileID: 5063870690195815753}
-  _tileTwoPrice: {fileID: 8535328785942581009}
-  _tileThreePrice: {fileID: 2488280792121251160}
-  _tileFourPrice: {fileID: 5527250567667798945}
+  _tileOneToll: {fileID: 5063870690195815753}
+  _tileTwoToll: {fileID: 8535328785942581009}
+  _tileThreeToll: {fileID: 2488280792121251160}
+  _tileFourToll: {fileID: 5527250567667798945}
   _tileSheet: {fileID: 6474543546173728253}
   _tileToll: {fileID: 1593887998965487843}
   _playerMoney: {fileID: 1770043504173659780}
+  _buyButton: {fileID: 6338860197242573531}
   _closeButton: {fileID: 810592468926917998}
+  _money: 0
+  _ownerActorNumber: 0
+  _landLevel: 0
 --- !u!1 &8940945745390443157
 GameObject:
   m_ObjectHideFlags: 0
