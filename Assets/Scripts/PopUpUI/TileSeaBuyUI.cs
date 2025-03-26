@@ -56,10 +56,14 @@ public class TileSeaBuyUI : MonoBehaviour
     {
         SetPlayerData();
 
+        //구매 버튼 클릭 시
         _buyButton.onClick.AddListener(() => UIManagerP.instance.OffBuyUIPanel());
         _buyButton.onClick.AddListener(() => BuySeaTile());
 
+        //취소 버튼 클릭 시
         _closeButton.onClick.AddListener(() => UIManagerP.instance.OffBuyUIPanel());
+        
+        //관광지 팝업 활성화 될 시
         UIManagerP.instance._buyChangeDataSea += SetTileData;
     }
 
@@ -146,7 +150,7 @@ public class TileSeaBuyUI : MonoBehaviour
         _currentTile.photonView.RPC("SetOwner", RpcTarget.All, 0, _playerKey);
 
         // 관광지 타일 리스트에 현재 타일 추가
-        _playerData.AddSeaTile(_currentTile);
+        _playerData.photonView.RPC("AddSeaTile", RpcTarget.All, _currentTile.photonView.ViewID);
 
         // 관광지 보유 리스트 최신화
         _playerData.RefreshOwnedSeaTiles();

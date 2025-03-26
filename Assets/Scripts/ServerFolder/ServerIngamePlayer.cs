@@ -106,13 +106,19 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     /// <summary>
     /// 플레이어가 소유한 Sea 타일을 추가한다
     /// </summary>
-    public void AddSeaTile(TileController tile)
+    [PunRPC]
+    public void AddSeaTile(int viewID)
     {
-        if (tile._tileType == TileType.Sea && !_ownedSeaTiles.Contains(tile))
+        PhotonView view = PhotonView.Find(viewID);
+        if (view == null) return;
+
+        TileController tile = view.GetComponent<TileController>();
+        if (tile != null && tile._tileType == TileType.Sea && !_ownedSeaTiles.Contains(tile))
         {
             _ownedSeaTiles.Add(tile);
         }
     }
+
 
     /// <summary>
     /// 현재 소유 중인 Sea 타입 타일을 다시 찾아와 리스트를 갱신한다
