@@ -58,6 +58,8 @@ public class TileBuyUI : MonoBehaviour
     int[] _enemyKeys;                           // 상대방들 ActorNumber
 
     PlayerMoveTest _playerMoveTest;
+
+    ServerIngamePlayer _playerData;
     #endregion
 
     void Awake()
@@ -175,8 +177,15 @@ public class TileBuyUI : MonoBehaviour
             _tileOwners[i] = data.GetOwner(i);
         }
 
-        ServerIngamePlayer _playerData = FindObjectOfType<ServerIngamePlayer>();
-        if (_playerData == null) return;
+        ServerIngamePlayer[] playerDatas = FindObjectsOfType<ServerIngamePlayer>();
+        foreach (var playerData in playerDatas)
+        {
+            if (playerData.photonView.OwnerActorNr == _playerKey)
+            {
+                _playerData = playerData;
+                break;
+            }
+        }
 
         ResetButtonStates();
         _currentMoney = _cancelRememberMoney = _playerData.GetMoney();
@@ -264,6 +273,7 @@ public class TileBuyUI : MonoBehaviour
             if (_playerData.photonView.OwnerActorNr == _playerKey)
             {
                 _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
+                _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
                 break;
             }
         }

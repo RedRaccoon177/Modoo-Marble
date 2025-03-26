@@ -55,6 +55,7 @@ MonoBehaviour:
   - TileNameSetting
   - TileSetting
   - AddSeaTile
+  - TotalMoney
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

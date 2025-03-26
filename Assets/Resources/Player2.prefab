@@ -145,6 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerNum: 0
   _money: 10000000
-  _view: {fileID: 0}
-  _SeaBuyCount: 0
+  _totalMoney: 0
   _ownedSeaTiles: []
+  _SeaBuyCount: 0
+  _view: {fileID: 0}
