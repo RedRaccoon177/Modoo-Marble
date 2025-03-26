@@ -254,4 +254,12 @@ public class MapManager : MonoBehaviourPun
 
         }
     }
+
+    void BackGroundTileSetting()
+    {
+
+    }
+
+
+
 }
