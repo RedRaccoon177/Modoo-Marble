@@ -148,3 +148,4 @@ MonoBehaviour:
   _view: {fileID: 0}
   _SeaBuyCount: 0
   _ownedSeaTiles: []
+  _totalMoney: 0
