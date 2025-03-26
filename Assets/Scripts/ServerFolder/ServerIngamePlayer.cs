@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using System;
 using System.Linq;
+using System.ComponentModel;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
@@ -40,6 +41,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     public int _SeaBuyCount = 0; // 관광지 보유 수
 
     public List<TileController> _ownedSeaTiles = new List<TileController>(); // 보유 중인 Sea 타입 타일들
+
+    [Header("플레이어 총 자산")] public double _totalMoney;
 
     void Start()
     {
@@ -90,6 +93,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         {
             PrintPlayerGroundLists();
         }
+    }
+
+    public void TotalMoney()
+    {
+        //각 타일들 40번에 걸쳐서 내꺼면 값 추가
+        for (int i = 0; i < _mapInfo._tiles.Length; i++)
+        { 
+            TileController currentTile = _mapInfo._tiles[i].GetComponent<TileController>();
+        }
+
+        //_totalMoney = _money + 
     }
 
     //팝업창 쿨타임(구매, 취소등)
