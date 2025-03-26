@@ -232,9 +232,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 if (_money > currentTileTollPrice)
                 {
                     Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
-                    _view.RPC("DecreaseMoney", photonView.Owner, currentTileTollPrice);
+                    _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                     // 토지주인의 돈 증가 함수 실행
-                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", photonView.Owner, currentTileTollPrice);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
                     if (currentTile._tileType == TileType.Ground)
                     {
@@ -265,14 +265,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     public void IncreaseMoney(double money)
     {
         _money += money;
-        photonView.RPC("SyncMoney", RpcTarget.Others, _money);
     }
 
     [PunRPC]
     public void DecreaseMoney(double money)
     {
         _money -= money;
-        photonView.RPC("SyncMoney", RpcTarget.Others, _money);
     }
     [PunRPC]
     public void SyncMoney(double updatedMoney)

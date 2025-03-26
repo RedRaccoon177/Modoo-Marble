@@ -43,15 +43,9 @@ public class FactorUI : MonoBehaviour
             if (_currentTile.GetOwner(i) != 0)
             {
                 // 주인에게 건설비용 돌려주기
-                if (_currentPlayer.photonView.IsMine)
-                {
-                    _currentPlayer.photonView.RPC("DecreaseMoney", _currentPlayer.photonView.Owner, _currentTile.TotalBuyPrice(_currentTile));
-                }
+                _currentPlayer.photonView.RPC("DecreaseMoney", RpcTarget.All, _currentTile.TotalBuyPrice(_currentTile));
                 // 새로운 주인에게 비용 부과
-                if (_targetPlayer.photonView.IsMine)
-                {
-                    _targetPlayer.photonView.RPC("IncreaseMoney", _targetPlayer.photonView.Owner, _currentTile.TotalBuyPrice(_currentTile));
-                }
+                _targetPlayer.photonView.RPC("IncreaseMoney", RpcTarget.All, _currentTile.TotalBuyPrice(_currentTile));
 
                     // 새로운 주인으로 명의 변경
                 _currentTile.photonView.RPC("SetOwner",RpcTarget.All, i, _currentPlayer._playerNum);
