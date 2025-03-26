@@ -58,7 +58,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             {
                 //_isTurn = false;
                 var ddd = _turnBasedManager.Dice();
-                photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
+                photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
             }
         }
 
@@ -145,8 +145,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 없을때
         if (currentTile.GetOwner(0) == 0)
         {
-            Debug.Log("1.현재 플레이어 번호 : " + _playerNum);
-            Debug.Log("1.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (photonView.IsMine)
             {
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
@@ -156,8 +154,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         // 주인 = 나, 타일 타입 = 그라운드
         else if (currentTile.GetOwner(0) == _playerNum)
         {
-            Debug.Log("2.현재 플레이어 번호 : " + _playerNum);
-            Debug.Log("2.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             if (currentTile._tileType == TileType.Ground)
             {
                 if (photonView.IsMine)
@@ -168,22 +164,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             }
         }
         // 주인 = 다른 사람
-        else if(currentTile.GetOwner(0) != _playerNum && photonView.IsMine)
+        else if(currentTile.GetOwner(0) != _playerNum)
         {
-            Debug.Log("3.현재 플레이어 번호 : " + _playerNum);
-            Debug.Log("3.땅 소유 플레이어 번호 : " + currentTile.GetOwner(0));
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
-            if (_money > currentTileTollPrice)
+            if (_view.IsMine == true)
             {
-                _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
-                if (currentTile._tileType == TileType.Ground)
+                if (_money > currentTileTollPrice)
                 {
-                    UIManagerP.instance.OnFactorUI(currentTile, this);
+                    Debug.Log("빠져 나간 돈 : " + currentTileTollPrice);
+                    _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    // 땅 주인 돈 ++
+                    // 땅 주인의 PhotoneNetwork.LocalPlayer.ActorNumber 번호 알고있는데 어떻게 찾을지
+                    if (currentTile._tileType == TileType.Ground)
+                    {
+                        UIManagerP.instance.OnFactorUI(currentTile, this);
+                    }
                 }
-            }
-            else
-            {
-                Debug.Log("파산");
+                else
+                {
+                    Debug.Log("파산");
+                }
             }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화

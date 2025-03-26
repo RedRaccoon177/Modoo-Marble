@@ -186,6 +186,7 @@ MonoBehaviour:
   _tileCondoToll: 0
   _tileHotelToll: 0
   _tileLandMarkToll: 0
+  _totalTollPrice: 0
 --- !u!114 &-7105071037113260314
 MonoBehaviour:
   m_ObjectHideFlags: 0
