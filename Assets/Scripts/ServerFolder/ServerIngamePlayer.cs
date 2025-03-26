@@ -137,6 +137,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
 
+        //TODO: 상대방 토지 일 경우 금액 차감 후 진행
+
+        //TODO: 이미 구매 토지 일 경우 아예 출력방식들이 다 달라야함.
+        //일반 토지는 금액만 차감 후 인수가능 한지 확인 해야 하고
+        //관광지는 그냥 금액만 차감해야 함.
+        //그리고 특수 토지 인경우는 금액 차감말고 다른 거 진행해야 함.
+
         if (photonView.IsMine)
         {
             UIManagerP.instance.OnBuyUI(currentTile._tileType);
