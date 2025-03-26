@@ -144,6 +144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerNum: 0
+  currentDiceCooldown1: 5
+  currentDiceCooldown2: 5
   _money: 10000000
   _SeaBuyCount: 0
   _ownedSeaTiles: []

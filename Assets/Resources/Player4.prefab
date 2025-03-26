@@ -143,4 +143,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2765f14450e7d8e459618064b8471d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerNum: 0
+  currentDiceCooldown1: 5
+  currentDiceCooldown2: 5
+  coolSiders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _money: 10000000
+  _SeaBuyCount: 0
+  _ownedSeaTiles: []
