@@ -16,8 +16,6 @@ public class FactorUI : MonoBehaviour
     public ServerIngamePlayer _targetPlayer;
 
 
-
-
     private void Awake()
     {
         _factorBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorUI());
@@ -48,6 +46,4 @@ public class FactorUI : MonoBehaviour
             }
         }
     }
-
-
 }

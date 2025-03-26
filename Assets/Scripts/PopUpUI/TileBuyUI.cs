@@ -261,8 +261,7 @@ public class TileBuyUI : MonoBehaviour
         {
             int owner = _tileOwners[i];
             int newOwner = owner == 0
-                ? (_buildingChecks[i] ? _playerKey : 0)
-                : owner; // 기존 소유자 유지
+                ? (_buildingChecks[i] ? _playerKey : 0) : owner; // 기존 소유자 유지
 
             _currentTile.photonView.RPC("SetOwner", RpcTarget.All, i, newOwner);
         }

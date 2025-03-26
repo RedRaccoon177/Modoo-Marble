@@ -11,7 +11,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
     [Header("플레이어 UI 오브젝트 4개 (순서대로 등록)")]
     public GameObject[] playerUIObjects; // 최대 4개의 플레이어 UI 오브젝트 (인스펙터에 순서대로 등록해야 함)
 
-    void Start()
+    private void Awake()
     {
         // 현재 룸에 접속한 플레이어 수를 가져옴
         int playerCount = PhotonNetwork.PlayerList.Length;

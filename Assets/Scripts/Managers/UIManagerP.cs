@@ -46,8 +46,6 @@ public class UIManagerP : MonoBehaviour
     /// 패널 활성화 및 구매 UI 활성화 
     /// </summary>
     /// <param name="_tileType"></param>
-
-
     public void OnFactorUI(TileController currentTile, ServerIngamePlayer player, ServerIngamePlayer targetPlayer)
     {
         //_factorUI.transform.position = _target;
@@ -144,6 +142,7 @@ public class UIManagerP : MonoBehaviour
             _clickTileUI[i] = Instantiate(_clickTileUI[i],canvus);
         }
     }
+
     /// <summary>
     ///  타입 전해주면 그 타입의 ui 띄움 타일 클릭시 생성되는 UI
     /// </summary>

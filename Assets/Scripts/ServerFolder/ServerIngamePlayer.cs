@@ -14,13 +14,14 @@ using System.ComponentModel;
 /// </summary>
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagicCallback
 {
+    #region 플레이어 변수들
     [Header("플레이어 기본 정보")]
     public int _playerNum; // 고유 번호
     int _playerNickName; // 닉네임 (미사용?)
 
     [Header("플레이어 자산 관련")]
-    public double _money = 10000000; // 현금
-    public double _totalMoney = 10000000; // 총 자산 (현금 + 부동산 등)
+    public double _money = 1000; // 현금
+    public double _totalMoney; // 총 자산 (현금 + 부동산 등)
 
     [Header("플레이어 상태")]
     bool _isLoan; // 대출 여부
@@ -46,11 +47,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     MapManager _mapInfo;
     TurnBasedManager _turnBasedManager;
     PlayerManager _playerManager;
+    #endregion
+
+    #region Start문, Update문
     void Start()
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 10000000;
+        _money = 1000;
+        _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
@@ -63,21 +68,22 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         //내턴 and 스페이스바 or 쿨타임끝남 
         if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn)
         {
+            /*
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null)
             {
                 runningCoroutine = StartCoroutine(Dicecooltimedelay(5f));
             }
+            */
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
             {
                 if (photonView.IsMine && _isTurn == true)
                 {
-                    _isTurn = false;
-                    Debug.Log("여기들어옴");
+                    //_isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
-                    
+                    //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
                 }
             }
         }
@@ -96,12 +102,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             PrintPlayerGroundLists();
         }
     }
+    #endregion
 
     [PunRPC]
     public void TotalMoney()
     {
-        if (_playerNum != PhotonNetwork.LocalPlayer.ActorNumber) return;
-
         double tileAssetTotal = 0;
 
         // 전체 타일 순회
@@ -124,7 +129,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
 
         Debug.Log($"[총 자산 계산] 현금: {_money}, 땅/건물 자산: {tileAssetTotal}, 총합: {_totalMoney}");
     }
-
 
     //팝업창 쿨타임(구매, 취소등)
     IEnumerator cooltimedelay(float Scond)
@@ -223,7 +227,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             if (photonView.IsMine)
             {
                 //쿨타임
-                StartCoroutine(cooltimedelay(5f));
+                //StartCoroutine(cooltimedelay(5f));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
@@ -236,7 +240,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 if (photonView.IsMine)
                 {  
                     //쿨타임
-                    StartCoroutine(cooltimedelay(5f));
+                    //StartCoroutine(cooltimedelay(5f));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
@@ -255,7 +259,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     if (currentTile._tileType == TileType.Ground)
                     {
-                        StartCoroutine(cooltimedelay(5f));
+                        //StartCoroutine(cooltimedelay(5f));
                         UIManagerP.instance.OnFactorUI(currentTile, this, FindPlayer(currentTile.GetOwner(0)));
                     }
                 }
