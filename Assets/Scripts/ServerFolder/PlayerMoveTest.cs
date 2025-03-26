@@ -69,6 +69,10 @@ public class PlayerMoveTest : Singleton<PlayerMoveTest>
 
     public void endTurn()
     {
+        UIManagerP.instance.OffBuyUIPanel();
+        UIManagerP.instance.OffFactorUI();
+        UIManagerP.instance.OffClickUI();
+
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {

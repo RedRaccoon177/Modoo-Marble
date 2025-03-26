@@ -176,6 +176,7 @@ public class UIManagerP : MonoBehaviour
             temp.SetActive(false);
         }
     }
+
     /// <summary>
     ///  타입에 맞게 이벤트 실행, 이벤트 = 데이터 주입 이벤트
     /// </summary>
