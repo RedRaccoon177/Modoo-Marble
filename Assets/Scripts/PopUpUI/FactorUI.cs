@@ -38,20 +38,22 @@ public class FactorUI : MonoBehaviour
 
     public void Factor()
     {
+        double _totalBuyPrice = _currentTile.TotalBuyPrice(_currentTile);
+        // 주인에게 건설비용 돌려주기
+        _currentPlayer.photonView.RPC("DecreaseMoney", RpcTarget.All, _totalBuyPrice);
+        Debug.Log($" {_currentPlayer._playerNum} : 건설 비용 빠져 나간 돈 : " + _totalBuyPrice);
+
+        // 새로운 주인에게 비용 부과
+        _targetPlayer.photonView.RPC("IncreaseMoney", RpcTarget.All, _totalBuyPrice);
+        Debug.Log($" {_targetPlayer._playerNum} : 건설 비용 빠져 나간 돈 : " + _totalBuyPrice);
         for (int i=0; i< 4; i ++)
         {
             if (_currentTile.GetOwner(i) != 0)
             {
-                // 주인에게 건설비용 돌려주기
-                _currentPlayer.photonView.RPC("DecreaseMoney", RpcTarget.All, _currentTile.TotalBuyPrice(_currentTile));
-                // 새로운 주인에게 비용 부과
-                _targetPlayer.photonView.RPC("IncreaseMoney", RpcTarget.All, _currentTile.TotalBuyPrice(_currentTile));
-
-                    // 새로운 주인으로 명의 변경
                 _currentTile.photonView.RPC("SetOwner",RpcTarget.All, i, _currentPlayer._playerNum);
             }
         }
-    }
+    }   
 
 
 }
