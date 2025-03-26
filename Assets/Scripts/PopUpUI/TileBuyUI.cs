@@ -286,9 +286,6 @@ public class TileBuyUI : MonoBehaviour
         _playerMoveTest.endTurn();
     }
 
-
-
-    #region 추후 기능
     /// <summary>
     /// 플레이어가 이미 소유한 땅일 경우 건물만 구매 가능
     /// </summary>
@@ -304,7 +301,6 @@ public class TileBuyUI : MonoBehaviour
             }
         }
 
-
         for (int i = 0; i < 4; i++)
         {
             _buildingButtons[i].interactable = _tileOwners[i] == 0 && _currentMoney >= _currentTile.GetPrice(i);
@@ -313,6 +309,7 @@ public class TileBuyUI : MonoBehaviour
         _buyBtn.interactable = true;
     }
 
+    #region 추후 기능
     /// <summary>
     /// 적이 소유한 땅일 경우: 건물 비활성화, 금액만 갱신
     /// </summary>
