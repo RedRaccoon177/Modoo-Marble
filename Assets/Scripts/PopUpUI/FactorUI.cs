@@ -24,7 +24,8 @@ public class FactorUI : MonoBehaviour
     public ServerIngamePlayer _targetPlayer; // 땅 주인
     bool _skipNextClick;
 
-    double _totalBuyPrice;
+    double _totalBuyPrice; // 토지 건물 추가 건설 금액
+    int _firstZeroOwner; // 토지 건물의 은행 소유 찾기(예외처리용)
 
     public void SetData()
     {
@@ -33,6 +34,7 @@ public class FactorUI : MonoBehaviour
         _playerMoney.text = _currentPlayer.GetMoney().ToString();
         _buyPrice.text = _totalBuyPrice.ToString();
         _currentTileName.text = _currentTile._tileName;
+        _firstZeroOwner = 0;
     }
 
 
@@ -59,8 +61,16 @@ public class FactorUI : MonoBehaviour
 
     public void Factor()
     {
-        if(_currentPlayer.GetMoney() < _totalBuyPrice)
+        for (int i = 0; i < 4; i++)
         {
+            if (_firstZeroOwner <_currentTile.GetOwner(i))
+            {
+                _firstZeroOwner = _currentTile.GetOwner(i);
+            }
+        }
+        if(_currentTile.GetPrice(_firstZeroOwner) > _currentPlayer.GetMoney())
+        {
+            // 타일의 0이아닌 첫번 째 건물 찾기
             _skipNextClick = true;
         }
         // 0이아닌 첫 번째 건물 
