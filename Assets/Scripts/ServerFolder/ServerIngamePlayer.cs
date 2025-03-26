@@ -49,7 +49,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 10000000;
+        _money = 100;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
@@ -227,9 +227,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         else if(currentTile.GetOwner(0) != _playerNum)
         {
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
+            double currentTileBuyPrice = currentTile.TotalBuyPrice(currentTile);
             if (_view.IsMine == true)
             {
-                if (_money > currentTileTollPrice)
+                // 통행료 지불 가능 상태라면
+                if (_money >= currentTileTollPrice)
                 {
                     Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
@@ -239,7 +241,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     if (currentTile._tileType == TileType.Ground)
                     {
                         StartCoroutine(cooltimedelay(5f));
-                        UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
+                        if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
+                        {
+                            UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
+                        }
+                        else
+                        {
+                            // 인수 불가 Ui 출력
+                            UIManagerP.instance.OnFactorWarningUI();
+                        }
                     }
                 }
                 else
