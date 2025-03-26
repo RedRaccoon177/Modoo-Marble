@@ -175,8 +175,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                     // 땅 주인 돈 ++
                     // 땅 주인의 PhotoneNetwork.LocalPlayer.ActorNumber 번호 알고있는데 어떻게 찾을지
-                    // 딕셔너리를 하나 만들어서 플레이어 생성될때 그 딕셔너리에 플레이어 저장
-                    // find로 찾기
+                    // 1. 딕셔너리를 하나 만들어서 플레이어 생성될때 그 딕셔너리에 플레이어 저장
+                    // 2. find로 찾기
                     if (currentTile._tileType == TileType.Ground)
                     {
                         UIManagerP.instance.OnFactorUI(currentTile, this);
