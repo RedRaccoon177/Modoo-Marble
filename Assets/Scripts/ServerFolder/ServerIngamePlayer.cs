@@ -7,11 +7,12 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using System;
 using System.Linq;
+using JetBrains.Annotations;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
 /// </summary>
-public class ServerIngamePlayer : MonoBehaviourPunCallbacks
+public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagicCallback
 {
     bool _isLoan; // 대출여부
     public int _playerNum;
@@ -19,9 +20,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
 
     // 게임 내 자금 (초기값은 테스트용)
     public double _money = 10000000;
+    Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>();
 
     int _mapTurn; // 맵 회전 수
-    PhotonView _view;
+    public PhotonView _view;
     List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅 소유 리스트
     int _playerPosIndex = 0; // 현재 타일 인덱스
 
@@ -42,11 +44,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _money = 10000000;
-        _playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
+        _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
+        //_playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
     }
 
     private void Update()
@@ -57,7 +60,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             if (photonView.IsMine && _isTurn)
             {
                 //_isTurn = false;
-                var ddd = _turnBasedManager.Dice();
+                int _diceNum = _turnBasedManager.Dice();
                 photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
             }
         }
@@ -173,10 +176,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 {
                     Debug.Log("빠져 나간 돈 : " + currentTileTollPrice);
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
-                    // 땅 주인 돈 ++
-                    // 땅 주인의 PhotoneNetwork.LocalPlayer.ActorNumber 번호 알고있는데 어떻게 찾을지
-                    // 1. 딕셔너리를 하나 만들어서 플레이어 생성될때 그 딕셔너리에 플레이어 저장
-                    // 2. find로 찾기
+
+                    //FindPlayer(_playerNum)._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
+
                     if (currentTile._tileType == TileType.Ground)
                     {
                         UIManagerP.instance.OnFactorUI(currentTile, this);
@@ -189,6 +191,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
+    }
+
+    public ServerIngamePlayer FindPlayer(int _actorNum)
+    {
+        return _players[_actorNum];
     }
 
     public void StartPointPass()
@@ -257,5 +264,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     public void AddPlayerGroundLists(TileController tileController)
     {
         _playerGroundLists.Add(tileController);
+    }
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] data = info.photonView.InstantiationData;
+        if (data != null && data.Length > 0)
+        {
+            _playerNum = (int)data[0];
+            Debug.Log(_playerNum + "생성");
+        }
     }
 }
