@@ -185,6 +185,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             Debug.Log("1.¶¥ ¼ÒÀ¯ ÇÃ·¹ÀÌ¾î ¹øÈ£ : " + currentTile.GetOwner(0));
             if (photonView.IsMine)
             {
+                //ÄðÅ¸ÀÓ
                 StartCoroutine(cooltimedelay(5f));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
@@ -198,7 +199,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             if (currentTile._tileType == TileType.Ground)
             {
                 if (photonView.IsMine)
-                {
+                {  
+                    //ÄðÅ¸ÀÓ
+                    StartCoroutine(cooltimedelay(5f));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
@@ -215,6 +218,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                 _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
                 if (currentTile._tileType == TileType.Ground)
                 {
+                    //ÄðÅ¸ÀÓ
+                    StartCoroutine(cooltimedelay(5f));
                     UIManagerP.instance.OnFactorUI(currentTile, this);
                 }
             }
