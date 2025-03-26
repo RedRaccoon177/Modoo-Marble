@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 //마스터 턴이있고
 //턴이 지나면 마스터가 턴을 +1함
 //내턴일때만 사용가능
-public class PlayerMoveTest : MonoBehaviourPunCallbacks
+public class PlayerMoveTest : Singleton<PlayerMoveTest>
 { 
     static public int currentTurn = 1;
     public GameObject[] playerfabs;
