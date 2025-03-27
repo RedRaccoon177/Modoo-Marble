@@ -39,9 +39,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [Header("소유 타일 정보")]
     //List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅
     public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지
-    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
 
-    public List<int> _playerOwnerTileViewList = new List<int>();
     int[] _playerOwnerTileViewArr;
 
     public int _SeaBuyCount = 0; // 관광지 보유 수
@@ -70,6 +68,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //        _playerOwnerTileList.Add(_currentTile);
     //    }
     //}
+    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
+    public List<int> _playerOwnerTileViewList = new List<int>();
 
     [PunRPC]
     public void AddPlayerOwnerTileList(int _tileViewNum)
@@ -113,12 +113,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //    }
     //}
 
-    [PunRPC]
+    
     public void LowPriceSorting(int[] _playerOwnerTileViewArr)
     {
         _playerOwnerTileList.Clear();
 
-        // 배열로 받은거 다시 플레이어 리스트에 넣어주기
+        // 타일 viewID 로 받은거 다시 플레이어 리스트에 넣어주기
         for (int i =0; i < _playerOwnerTileViewArr.Length; i++)
         {
             PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]);
@@ -149,7 +149,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [PunRPC]
     public void AutomaticSale(double _SaleAmount)
     {
-        _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
+        LowPriceSorting(_playerOwnerTileViewArr);
         double _TotalMyLandPrice = 0;
         int i = 0;
         for (i = 0; i < _playerOwnerTileList.Count; i++)
@@ -163,7 +163,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 _TotalMyLandPrice += _playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]);
             }
         }
-        for (int j = 0; j < _playerOwnerTileList.Count; j++)
+        for (int j = 0; j < i; j++)
         {
             for (int k =0; k<4; k++)
             {
@@ -172,6 +172,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     _playerOwnerTileList[j].SetOwner(k,0);
                 }
             }
+        }
+        for (int h = 0; h < i; h++)
+        {
+            var a = _playerOwnerTileList[h].photonView.ViewID;
+            _playerOwnerTileViewList.Remove(a);
         }
         if (i >= _playerOwnerTileList.Count)
         {
@@ -185,7 +190,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 100;
+        _money = Random.Range(1000,10000);
         _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
@@ -278,7 +283,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         {
             currentDiceCooldown1 -= Time.deltaTime;
             mySlider.value = currentDiceCooldown1;
-            Debug.Log("currentDiceCooldown1 : " + currentDiceCooldown1);
             yield return null;
         }
         mySlider.gameObject.SetActive(false);
@@ -294,7 +298,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         while (currentDiceCooldown2 > 0f)
         {
             currentDiceCooldown2 -= Time.deltaTime;
-            Debug.Log("currentDiceCooldown2 : " + currentDiceCooldown1);
             yield return null;
         }
         //yield return new WaitForSeconds(Second);
@@ -437,6 +440,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
             }
+            else
+            {
+                TurnMgr.Instance.endTurn();
+            }
         }
         // 주인 = 다른 사람
         else if(currentTile.GetOwner(0) != _playerNum)
@@ -478,8 +485,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
                 else // 통행료 지불이 불가한 상태라면
                 {
-                    // 총 내야 하는 통행료 - 현재 돈
+                    _view.RPC("DecreaseMoney", RpcTarget.All, _money);
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money);
+                    _view.RPC("TotalMoney", RpcTarget.All);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
                     Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
                 }
             }

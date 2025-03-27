@@ -11,5 +11,6 @@ public class FactorWarningUI : MonoBehaviour
     {
         _closeBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorWarningUI());
         _closeBtn.onClick.AddListener(() => TurnMgr.Instance.endTurn());
+
     }
 }

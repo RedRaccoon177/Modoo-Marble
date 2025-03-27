@@ -61,17 +61,8 @@ MonoBehaviour:
   - AddSeaTile
   - SyncMoney
   - TotalMoney
-<<<<<<< HEAD
-  - SyncMoney
-  - AddPlayerOwnerTileList
-  - AutomaticSale
-  - LowPriceSorting
-  - AddPlayerOwnerTileListp
-  - MinusPlayerOwnerTileList
-=======
   - Dicecooltime
   - HideSlider
->>>>>>> origin/Develop_Sliderdongoh
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
