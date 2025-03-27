@@ -180,11 +180,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
 
     }
 
-    //쿨타임 게이지바(슬라이더)
-    Slider mySlider;
-    GameObject mySliderobj;
-
-
     #region Start문, Update문
     void Start()
     {

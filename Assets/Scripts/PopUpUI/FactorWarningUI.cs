@@ -10,7 +10,7 @@ public class FactorWarningUI : MonoBehaviour
     private void Awake()
     {
         _closeBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorWarningUI());
-        _closeBtn.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
+        _closeBtn.onClick.AddListener(() => TurnMgr.Instance.endTurn());
 
     }
 }
