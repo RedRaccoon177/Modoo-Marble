@@ -329,6 +329,7 @@ public class TileBuyUI : MonoBehaviour
         }
 
         _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
+        _playerData.photonView.RPC("AddPlayerOwnerTileList", RpcTarget.All, _currentTile.photonView.ViewID);
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
 
         _playerMoveTest = FindObjectOfType<TurnMgr>();
