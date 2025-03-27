@@ -64,17 +64,38 @@ public class TileBuyUI : MonoBehaviour
     int[] _enemyKeys;                           // 상대방들 ActorNumber
 
     PlayerMoveTest _playerMoveTest;
-    ServerIngamePlayer _playerData;
+    ServerIngamePlayer _playerData = null;
     #endregion
 
     void Awake()
     {
+        SetPlayerData();
+
         // UI 이벤트 연결
         UIManagerP.instance._buyChangeDataGround += SetTileData;
         UpdateCheckImages(); // 색상 초기화
         BindButtonEvents();  // 버튼 이벤트 연결
         SetPlayerAndEnemies();
     }
+
+    /// <summary>
+    /// 로컬 플레이어 정보 가져오기
+    /// </summary>
+    void SetPlayerData()
+    {
+        _playerKey = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        ServerIngamePlayer[] playerDatas = FindObjectsOfType<ServerIngamePlayer>();
+        foreach (var playerData in playerDatas)
+        {
+            if (playerData.photonView.OwnerActorNr == _playerKey)
+            {
+                _playerData = playerData;
+                break;
+            }
+        }
+    }
+
     double TotalBuyPrice()
     {
         double total = 0;
@@ -222,16 +243,6 @@ public class TileBuyUI : MonoBehaviour
             _tileOwners[i] = data.GetOwner(i);
         }
 
-        ServerIngamePlayer[] playerDatas = FindObjectsOfType<ServerIngamePlayer>();
-        foreach (var playerData in playerDatas)
-        {
-            if (playerData.photonView.OwnerActorNr == _playerKey)
-            {
-                _playerData = playerData;
-                break;
-            }
-        }
-
         PrintPlayerMoney(_playerData);
         ResetButtonStates();
         _currentMoney = _cancelRememberMoney = _playerData.GetMoney();
@@ -317,16 +328,8 @@ public class TileBuyUI : MonoBehaviour
             _currentTile.photonView.RPC("SetOwner", RpcTarget.All, i, newOwner);
         }
 
-        ServerIngamePlayer[] playerDatas = FindObjectsOfType<ServerIngamePlayer>();
-        foreach (var _playerData in playerDatas)
-        {
-            if (_playerData.photonView.OwnerActorNr == _playerKey)
-            {
-                _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
-                _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
-                break;
-            }
-        }
+        _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
+        _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
 
         _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
         _playerMoveTest.endTurn();
@@ -344,6 +347,8 @@ public class TileBuyUI : MonoBehaviour
 
         _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
         _playerMoveTest.endTurn();
+
+        _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
     }
 
     /// <summary>

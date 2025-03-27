@@ -95,6 +95,8 @@ public class TileSeaBuyUI : MonoBehaviour
     {
         if (data == null) return;
 
+        //SetPlayerData();
+
         _currentTile = data;
 
         // 텍스트 UI 설정
@@ -175,6 +177,8 @@ public class TileSeaBuyUI : MonoBehaviour
 
         // 총 자산 확인
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
+
+        Debug.Log(_playerData);
     }
 
 

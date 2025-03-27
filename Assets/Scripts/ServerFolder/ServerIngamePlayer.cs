@@ -21,7 +21,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     int _playerNickName; // (미사용 중) 닉네임 데이터
 
     [Header("플레이어 자산 관련")]
-    public double _money = 1000;         // 현재 현금 보유액
+    public double _money;         // 현재 현금 보유액
     public double _totalMoney;           // 총 자산 (현금 + 소유 부동산 자산 포함)
 
     [Header("플레이어 상태")]
@@ -62,7 +62,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 1000;
+        _money = 100;
         _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
@@ -215,7 +215,19 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
             }
         }
+        
+        Debug.Log(_totalMoney + "dd");
+
+        _totalMoney = 0;
         _totalMoney = _money + tileAssetTotal;
+
+        Debug.Log(_totalMoney + "aa");
+
+        if (_totalMoney < 0)
+        { 
+            _totalMoney = 0;
+            Debug.Log( _playerNum + "게임 오버");
+        }
     }
 
     /// <summary>
@@ -358,7 +370,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
                 else
                 {
-                    Debug.Log("파산");
+                    Debug.Log(" 자동 매각 ");
                 }
             }
         }
@@ -386,6 +398,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         _money -= money;
     }
+
     [PunRPC]
     public void SyncMoney(double updatedMoney)
     {
