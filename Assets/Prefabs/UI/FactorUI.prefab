@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: 30}
+  m_AnchoredPosition: {x: 30, y: 30}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &3239942799433979073
@@ -302,7 +302,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 20, y: 30}
+  m_AnchoredPosition: {x: 30, y: 30}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &7977194629001125836
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 1390427626957948963}
   - component: {fileID: 8523212591993407883}
   m_Layer: 5
-  m_Name: Text (TMP) (3)
+  m_Name: FactorPriceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -436,7 +436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -15, y: 30}
+  m_AnchoredPosition: {x: -30, y: 30}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &1390427626957948963
@@ -548,7 +548,7 @@ GameObject:
   - component: {fileID: 1407395104749919188}
   - component: {fileID: 8139610803183775496}
   m_Layer: 5
-  m_Name: FactorText
+  m_Name: currentTileNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -682,7 +682,7 @@ GameObject:
   - component: {fileID: 7078380824081155564}
   - component: {fileID: 4645875656120948555}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: PlayerMoneyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -704,7 +704,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -15, y: 30}
+  m_AnchoredPosition: {x: -30, y: 30}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &7078380824081155564
@@ -840,7 +840,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 82.82}
+  m_AnchoredPosition: {x: 30, y: 33}
   m_SizeDelta: {x: 170, y: 80}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1480566383303134937
@@ -1040,7 +1040,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -30, y: 82.82}
+  m_AnchoredPosition: {x: -30, y: 33}
   m_SizeDelta: {x: 170, y: 80}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4251336852531166569
@@ -1295,7 +1295,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 80}
+  m_AnchoredPosition: {x: 0, y: 60}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &407610023321931009
@@ -1375,7 +1375,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 450, y: 600}
+  m_SizeDelta: {x: 450, y: 560}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4429797324726211235
 CanvasRenderer:
@@ -1429,5 +1429,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _factorBtn: {fileID: 6497073292209339878}
   _cancelBtn: {fileID: 5273774056906200874}
+  _currentTileName: {fileID: 8139610803183775496}
+  _playerMoney: {fileID: 4645875656120948555}
+  _buyPrice: {fileID: 8523212591993407883}
   _currentTile: {fileID: 0}
-  _player: {fileID: 0}
+  _currentPlayer: {fileID: 0}
+  _targetPlayer: {fileID: 0}

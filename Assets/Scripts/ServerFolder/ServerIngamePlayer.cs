@@ -133,7 +133,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //팝업창 쿨타임(구매, 취소등)
     IEnumerator cooltimedelay(float Scond)
     {
-        yield return new WaitForSeconds(Scond);
+        yield return new WaitForSeconds(10000000000);
         PlayerMoveTest.Instance.endTurn();
     }
 
@@ -142,7 +142,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         Debug.Log("10초전");
         Debug.Log("_isCoolFinish" + _isCoolFinish);
-        yield return new WaitForSeconds(second);
+        yield return new WaitForSeconds(10000000000);
         _isCoolFinish = true;
         Debug.Log("10초후");
         Debug.Log("_isCoolFinish" + _isCoolFinish);
@@ -250,17 +250,29 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         else if(currentTile.GetOwner(0) != _playerNum)
         {
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
+            double currentTileBuyPrice = currentTile.TotalBuyPrice(currentTile);
             if (_view.IsMine == true)
             {
-                if (_money > currentTileTollPrice)
+                // 통행료 지불 가능 상태라면
+                if (_money >= currentTileTollPrice)
                 {
-                    Debug.Log("빠져 나간 돈 : " + currentTileTollPrice);
+                    Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    // 토지주인의 돈 증가 함수 실행
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
                     if (currentTile._tileType == TileType.Ground)
                     {
-                        //StartCoroutine(cooltimedelay(5f));
-                        UIManagerP.instance.OnFactorUI(currentTile, this, FindPlayer(currentTile.GetOwner(0)));
+                        StartCoroutine(cooltimedelay(5f));
+                        if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
+                        {
+                            UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
+                        }
+                        else
+                        {
+                            // 인수 불가 Ui 출력
+                            UIManagerP.instance.OnFactorWarningUI();
+                        }
                     }
                 }
                 else
@@ -292,6 +304,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     public void DecreaseMoney(double money)
     {
         _money -= money;
+    }
+    [PunRPC]
+    public void SyncMoney(double updatedMoney)
+    {
+        if (!photonView.IsMine)
+        {
+            _money = updatedMoney;
+        }
     }
 
     [PunRPC]
