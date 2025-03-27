@@ -113,12 +113,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //    }
     //}
 
-    [PunRPC]
+    
     public void LowPriceSorting(int[] _playerOwnerTileViewArr)
     {
         _playerOwnerTileList.Clear();
 
-        // 배열로 받은거 다시 플레이어 리스트에 넣어주기
+        // 타일 viewID 로 받은거 다시 플레이어 리스트에 넣어주기
         for (int i =0; i < _playerOwnerTileViewArr.Length; i++)
         {
             PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]);
@@ -149,7 +149,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [PunRPC]
     public void AutomaticSale(double _SaleAmount)
     {
-        _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
+        LowPriceSorting(_playerOwnerTileViewArr);
         double _TotalMyLandPrice = 0;
         int i = 0;
         for (i = 0; i < _playerOwnerTileList.Count; i++)
@@ -453,6 +453,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
+            }
+            else
+            {
+                PlayerMoveTest.Instance.endTurn();
             }
         }
         // 주인 = 다른 사람
