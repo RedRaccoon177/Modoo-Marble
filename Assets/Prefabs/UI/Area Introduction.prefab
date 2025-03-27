@@ -2952,6 +2952,7 @@ MonoBehaviour:
   _tilePensionTollPrice: {fileID: 717462409241970409}
   _tileCondoTollPrice: {fileID: 4420005482225602782}
   _tileHotelTollPrice: {fileID: 8041148742344475674}
+  _tileCurrentTotalTollPrice: {fileID: 8172209624445335919}
   Building: {fileID: 5706537666657187123}
   Olympics: {fileID: 78307061080428293}
   Festivities: {fileID: 8553946776647110334}

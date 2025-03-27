@@ -34,6 +34,7 @@ public class FactorUI : MonoBehaviour
         _playerMoney.text = _currentPlayer.GetMoney().ToString();
         _buyPrice.text = _totalBuyPrice.ToString();
         _currentTileName.text = _currentTile._tileName;
+        _skipNextClick = false;
         _firstZeroOwner = 0;
     }
 
@@ -68,12 +69,13 @@ public class FactorUI : MonoBehaviour
                 _firstZeroOwner = _currentTile.GetOwner(i);
             }
         }
-        if(_currentTile.GetPrice(_firstZeroOwner) > _currentPlayer.GetMoney())
+        // 건물 하나라도 인수 안되면 추가 구매 창 안뛰움
+        if(_currentPlayer.GetMoney() < _currentTile.GetPrice(_firstZeroOwner))
         {
             // 타일의 0이아닌 첫번 째 건물 찾기
             _skipNextClick = true;
         }
-        // 0이아닌 첫 번째 건물 
+        // 0이아닌 첫 번째 건물`````````````````````````````````````````````````````` 
         // 주인에게 건설비용 돌려주기
         _currentPlayer.photonView.RPC("DecreaseMoney", RpcTarget.All, _totalBuyPrice);
         Debug.Log($" {_currentPlayer._playerNum} : 건설 비용 빠져 나간 돈 : " + _totalBuyPrice);
