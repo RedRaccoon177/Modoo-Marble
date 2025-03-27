@@ -187,7 +187,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 100;
+        _money = Random.Range(1000,10000);
         _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
