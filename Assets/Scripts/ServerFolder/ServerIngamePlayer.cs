@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon;
-using UnityEngine.UI;
-using Photon.Realtime;
-using System;
 using System.Linq;
-using System.ComponentModel;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
@@ -35,8 +31,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     Coroutine _playerMoveCor;
 
     [Header("소유 타일 정보")]
-    List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅
+    //List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅
     public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지
+    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
+
+    public List<int> _playerOwnerTileViewList = new List<int>();
+    int[] _playerOwnerTileViewArr;
+
     public int _SeaBuyCount = 0; // 관광지 보유 수
 
     [Header("Photon 관련")]
@@ -47,7 +48,113 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     MapManager _mapInfo;
     TurnBasedManager _turnBasedManager;
     PlayerManager _playerManager;
+    bool isBankRun; // 파산 상태인지
+    bool salePossable; // 매각 가능한지
     #endregion
+
+
+    // 리스트에 추가, 중복체크
+    //[PunRPC]
+    //public void AddPlayerOwnerTileList(TileController _currentTile)
+    //{
+    //    if (_playerOwnerTileList.Contains(_currentTile) == false)
+    //    {
+    //        _playerOwnerTileList.Add(_currentTile);
+    //    }
+    //}
+
+    [PunRPC]
+    public void AddPlayerOwnerTileList(int _tileViewNum)
+    {
+        if (_playerOwnerTileViewList.Contains(_tileViewNum) == false)
+        {
+            Debug.Log(_playerNum + " 에게 땅 추가" + (_tileViewNum));
+            _playerOwnerTileViewList.Add(_tileViewNum);
+        }
+    }
+
+    [PunRPC]
+    public void MinusPlayerOwnerTileList(int _tileViewNum)
+    {
+        if (_playerOwnerTileViewList.Contains(_tileViewNum) == true)
+        {
+            Debug.Log(_playerNum + " 에게 땅 없애" + (_tileViewNum));
+            _playerOwnerTileViewList.Remove(_tileViewNum);
+        }
+    }
+
+    /// <summary>
+    ///  비용이 마련될 때까지 매각 해버림
+    /// </summary>
+    /// <param name="_playerOwnerTileList"></param>
+    //[PunRPC]
+    //public void LowPriceSorting(List<TileController> _playerOwnerTileList)
+    //{
+    //    // 버블 정렬 (낮은 가격 순)
+    //    for (int i=0; i < _playerOwnerTileList.Count() - 1; i++)
+    //    {
+    //        for (int j=0; j< _playerOwnerTileList.Count() - i - 1; j++)
+    //        {
+    //            if (_playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]) > _playerOwnerTileList[i+1].TotalBuyPrice(_playerOwnerTileList[i+1]))
+    //            {
+    //                var _temp = _playerOwnerTileList[i]; 
+    //                _playerOwnerTileList[i] = _playerOwnerTileList[i + 1];
+    //                _playerOwnerTileList[i + 1] = _temp;
+    //            }
+    //        }
+    //    }
+    //}
+
+    [PunRPC]
+    public void LowPriceSorting(int[] _playerOwnerTileViewArr)
+    {
+        _playerOwnerTileList.Clear();
+
+        // 배열로 받은거 다시 플레이어 리스트에 넣어주기
+        for (int i =0; i < _playerOwnerTileViewArr.Length; i++)
+        {
+            PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]);
+            TileController _currentTileController = _tileViewId.GetComponent<TileController>();
+            _playerOwnerTileList.Add(_currentTileController);
+        }
+
+        // 버블 정렬 (낮은 가격 순)
+        for (int i = 0; i < _playerOwnerTileList.Count() - 1; i++)
+        {
+            for (int j = 0; j < _playerOwnerTileList.Count() - i - 1; j++)
+            {
+                if (_playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]) > _playerOwnerTileList[i + 1].TotalBuyPrice(_playerOwnerTileList[i + 1]))
+                {
+                    var _temp = _playerOwnerTileList[i];
+                    _playerOwnerTileList[i] = _playerOwnerTileList[i + 1];
+                    _playerOwnerTileList[i + 1] = _temp;
+                }
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// 인자값으로 추가로 내야하는 금액 받음
+    /// </summary>
+    /// <param name="_SaleAmount"></param>
+    [PunRPC]
+    public void AutomaticSale(double _SaleAmount)
+    {
+        _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
+        int idx = 0;
+        double _TotalMyLandPrice = 0;
+        while (_SaleAmount > _TotalMyLandPrice)
+        {
+            _TotalMyLandPrice += _playerOwnerTileList[idx++].TotalBuyPrice(_playerOwnerTileList[idx++]);
+        }
+        for (int i = 0; i < idx; i++)
+        {
+            // 소유주 은행으로 모두 변경
+        }
+    }
+
+
 
     #region Start문, Update문
     void Start()
@@ -96,10 +203,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         {
             _isTurn = true;
             _isCoolFinish = false;
-        }
-        if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
-        {
-            PrintPlayerGroundLists();
         }
     }
     #endregion
@@ -275,9 +378,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                         }
                     }
                 }
-                else
+                else // 통행료 지불이 불가한 상태라면
                 {
-                    Debug.Log("파산");
+                    // 총 내야 하는 통행료 - 현재 돈
+                    _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money);
+                    Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
                 }
             }
         }
@@ -328,42 +433,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         return _money;
     }
 
-    /// <summary>
-    /// 소유한 일반 땅을 모두 출력 (디버깅용)
-    /// </summary>
-    public void PrintPlayerGroundLists()
-    {
-        foreach (var item in _playerGroundLists)
-        {
-            Debug.Log(item);
-        }
-    }
-
-    /// <summary>
-    /// 소유한 모든 땅의 총 가격 반환
-    /// </summary>
-    public double TotalLandCost()
-    {
-        double _totalPrice = 0;
-
-        foreach (var tile in _playerGroundLists)
-        {
-            _totalPrice += tile._tileLandPrice;
-            _totalPrice += tile._tilePensionPrice;
-            _totalPrice += tile._tileCondoPrice;
-            _totalPrice += tile._tileHotelPrice;
-        }
-
-        return _totalPrice;
-    }
-
-    /// <summary>
-    /// 일반 타일을 구매했을 때 리스트에 추가
-    /// </summary>
-    public void AddPlayerGroundLists(TileController tileController)
-    {
-        _playerGroundLists.Add(tileController);
-    }
+   
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {

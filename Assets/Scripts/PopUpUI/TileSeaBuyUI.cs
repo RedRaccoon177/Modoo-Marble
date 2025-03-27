@@ -153,7 +153,7 @@ public class TileSeaBuyUI : MonoBehaviour
 
         // 관광지 타일 리스트에 현재 타일 추가
         _playerData.photonView.RPC("AddSeaTile", RpcTarget.All, _currentTile.photonView.ViewID);
-
+        _playerData.photonView.RPC("AddPlayerOwnerTileList", RpcTarget.All, _currentTile.photonView.ViewID);
         // 관광지 보유 리스트 최신화
         _playerData.RefreshOwnedSeaTiles();
         _seaBuyCount = _playerData.GetOwnedSeaTileCount();

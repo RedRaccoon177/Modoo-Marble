@@ -147,5 +147,7 @@ MonoBehaviour:
   _money: 1000
   _totalMoney: 0
   _ownedSeaTiles: []
+  _playerOwnerTileList: []
+  _playerOwnerTileViewList: 
   _SeaBuyCount: 0
   _view: {fileID: 0}

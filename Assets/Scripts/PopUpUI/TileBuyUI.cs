@@ -322,6 +322,7 @@ public class TileBuyUI : MonoBehaviour
         {
             if (_playerData.photonView.OwnerActorNr == _playerKey)
             {
+                _playerData.photonView.RPC("AddPlayerOwnerTileList",RpcTarget.All,_currentTile.photonView.ViewID);
                 _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
                 _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
                 break;
