@@ -11,6 +11,7 @@ public class NewBehaviourScript : MonoBehaviour
     {
         UIManagerP.instance._DataUnfinished += SetData;
         _closeButton.onClick.AddListener(() => UIManagerP.instance.OffClickUI());
+        _closeButton.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
     }
 
     public void SetData(TileController _data)

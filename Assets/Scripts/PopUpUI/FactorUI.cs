@@ -48,6 +48,7 @@ public class FactorUI : MonoBehaviour
             StartBuyProcess(); // ±¸¸Å UI ¶ç¿ì±â
         });
         _cancelBtn.onClick.AddListener(() => UIManagerP.instance.OffFactorUI());
+        _cancelBtn.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
     }
 
     private void StartBuyProcess()
