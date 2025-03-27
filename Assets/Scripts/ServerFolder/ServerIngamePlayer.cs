@@ -103,7 +103,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     int _diceNum = _turnBasedManager.Dice();
                     //TODO: 테스트를 위한 임시 주석
                     //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 20);
+                    Debug.Log(_playerPosIndex);
                 }
             }
         }
@@ -363,6 +364,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
+        OnPlayerPositionChanged?.Invoke(_playerPosIndex);//코루틴 끝나고 플레이위치를 받아서위치(SMW)
+        Debug.Log(_playerPosIndex +" 이것는 테스트를 위한 것이요.");
     }
 
     public ServerIngamePlayer FindPlayer(int _actorNum)
@@ -455,4 +458,40 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             Debug.Log(_playerNum + "생성");
         }
     }
+
+
+    public static event Action<int> OnPlayerPositionChanged;//플레이어 위치를 올림픽에게 보냄 
+    public static event Action<bool> OlympicCheck;//플레이어가 올림픽을 개최했으면 중복안되게 해줄이벤트
+
+
+    public void IsSelect(bool check)
+    {
+        if (check == false)
+        {
+            OlympicCheck?.Invoke(false);
+        }
+    }
+
+    public int PlayerPosIndex
+    {
+        get => _playerPosIndex;
+        set
+        {
+            if (_playerPosIndex != value) // 값이 변경될 때만 실행
+            {
+                _playerPosIndex = value;
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        Olympic.AlreadyCheck += IsSelect;
+    }
+    private void OnDisable()
+    {
+        Olympic.AlreadyCheck -= IsSelect;
+    }
+
+
 }
