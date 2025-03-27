@@ -39,9 +39,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [Header("소유 타일 정보")]
     //List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅
     public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지
-    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
 
-    public List<int> _playerOwnerTileViewList = new List<int>();
     int[] _playerOwnerTileViewArr;
 
     public int _SeaBuyCount = 0; // 관광지 보유 수
@@ -70,6 +68,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //        _playerOwnerTileList.Add(_currentTile);
     //    }
     //}
+    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
+    public List<int> _playerOwnerTileViewList = new List<int>();
 
     [PunRPC]
     public void AddPlayerOwnerTileList(int _tileViewNum)
@@ -163,7 +163,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 _TotalMyLandPrice += _playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]);
             }
         }
-        for (int j = 0; j < _playerOwnerTileList.Count; j++)
+        for (int j = 0; j < i; j++)
         {
             for (int k =0; k<4; k++)
             {
@@ -172,6 +172,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     _playerOwnerTileList[j].SetOwner(k,0);
                 }
             }
+        }
+        for (int h = 0; h < i; h++)
+        {
+            var a = _playerOwnerTileList[h].photonView.ViewID;
+            _playerOwnerTileViewList.Remove(a);
         }
         if (i >= _playerOwnerTileList.Count)
         {
@@ -491,8 +496,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
                 else // 통행료 지불이 불가한 상태라면
                 {
-                    // 총 내야 하는 통행료 - 현재 돈
+                    _view.RPC("DecreaseMoney", RpcTarget.All, _money);
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money);
+                    _view.RPC("TotalMoney", RpcTarget.All);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
                     Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
                 }
             }
