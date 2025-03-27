@@ -63,7 +63,7 @@ public class TileBuyUI : MonoBehaviour
     int _playerKey;                             // 나의 고유 ActorNumber
     int[] _enemyKeys;                           // 상대방들 ActorNumber
 
-    PlayerMoveTest _playerMoveTest;
+    TurnMgr _playerMoveTest;
     ServerIngamePlayer _playerData;
     #endregion
 
@@ -328,7 +328,7 @@ public class TileBuyUI : MonoBehaviour
             }
         }
 
-        _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
+        _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
 
         UIManagerP.instance.OffBuyUIPanel();
@@ -342,7 +342,7 @@ public class TileBuyUI : MonoBehaviour
         _currentMoney = _cancelRememberMoney;
         UIManagerP.instance.OffBuyUIPanel();
 
-        _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
+        _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
     }
 

@@ -483,8 +483,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 610824020}
-        m_TargetAssemblyTypeName: PlayerMoveTest, Assembly-CSharp
+      - m_Target: {fileID: 610824023}
+        m_TargetAssemblyTypeName: TurnMgr, Assembly-CSharp
         m_MethodName: endTurn
         m_Mode: 1
         m_Arguments:
@@ -850,8 +850,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 610824021}
-  - component: {fileID: 610824020}
   - component: {fileID: 610824022}
+  - component: {fileID: 610824023}
   m_Layer: 0
   m_Name: ServerPlayerMoveTest
   m_TagString: Untagged
@@ -859,25 +859,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &610824020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 610824019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4472ef4f5f059f644ba54bc11c6568c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerfabs:
-  - {fileID: 2251393183922970900, guid: d09971626ac887942bb3bfa6af682e20, type: 3}
-  - {fileID: 2251393183922970900, guid: 51a18b0212b67f241ac141effc2949cb, type: 3}
-  - {fileID: 2251393183922970900, guid: 87d2003e61b15084db090a1f42f5c610, type: 3}
-  - {fileID: 2251393183922970900, guid: 24ec2184c60f22d42be79f8906981709, type: 3}
-  playerTurnText: {fileID: 1986182976}
-  currentTurnText: {fileID: 1261970125}
 --- !u!4 &610824021
 Transform:
   m_ObjectHideFlags: 0
@@ -915,6 +896,25 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &610824023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610824019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e824203c87e1af4dbd5e4c65adb7f73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerfabs:
+  - {fileID: 2251393183922970900, guid: d09971626ac887942bb3bfa6af682e20, type: 3}
+  - {fileID: 2251393183922970900, guid: 51a18b0212b67f241ac141effc2949cb, type: 3}
+  - {fileID: 2251393183922970900, guid: 87d2003e61b15084db090a1f42f5c610, type: 3}
+  - {fileID: 2251393183922970900, guid: 24ec2184c60f22d42be79f8906981709, type: 3}
+  playerTurnText: {fileID: 1986182976}
+  currentTurnText: {fileID: 1261970125}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2082,7 +2082,7 @@ RectTransform:
   m_Father: {fileID: 1652753646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3605,7 +3605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1725498105
 RectTransform:
   m_ObjectHideFlags: 0
