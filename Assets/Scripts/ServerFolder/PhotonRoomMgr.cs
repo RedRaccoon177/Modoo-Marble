@@ -104,6 +104,29 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         Debug.Log("로비 퇴장");
     }
 
+    //방에서 유저 나가면
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        TurnMgr.leaveNum++;
+        if (otherPlayer.ActorNumber == 1)
+        {
+            TurnMgr.leave1 = true;
+        }
+        if (otherPlayer.ActorNumber == 2)
+        {
+            TurnMgr.leave2 = true;
+        }
+        if (otherPlayer.ActorNumber == 3)
+        {
+            TurnMgr.leave3 = true;
+        }
+        if (otherPlayer.ActorNumber == 4)
+        {
+            TurnMgr.leave4 = true;
+        }
+
+    }
+
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         Debug.Log("리스트들어옴");
