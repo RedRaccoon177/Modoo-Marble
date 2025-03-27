@@ -331,7 +331,7 @@ public class TileBuyUI : MonoBehaviour
         _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
 
-        _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
+        _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
 
         UIManagerP.instance.OffBuyUIPanel();
@@ -345,7 +345,7 @@ public class TileBuyUI : MonoBehaviour
         _currentMoney = _cancelRememberMoney;
         UIManagerP.instance.OffBuyUIPanel();
 
-        _playerMoveTest = FindObjectOfType<PlayerMoveTest>();
+        _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
 
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);

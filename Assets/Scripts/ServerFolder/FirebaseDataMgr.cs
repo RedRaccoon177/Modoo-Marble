@@ -1,3 +1,4 @@
+//최동오
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,8 +12,6 @@ using Firebase.Extensions;
 using System.Threading.Tasks;
 using System;
 
-
-//궁금한게 내가원하는씬에서 부터 생성하면 그때부터 계속 생성되게는 안돼나
 public class FirebaseDataMgr : MonoBehaviourPunCallbacks
 {
     public static FirebaseDataMgr Instance { get; private set; }
@@ -41,7 +40,6 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
         {
             FirebaseApp app = FirebaseApp.DefaultInstance;
             dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-            Debug.Log("ㅇㅇ12");
 
             if (FirebaseLoginMgr.user != null)
             {
@@ -85,7 +83,6 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
     //id의 레벨 불러오고 playerLevel 변수에 담음
     //playerLevel =  데이터value; 이런식
     //await할때까지 기달림
-    //그놈의 비동기 
     //https://ljhyunstory.tistory.com/284 
     public async Task<T> LoadUserDataAsync<T>(string userId, string dataName, T type)
     {
