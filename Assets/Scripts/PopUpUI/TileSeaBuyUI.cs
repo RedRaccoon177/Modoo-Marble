@@ -59,9 +59,11 @@ public class TileSeaBuyUI : MonoBehaviour
         //구매 버튼 클릭 시
         _buyButton.onClick.AddListener(() => UIManagerP.instance.OffBuyUIPanel());
         _buyButton.onClick.AddListener(() => BuySeaTile());
+        _buyButton.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
 
         //취소 버튼 클릭 시
         _closeButton.onClick.AddListener(() => UIManagerP.instance.OffBuyUIPanel());
+        _closeButton.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
         
         //관광지 팝업 활성화 될 시
         UIManagerP.instance._buyChangeDataSea += SetTileData;
