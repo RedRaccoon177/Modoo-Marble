@@ -146,6 +146,8 @@ MonoBehaviour:
   _playerNum: 0
   _money: 1000
   _totalMoney: 0
+  currentDiceCooldown1: 5
+  currentDiceCooldown2: 5
   _ownedSeaTiles: []
   _SeaBuyCount: 0
   _view: {fileID: 0}

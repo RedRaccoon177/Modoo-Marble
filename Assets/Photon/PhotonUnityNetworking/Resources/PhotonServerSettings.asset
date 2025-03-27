@@ -58,6 +58,9 @@ MonoBehaviour:
   - SliderValue
   - ds
   - ds1
+  - AddSeaTile
+  - SyncMoney
+  - TotalMoney
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

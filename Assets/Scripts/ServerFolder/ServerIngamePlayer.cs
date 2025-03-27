@@ -184,13 +184,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         Debug.Log($"[총 자산 계산] 현금: {_money}, 땅/건물 자산: {tileAssetTotal}, 총합: {_totalMoney}");
     }
 
-    //팝업창 쿨타임(구매, 취소등)
-    IEnumerator cooltimedelay(float Scond)
-    {
-        yield return new WaitForSeconds(10000000000);
-        PlayerMoveTest.Instance.endTurn();
-    }
-
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
