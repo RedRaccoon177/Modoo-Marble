@@ -63,6 +63,11 @@ MonoBehaviour:
   - TotalMoney
   - Dicecooltime
   - HideSlider
+  - AddPlayerOwnerTileList
+  - AutomaticSale
+  - LowPriceSorting
+  - MinusPlayerOwnerTileList
+  - ApplyOlympicEffect
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

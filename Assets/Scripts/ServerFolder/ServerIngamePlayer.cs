@@ -7,6 +7,7 @@ using Photon;
 using System.Linq;
 using System.ComponentModel;
 using Unity.VisualScripting;
+using System;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
@@ -58,7 +59,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     GameObject mySliderobj;             // 슬라이더 오브젝트
     #endregion
 
-
     // 리스트에 추가, 중복체크
     //[PunRPC]
     //public void AddPlayerOwnerTileList(TileController _currentTile)
@@ -72,6 +72,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     public List<int> _playerOwnerTileViewList = new List<int>();
 
     [PunRPC]
+
     public void AddPlayerOwnerTileList(int _tileViewNum)
     {
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == false)
@@ -190,7 +191,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = Random.Range(1000,10000);
+        _money = 1000;
         _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
@@ -207,11 +208,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         //내턴 and (쿨타임 or 주사위)
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {
-
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
-                photonView.RPC("Dicecooltime", RpcTarget.All);
+                //TODO: 테스트용 주석
+                //hotonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
@@ -223,7 +224,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
 
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 20);
                 }
             }
         }
@@ -422,6 +423,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             if (photonView.IsMine)
             {
                 //쿨타임
+                //TODO: 테스트용 주석
                 //StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
@@ -435,6 +437,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 if (photonView.IsMine)
                 {
                     //쿨타임
+                    //TODO: 테스트용 주석
                     //StartCoroutine(cooltimedelay(second));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
@@ -471,6 +474,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
 
                     if (currentTile._tileType == TileType.Ground)
                     {
+                        //TODO: 테스트용 주석
                         //StartCoroutine(cooltimedelay(5f));
                         if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
                         {
@@ -495,7 +499,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             }
         }
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
-        OnPlayerPositionChanged?.Invoke(_playerPosIndex);//코루틴 끝나고 플레이위치를 받아서위치(SMW)
+        OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
         Debug.Log(_playerPosIndex +" 이것는 테스트를 위한 것이요.");
     }
 
@@ -556,11 +560,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         }
     }
 
-
-    public static event Action<int> OnPlayerPositionChanged;//플레이어 위치를 올림픽에게 보냄 
-    public static event Action<bool> OlympicCheck;//플레이어가 올림픽을 개최했으면 중복안되게 해줄이벤트
-
-
     public void IsSelect(bool check)
     {
         if (check == false)
@@ -581,6 +580,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         }
     }
 
+    public static event Action<int, int> OnPlayerPositionChanged;
+    public static event Action<bool> OlympicCheck;            // 플레이어가 올림픽을 개최했으면 중복 안되게 해줄 이벤트
+
     private void OnEnable()
     {
         Olympic.AlreadyCheck += IsSelect;
@@ -589,6 +591,5 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         Olympic.AlreadyCheck -= IsSelect;
     }
-
 
 }

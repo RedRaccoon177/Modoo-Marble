@@ -237,7 +237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d2075a548c35848aeccc0ca7857eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OlympicUI: {fileID: 1018988982135116254, guid: 07be6e97d4e584f45a5d324687f8faad, type: 3}
 --- !u!1 &3824028992111520739
 GameObject:
   m_ObjectHideFlags: 0
