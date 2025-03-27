@@ -255,7 +255,6 @@ public partial class TileController : MonoBehaviourPun
         if (_tilePensionOwner != 0) { _totalTollPrice += _tilePensionPrice; }
         if (_tileCondoOwner != 0) { _totalTollPrice += _tileCondoPrice; }
         if (_tileHotelOwner != 0) { _totalTollPrice += _tileHotelPrice; }
-        Debug.Log("비용비용비용 : " + _totalTollPrice);
         return _totalTollPrice;
     }
 
