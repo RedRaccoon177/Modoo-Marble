@@ -283,7 +283,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         {
             currentDiceCooldown1 -= Time.deltaTime;
             mySlider.value = currentDiceCooldown1;
-            Debug.Log("currentDiceCooldown1 : " + currentDiceCooldown1);
             yield return null;
         }
         mySlider.gameObject.SetActive(false);
@@ -299,7 +298,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         while (currentDiceCooldown2 > 0f)
         {
             currentDiceCooldown2 -= Time.deltaTime;
-            Debug.Log("currentDiceCooldown2 : " + currentDiceCooldown1);
             yield return null;
         }
         //yield return new WaitForSeconds(Second);
