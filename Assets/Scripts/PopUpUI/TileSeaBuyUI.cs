@@ -173,7 +173,8 @@ public class TileSeaBuyUI : MonoBehaviour
         _tileSheet.text = _seaBuyCount.ToString();
         _tileToll.text = GetTollBySeaCount(_seaBuyCount).ToString();
 
-        Debug.Log($"{_playerKey}번 플레이어가 관광지 {_currentTile._tileName}을 구매했습니다. 현재 보유 수: {_seaBuyCount}");
+        // 총 자산 확인
+        _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
     }
 
 

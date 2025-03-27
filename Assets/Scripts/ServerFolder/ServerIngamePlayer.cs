@@ -15,46 +15,46 @@ using Unity.VisualScripting;
 /// </summary>
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagicCallback
 {
-    #region 플레이어 변수들
+    #region 플레이어 기본 정보
     [Header("플레이어 기본 정보")]
-    public int _playerNum; // 고유 번호
-    int _playerNickName; // 닉네임 (미사용?)
+    public int _playerNum; // 플레이어 고유 번호
+    int _playerNickName; // (미사용 중) 닉네임 데이터
 
     [Header("플레이어 자산 관련")]
-    public double _money = 1000; // 현금
-    public double _totalMoney; // 총 자산 (현금 + 부동산 등)
+    public double _money = 1000;         // 현재 현금 보유액
+    public double _totalMoney;           // 총 자산 (현금 + 소유 부동산 자산 포함)
 
     [Header("플레이어 상태")]
-    bool _isLoan; // 대출 여부
-    bool _isTurn = true; // 현재 턴 여부
-    bool _isCoolFinish = false; // 주사위 쿨타임 완료 여부
-    Coroutine runningCoroutine;
-    float second = 5f;
-    public float currentDiceCooldown1 = 5f; //주사위 쿨타임
-    [SerializeField] private float currentDiceCooldown2 = 5f; //UI팝업창 쿨타임
+    bool _isLoan;                        // 대출 여부
+    bool _isTurn = true;                 // 현재 턴 여부
+    bool _isCoolFinish = false;          // 주사위 쿨타임 완료 여부
+    Coroutine runningCoroutine;          // 주사위 쿨타임 코루틴 참조
+    float second = 5f;                   // 기본 쿨타임 시간
+    public float currentDiceCooldown1 = 5f; // 주사위 쿨타임 (슬라이더용)
+    [SerializeField] private float currentDiceCooldown2 = 5f; // UI 팝업창 쿨타임
 
     [Header("맵 및 위치 정보")]
-    int _mapTurn; // 맵 회전 수
-    int _playerPosIndex = 0; // 현재 위치 인덱스
-    Coroutine _playerMoveCor;
+    int _mapTurn;                        // 맵을 한 바퀴 돈 횟수
+    int _playerPosIndex = 0;             // 현재 위치 인덱스
+    Coroutine _playerMoveCor;            // 이동 중인 코루틴 참조
 
     [Header("소유 타일 정보")]
-    List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅
-    public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지
-    public int _SeaBuyCount = 0; // 관광지 보유 수
+    List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅 리스트
+    public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지(Sea타일) 리스트
+    public int _SeaBuyCount = 0;         // 보유한 관광지 수
 
     [Header("Photon 관련")]
-    public PhotonView _view;
-    public static Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>();
+    public PhotonView _view;             // PhotonView 참조
+    public static Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>(); // 전체 플레이어 관리 딕셔너리
 
     [Header("게임 매니저 참조")]
-    MapManager _mapInfo;
-    TurnBasedManager _turnBasedManager;
-    PlayerManager _playerManager;
+    MapManager _mapInfo;                 // 맵 정보 참조
+    TurnBasedManager _turnBasedManager; // 턴 관리 매니저
+    PlayerManager _playerManager;       // 플레이어 매니저
 
-    Slider mySlider;
-    GameObject mySliderobj;
-
+    [Header("UI 관련")]
+    Slider mySlider;                     // 주사위 쿨타임 슬라이더
+    GameObject mySliderobj;             // 슬라이더 오브젝트
     #endregion
 
     #region Start문, Update문
@@ -83,7 +83,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         //내턴 and 스페이스바 or 쿨타임끝남 
         if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn)
         {
-
             ////내턴 될때 쿹타임 10초 
             //if (runningCoroutine == null && _isCoolFinish == false)
             //{
@@ -91,12 +90,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             //    photonView.RPC("ds", RpcTarget.All);
             //}
 
-
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
             {
                 if (photonView.IsMine && _isTurn == true)
                 {
-
                     currentDiceCooldown1 = second;
                     //여기에 기능  //currentDiceCooldown1 주사위굴러가면 초기화 안보이게? 넣으면댐 
                     //ui를 숨기다던지 //처음에 find로 찾아놓고 바꿔야댐 
@@ -104,13 +101,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
 
                     //_isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
+                    //TODO: 테스트를 위한 임시 주석
                     //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
                 }
             }
         }
-        
-
 
         //주사위 중복 방지 
         // 또는 버튼기능클릭시 ****
@@ -128,6 +124,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     }
     #endregion
 
+    #region 뭔지 모를 함수들
     [PunRPC]
     void ds1()
     {
@@ -154,41 +151,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             mySliderobj.transform.localPosition = new Vector3(687, -287, 0);
         }
 
-
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
+    #endregion
 
-    [PunRPC]
-    public void TotalMoney()
-    {
-        double tileAssetTotal = 0;
-
-        // 전체 타일 순회
-        for (int i = 0; i < _mapInfo._tiles.Length; i++)
-        {
-            TileController currentTile = _mapInfo._tiles[i].GetComponent<TileController>();
-
-            // 땅(0) ~ 호텔(3)까지 확인
-            for (int index = 0; index <= 3; index++)
-            {
-                // 이 타일의 이 건물이 내 소유인가?
-                if (currentTile.GetOwner(index) == _playerNum)
-                {
-                    tileAssetTotal += currentTile.GetPrice(index);
-                }
-            }
-        }
-
-        _totalMoney = _money + tileAssetTotal;
-
-        Debug.Log($"[총 자산 계산] 현금: {_money}, 땅/건물 자산: {tileAssetTotal}, 총합: {_totalMoney}");
-    }
-
+    #region 주사위 쿨타임
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
-        currentDiceCooldown1 = Second; 
+        currentDiceCooldown1 = Second;
         mySlider.gameObject.SetActive(true);
+
         //currentDiceCooldown1 주사위굴러가면 초기화 안보이게?
         while (currentDiceCooldown1 > 0f)
         {
@@ -216,6 +189,33 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         //yield return new WaitForSeconds(Second);
         currentDiceCooldown2 = Second;
         PlayerMoveTest.Instance.endTurn();
+    }
+    #endregion
+
+    /// <summary>
+    /// 플레이어의 총 자산(현금 + 보유 토지)
+    /// </summary>
+    [PunRPC]
+    public void TotalMoney()
+    {
+        double tileAssetTotal = 0;
+
+        // 전체 타일 순회
+        for (int i = 0; i < _mapInfo._tiles.Length; i++)
+        {
+            TileController currentTile = _mapInfo._tiles[i].GetComponent<TileController>();
+
+            // 땅(0) ~ 호텔(3)까지 확인
+            for (int index = 0; index <= 3; index++)
+            {
+                // 이 타일의 이 건물이 내 소유인가?
+                if (currentTile.GetOwner(index) == _playerNum)
+                {
+                    tileAssetTotal += currentTile.GetPrice(index);
+                }
+            }
+        }
+        _totalMoney = _money + tileAssetTotal;
     }
 
     /// <summary>
@@ -296,7 +296,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             if (photonView.IsMine)
             {
                 //쿨타임
-                StartCoroutine(cooltimedelay(second));
+                //TODO: 테스트를 위한 주석
+                //StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
@@ -307,9 +308,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             if (currentTile._tileType == TileType.Ground)
             {
                 if (photonView.IsMine)
-                {  
+                {
                     //쿨타임
-                    StartCoroutine(cooltimedelay(second));
+                    //TODO: 테스트를 위한 주석
+                    //StartCoroutine(cooltimedelay(second));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
@@ -326,13 +328,23 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 if (_money >= currentTileTollPrice)
                 {
                     Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
+                    
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
+
+                    // 총 자산 확인
+                    _view.RPC("TotalMoney", RpcTarget.All);
+
                     // 토지주인의 돈 증가 함수 실행
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
+
+                    // 총 자산 확인
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
+
                     if (currentTile._tileType == TileType.Ground)
                     {
-                        StartCoroutine(cooltimedelay(5f));
+                        //TODO: 테스트를 위한 주석
+                        //StartCoroutine(cooltimedelay(5f));
                         if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
                         {
                             UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));

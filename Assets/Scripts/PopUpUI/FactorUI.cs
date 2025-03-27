@@ -60,7 +60,6 @@ public class FactorUI : MonoBehaviour
         }
     }
 
-
     public void Factor()
     {
         for (int i = 0; i < 4; i++)
@@ -79,10 +78,12 @@ public class FactorUI : MonoBehaviour
         // 0이아닌 첫 번째 건물`````````````````````````````````````````````````````` 
         // 주인에게 건설비용 돌려주기
         _currentPlayer.photonView.RPC("DecreaseMoney", RpcTarget.All, _totalBuyPrice);
+        _currentPlayer.photonView.RPC("TotalMoney", RpcTarget.All);
         Debug.Log($" {_currentPlayer._playerNum} : 건설 비용 빠져 나간 돈 : " + _totalBuyPrice);
 
         // 새로운 주인에게 비용 부과
         _targetPlayer.photonView.RPC("IncreaseMoney", RpcTarget.All, _totalBuyPrice);
+        _targetPlayer.photonView.RPC("TotalMoney", RpcTarget.All);
         Debug.Log($" {_targetPlayer._playerNum} : 건설 비용 빠져 나간 돈 : " + _totalBuyPrice);
         for (int i=0; i< 4; i ++)
         {
@@ -92,6 +93,4 @@ public class FactorUI : MonoBehaviour
             }
         }
     }   
-
-
 }
