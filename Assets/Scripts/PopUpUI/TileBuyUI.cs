@@ -24,6 +24,12 @@ public class TileBuyUI : MonoBehaviour
 
     [Header("땅 이름")]
     public TextMeshProUGUI _tileName;           // 타일의 이름 표시
+    [Header("땅 총 통행료")]
+    public TextMeshProUGUI _tileTotalTollPrice;          
+    [Header("땅 총 건설비용")]
+    public TextMeshProUGUI _tileTotalBuyPrice;
+    [Header("플레이어 돈")]
+    public TextMeshProUGUI _playerMoneyText;
 
     [Header("타일 땅,건물들 가격")]
     public TextMeshProUGUI[] _buildingPricesText; // 각 건물의 가격 텍스트
@@ -58,6 +64,7 @@ public class TileBuyUI : MonoBehaviour
     int[] _enemyKeys;                           // 상대방들 ActorNumber
 
     PlayerMoveTest _playerMoveTest;
+    ServerIngamePlayer _playerData;
     #endregion
 
     void Awake()
@@ -67,6 +74,44 @@ public class TileBuyUI : MonoBehaviour
         UpdateCheckImages(); // 색상 초기화
         BindButtonEvents();  // 버튼 이벤트 연결
         SetPlayerAndEnemies();
+    }
+    double TotalBuyPrice()
+    {
+        double total = 0;
+
+        for (int i = 0; i < _buildingChecks.Length; i++)
+        {
+            // 체크되어 있고, 내가 소유하지 않은 건물만 가격에 포함
+            if (_buildingChecks[i] && _tileOwners[i] != _playerKey)
+            {
+                total += _currentTile.GetPrice(i);
+            }
+        }
+
+        return total;
+    }
+    double TotalTollPrice()
+    {
+        double total = 0;
+        for (int i = 0; i < _buildingChecks.Length; i++)
+        {
+            if (_buildingChecks[i])
+                total += _currentTile.GetTollPrice(i);
+        }
+        return total;
+    }
+    public void PrintTotalTollPrice()
+    {
+        _tileToll.text = TotalTollPrice().ToString();
+    }
+
+    public void PrintTotalBuyPrice()
+    {
+        _tileTotalBuyPrice.text = TotalBuyPrice().ToString();
+    }
+    public void PrintPlayerMoney(ServerIngamePlayer _player)
+    {
+        _playerMoneyText.text = _player.GetMoney().ToString();
     }
 
     /// <summary>
@@ -117,6 +162,8 @@ public class TileBuyUI : MonoBehaviour
         UpdateBuyButtonState();
 
         if (_FHandleBankOwnership) TileBuyCheckBtnCheck();
+        PrintTotalTollPrice();
+        PrintTotalBuyPrice();
     }
 
     /// <summary>
@@ -175,9 +222,17 @@ public class TileBuyUI : MonoBehaviour
             _tileOwners[i] = data.GetOwner(i);
         }
 
-        ServerIngamePlayer _playerData = FindObjectOfType<ServerIngamePlayer>();
-        if (_playerData == null) return;
+        ServerIngamePlayer[] playerDatas = FindObjectsOfType<ServerIngamePlayer>();
+        foreach (var playerData in playerDatas)
+        {
+            if (playerData.photonView.OwnerActorNr == _playerKey)
+            {
+                _playerData = playerData;
+                break;
+            }
+        }
 
+        PrintPlayerMoney(_playerData);
         ResetButtonStates();
         _currentMoney = _cancelRememberMoney = _playerData.GetMoney();
 
@@ -246,15 +301,19 @@ public class TileBuyUI : MonoBehaviour
     /// </summary>
     void BuyButtonClick()
     {
-        if (_currentTile == null) return;
+        double actualBuyCost = 0;
 
         for (int i = 0; i < 4; i++)
         {
             int owner = _tileOwners[i];
-            int newOwner = owner == 0
-                ? (_buildingChecks[i] ? _playerKey : 0)
-                : owner; // 기존 소유자 유지
+            bool isChecked = _buildingChecks[i];
 
+            if (owner == 0 && isChecked)
+            {
+                actualBuyCost += _currentTile.GetPrice(i);  // 새로 구매할 건물
+            }
+
+            int newOwner = (owner == 0 && isChecked) ? _playerKey : owner;
             _currentTile.photonView.RPC("SetOwner", RpcTarget.All, i, newOwner);
         }
 
@@ -264,6 +323,7 @@ public class TileBuyUI : MonoBehaviour
             if (_playerData.photonView.OwnerActorNr == _playerKey)
             {
                 _playerData.photonView.RPC("MoneyReturn", RpcTarget.All, _currentMoney);
+                _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
                 break;
             }
         }

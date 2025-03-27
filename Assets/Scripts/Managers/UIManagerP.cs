@@ -13,6 +13,9 @@ public class UIManagerP : MonoBehaviour
     [Header("인수창 UI")]
     public GameObject _factorUI;
 
+    [Header("인수 불가 안내 UI")]
+    public GameObject _factorWarningUI;
+
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
     [SerializeField] Transform canvus;
@@ -40,21 +43,32 @@ public class UIManagerP : MonoBehaviour
         OffBuyUIPanel();    // 구매할 때 나타나는 UI 비활성화
         _factorUI = Instantiate(_factorUI, canvus);
         _factorUI.SetActive(false);
+        _factorWarningUI = Instantiate(_factorWarningUI, canvus);
+        _factorWarningUI.SetActive(false);
     }
 
     /// <summary>
     /// 패널 활성화 및 구매 UI 활성화 
     /// </summary>
     /// <param name="_tileType"></param>
+    public void OnFactorWarningUI()
+    {
+        _factorWarningUI.SetActive(true);
+    }
+    public void OffFactorWarningUI()
+    {
+        _factorWarningUI.SetActive(false);
+    }
 
-
-    public void OnFactorUI(TileController currentTile, ServerIngamePlayer player)
+    public void OnFactorUI(TileController currentTile, ServerIngamePlayer player, ServerIngamePlayer targetPlayer)
     {
         //_factorUI.transform.position = _target;
         var _facScr = _factorUI.GetComponent<FactorUI>();
         _facScr._currentTile = currentTile;
-        _facScr._player = player;
+        _facScr._currentPlayer = player;
+        _facScr._targetPlayer = targetPlayer;
         _factorUI.SetActive(true);
+        _facScr.SetData();
     }
     public void OffFactorUI()
     {
@@ -143,6 +157,7 @@ public class UIManagerP : MonoBehaviour
             _clickTileUI[i] = Instantiate(_clickTileUI[i],canvus);
         }
     }
+
     /// <summary>
     ///  타입 전해주면 그 타입의 ui 띄움 타일 클릭시 생성되는 UI
     /// </summary>
@@ -176,6 +191,7 @@ public class UIManagerP : MonoBehaviour
             temp.SetActive(false);
         }
     }
+
     /// <summary>
     ///  타입에 맞게 이벤트 실행, 이벤트 = 데이터 주입 이벤트
     /// </summary>

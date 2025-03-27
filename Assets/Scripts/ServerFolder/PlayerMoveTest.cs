@@ -41,21 +41,24 @@ public class PlayerMoveTest : Singleton<PlayerMoveTest>
 
     private void Start()
     {
+        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+        object[] initData = new object[] { actorNumber };
+
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {
-            PhotonNetwork.Instantiate(playerfabs[0].name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(playerfabs[0].name, Vector3.zero, Quaternion.identity, 0, initData);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
         {
-            PhotonNetwork.Instantiate(playerfabs[1].name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(playerfabs[1].name, Vector3.zero, Quaternion.identity, 0, initData);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
         {
-            PhotonNetwork.Instantiate(playerfabs[2].name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(playerfabs[2].name, Vector3.zero, Quaternion.identity, 0, initData);
         }
         else if (PhotonNetwork.LocalPlayer.ActorNumber == 4)
         {
-            PhotonNetwork.Instantiate(playerfabs[3].name, Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(playerfabs[3].name, Vector3.zero, Quaternion.identity,0, initData);
         }
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
@@ -69,6 +72,10 @@ public class PlayerMoveTest : Singleton<PlayerMoveTest>
 
     public void endTurn()
     {
+        UIManagerP.instance.OffBuyUIPanel();
+        UIManagerP.instance.OffFactorUI();
+        UIManagerP.instance.OffClickUI();
+
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {

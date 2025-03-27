@@ -186,6 +186,7 @@ MonoBehaviour:
   _tileCondoToll: 0
   _tileHotelToll: 0
   _tileLandMarkToll: 0
+  _totalTollPrice: 0
 --- !u!114 &-7105071037113260314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +290,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.18, y: 0}
-  m_SizeDelta: {x: 31.809, y: 25}
+  m_SizeDelta: {x: 1.2, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5033928339646250918
 CanvasRenderer:
@@ -490,7 +491,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0.0492, y: 2.49}
-  m_SizeDelta: {x: 1.7063, y: 1.798}
+  m_SizeDelta: {x: 1, y: 1.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2488002566124294735
 Canvas:
@@ -625,7 +626,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.105, y: 0}
-  m_SizeDelta: {x: 31.809, y: 25}
+  m_SizeDelta: {x: 1.2, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1710045159846671997
 CanvasRenderer:

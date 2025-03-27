@@ -10,8 +10,7 @@ public class NewBehaviourScript : MonoBehaviour
     private void Awake()
     {
         UIManagerP.instance._DataUnfinished += SetData;
-        _closeButton.onClick.AddListener(() => gameObject.SetActive(false));
-
+        _closeButton.onClick.AddListener(() => UIManagerP.instance.OffClickUI());
     }
 
     public void SetData(TileController _data)
