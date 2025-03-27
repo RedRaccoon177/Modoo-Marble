@@ -444,7 +444,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             }
             else
             {
-                PlayerMoveTest.Instance.endTurn();
+                TurnMgr.Instance.endTurn();
             }
         }
         // 주인 = 다른 사람
