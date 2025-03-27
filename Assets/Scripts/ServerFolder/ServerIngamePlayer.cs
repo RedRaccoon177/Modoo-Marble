@@ -83,14 +83,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         //내턴 and 스페이스바 or 쿨타임끝남 
         if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerMoveTest.CurrentTurn)
         {
-            /*
-            //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null && _isCoolFinish ==false)
-            {
-                //runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
-                photonView.RPC("ds", RpcTarget.All);
-            }
-            */
+
+            ////내턴 될때 쿹타임 10초 
+            //if (runningCoroutine == null && _isCoolFinish == false)
+            //{
+            //    //runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
+            //    photonView.RPC("ds", RpcTarget.All);
+            //}
+
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
             {
