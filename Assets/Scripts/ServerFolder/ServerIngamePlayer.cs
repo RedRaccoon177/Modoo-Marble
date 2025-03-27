@@ -113,7 +113,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //    }
     //}
 
-    
+    [PunRPC]
     public void LowPriceSorting(int[] _playerOwnerTileViewArr)
     {
         _playerOwnerTileList.Clear();
@@ -149,7 +149,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [PunRPC]
     public void AutomaticSale(double _SaleAmount)
     {
-        LowPriceSorting(_playerOwnerTileViewArr);
+        _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
         double _TotalMyLandPrice = 0;
         int i = 0;
         for (i = 0; i < _playerOwnerTileList.Count; i++)
