@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4859121585563102265}
   - component: {fileID: -7105071037113260314}
   - component: {fileID: -64542540165084391}
+  - component: {fileID: -7023569442368063237}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -224,6 +225,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-7023569442368063237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699882789391996105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d2075a548c35848aeccc0ca7857eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OlympicUI: {fileID: 1018988982135116254, guid: 07be6e97d4e584f45a5d324687f8faad, type: 3}
 --- !u!1 &3824028992111520739
 GameObject:
   m_ObjectHideFlags: 0
