@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class test : MonoBehaviourPunCallbacks
+public class WaitingRoomManager : MonoBehaviourPunCallbacks
 {
     public Transform roomListPanel;
     public GameObject TestPlayerImage;

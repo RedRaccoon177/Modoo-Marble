@@ -8,6 +8,7 @@ using Photon;
 using Photon.Pun;
 
 // PhotonNetworkMgr 클래스는 Singleton(싱글톤) 패턴으로 만들어졌음.
+// MonoBehaviourPunCallbacks을 상속 받음. 
 // Singleton<PhotonNetworkMgr>을 상속받아 전역에서 하나의 인스턴스를 공유함.
 public class PhotonNetworkMgr : Singleton<PhotonNetworkMgr>
 {

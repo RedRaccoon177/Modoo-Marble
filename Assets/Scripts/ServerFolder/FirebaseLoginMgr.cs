@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using TMPro;
 
 //로그인창
-//임시 나중에 리스트로 담아서 해야될듯 지금은 기능 구현 우선
 public class FirebaseLoginMgr : MonoBehaviour
 {
     //유저 
@@ -23,32 +22,23 @@ public class FirebaseLoginMgr : MonoBehaviour
     [SerializeField] private TMP_InputField LoginIdInputField;
     [SerializeField] private TMP_InputField LoginPasswordInputField;
     [SerializeField] TextMeshProUGUI LoginwarningText;
+
     //회원가입용
     [Header("회원가입용")]
     [SerializeField] private TMP_InputField CreateIdInputField;
     [SerializeField] private TMP_InputField CreatePasswordInputField;
     [SerializeField] TextMeshProUGUI CreatewarningText;
+
+    //닉네임 설정용
     [Header("닉네임 설정용")]
     [SerializeField] private TMP_InputField NickNameInputField;
     [SerializeField] TextMeshProUGUI NickNamewarningText;
-
 
     [Header("큰테두리Ui")]
     [SerializeField] private GameObject SceneChanege;
     [SerializeField] private GameObject LoginUiPanel;
     [SerializeField] private GameObject CreateUiIdPanel;
     [SerializeField] private GameObject NickNameUiPanel;
-
-
-
-
-   
-
-
-
-
-
-
 
     private void Awake()
     {
@@ -67,8 +57,8 @@ public class FirebaseLoginMgr : MonoBehaviour
         LoginwarningText.text = "";
     }
 
-    //지금은 3개 만들자 헷갈린다
     //회원가입패널로 넘어감
+    //나중에는 인자값으로 받고 하면 될듯
     public void CreateIdPanel()
     {
         //회원가입패널
@@ -128,8 +118,8 @@ public class FirebaseLoginMgr : MonoBehaviour
     public void CreateNickName()
     {
         StartCoroutine(CreateNickNameCor(NickNameInputField.text));
-
     }
+
     IEnumerator CreateNickNameCor(string NickName)
     {
         if (user != null)
@@ -159,11 +149,6 @@ public class FirebaseLoginMgr : MonoBehaviour
                     NickNameUiPanel.gameObject.SetActive(false);
                     SceneChanege.gameObject.SetActive(true);
                 }
-                
-                
-
-
-               
             }
 
         }
@@ -269,15 +254,7 @@ public class FirebaseLoginMgr : MonoBehaviour
             else
             {
                 SceneChanege.gameObject.SetActive(true);
-
             }
         }
-
-
-
     }
-
-
-
-
 }
