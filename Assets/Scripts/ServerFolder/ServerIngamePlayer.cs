@@ -142,16 +142,34 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     public void AutomaticSale(double _SaleAmount)
     {
         _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
-        int idx = 0;
         double _TotalMyLandPrice = 0;
-        while (_SaleAmount > _TotalMyLandPrice)
+        int i = 0;
+        for (i = 0; i < _playerOwnerTileList.Count; i++)
         {
-            _TotalMyLandPrice += _playerOwnerTileList[idx++].TotalBuyPrice(_playerOwnerTileList[idx++]);
+            if (_SaleAmount <= _TotalMyLandPrice)
+            {
+                break;
+            }
+            else
+            {
+                _TotalMyLandPrice += _playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]);
+            }
         }
-        for (int i = 0; i < idx; i++)
+        for (int j = 0; j < _playerOwnerTileList.Count; j++)
         {
-            // 소유주 은행으로 모두 변경
+            for (int k =0; k<4; k++)
+            {
+                if (_playerOwnerTileList[j].GetOwner(k) == _playerNum)
+                {
+                    _playerOwnerTileList[j].SetOwner(k,0);
+                }
+            }
         }
+        if (i >= _playerOwnerTileList.Count)
+        {
+            Debug.Log("파산");
+        }
+
     }
 
 
@@ -161,7 +179,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 1000;
+        _money = Random.Range(100,1000);
         _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
@@ -190,7 +208,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     //_isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
                     //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                 }
             }
         }
@@ -357,7 +375,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             if (_view.IsMine == true)
             {
                 // 통행료 지불 가능 상태라면
-                if (_money >= currentTileTollPrice)
+                if (_money > currentTileTollPrice)
                 {
                     Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
