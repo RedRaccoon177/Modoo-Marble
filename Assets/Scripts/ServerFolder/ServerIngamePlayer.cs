@@ -90,6 +90,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
                     currentDiceCooldown1 = second;
                     //여기에 기능  //currentDiceCooldown1 주사위굴러가면 초기화 안보이게? 넣으면댐 
                     //ui를 숨기다던지 //처음에 find로 찾아놓고 바꿔야댐 
+                    photonView.RPC("ds1", RpcTarget.All);
                     Debug.Log("여기들어옴");
                     var ddd = _turnBasedManager.Dice();
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, ddd);
@@ -99,7 +100,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
         
 
 
-        //주사위 중복 방지
+        //주사위 중복 방지 
         // 또는 버튼기능클릭시 ****
         // 구매 쿨타이도 넣어아함 ****
         // 안전빵으로 쿨타임 메서드 두개만들자
@@ -113,26 +114,31 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
             PrintPlayerGroundLists();
         }
     }
+    [PunRPC]
+    void ds1()
+    {
+        mySlider.gameObject.SetActive(false);
+    }
 
     [PunRPC]
     void ds()
     {
         if (PlayerMoveTest.currentTurn == 1)
         {
-            mySliderobj.transform.localPosition = new Vector3(-1100, 0, 0);
+            mySliderobj.transform.localPosition = new Vector3(-720, 269, 0);
         }
         else if (PlayerMoveTest.currentTurn == 2)
         {
-            mySliderobj.transform.localPosition = new Vector3(0, 0, 0);
+            mySliderobj.transform.localPosition = new Vector3(720, 269, 0);
         }
-        //else if (PlayerMoveTest.currentTurn == 3)
-        //{
-        //    mySliderobj.transform.position = new Vector3(0, mySlider.transform.position.y, mySlider.transform.position.z);
-        //}
-        //else if (PlayerMoveTest.currentTurn == 4)
-        //{
-        //    mySliderobj.transform.position = new Vector3(0, mySlider.transform.position.y, mySlider.transform.position.z);
-        //}
+        else if (PlayerMoveTest.currentTurn == 3)
+        {
+            mySliderobj.transform.localPosition = new Vector3(695, -269, 0);
+        }
+        else if (PlayerMoveTest.currentTurn == 4)
+        {
+            mySliderobj.transform.localPosition = new Vector3(687, -287, 0);
+        }
 
 
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
@@ -141,6 +147,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
+        currentDiceCooldown1 = Second; 
         mySlider.gameObject.SetActive(true);
         //currentDiceCooldown1 주사위굴러가면 초기화 안보이게?
         while (currentDiceCooldown1 > 0f)
