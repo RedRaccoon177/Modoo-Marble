@@ -61,12 +61,8 @@ MonoBehaviour:
   - AddSeaTile
   - SyncMoney
   - TotalMoney
-  - SyncMoney
-  - AddPlayerOwnerTileList
-  - AutomaticSale
-  - LowPriceSorting
-  - AddPlayerOwnerTileListp
-  - MinusPlayerOwnerTileList
+  - Dicecooltime
+  - HideSlider
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

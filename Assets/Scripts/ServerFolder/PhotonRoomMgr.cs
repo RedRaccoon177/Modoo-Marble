@@ -55,15 +55,16 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     {
         PhotonNetwork.JoinRoom(joinRoomInput.text);
     }
+
     public void JoinRandomRoom()
     {
         PhotonNetwork.JoinRandomRoom();
     }
+
     public void QuitRoom()
     {
         PhotonNetwork.LeaveRoom();
         Debug.Log("룸나감");
-
     }
 
     public override void OnConnectedToMaster()
@@ -74,10 +75,12 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         PhotonNetwork.JoinLobby();
         PhotonNetworkMgr.Instance.changeScene("RoomScene");
     }
+
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.Log("연결 끊김 감지. 사유: " + cause);
     }
+
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         Debug.Log("방 참여 실패. 보통 이러면 새로운 방 생성");
@@ -90,6 +93,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
         PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
     }
+
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 입장");
@@ -98,6 +102,29 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     public override void OnLeftLobby()
     {
         Debug.Log("로비 퇴장");
+    }
+
+    //방에서 유저 나가면
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        TurnMgr.leaveNum++;
+        if (otherPlayer.ActorNumber == 1)
+        {
+            TurnMgr.leave1 = true;
+        }
+        if (otherPlayer.ActorNumber == 2)
+        {
+            TurnMgr.leave2 = true;
+        }
+        if (otherPlayer.ActorNumber == 3)
+        {
+            TurnMgr.leave3 = true;
+        }
+        if (otherPlayer.ActorNumber == 4)
+        {
+            TurnMgr.leave4 = true;
+        }
+
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -117,11 +144,5 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
             roomBtn.GetComponent<Button>().onClick.AddListener(()=>PhotonNetwork.JoinRoom(roomInfo.Name));
         }
     }
-
-
-
-
-
-
 }
 
