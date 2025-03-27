@@ -149,5 +149,7 @@ MonoBehaviour:
   currentDiceCooldown1: 5
   currentDiceCooldown2: 5
   _ownedSeaTiles: []
+  _playerOwnerTileList: []
+  _playerOwnerTileViewList: 
   _SeaBuyCount: 0
   _view: {fileID: 0}
