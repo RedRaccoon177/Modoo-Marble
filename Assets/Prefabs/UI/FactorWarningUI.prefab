@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 3942430962707550628}
   - component: {fileID: 4064000483921913357}
   - component: {fileID: 9204438163668334492}
+  - component: {fileID: 6686542675963178094}
   m_Layer: 5
   m_Name: FactorWarningUI
   m_TagString: Untagged
@@ -480,3 +481,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6686542675963178094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735657451695544505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8406a70d9f4f7e343b4629bf99a08060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _closeBtn: {fileID: 4615374964489470747}
