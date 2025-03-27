@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon;
 using System.Linq;
@@ -240,10 +241,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         {
             _isTurn = true;
             _isCoolFinish = false;
-        }
-        if (Input.GetKeyDown(KeyCode.Q) && _view.IsMine)
-        {
-            PrintPlayerGroundLists();
         }
     }
     #endregion
