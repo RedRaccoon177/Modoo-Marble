@@ -144,8 +144,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerNum: 0
+  currentDiceCooldown1: 5
+  currentDiceCooldown2: 5
+  coolSiders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _money: 10000000
-  _view: {fileID: 0}
   _SeaBuyCount: 0
   _ownedSeaTiles: []
-  _totalMoney: 0

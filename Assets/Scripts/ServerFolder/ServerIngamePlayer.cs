@@ -8,6 +8,7 @@ using Photon.Realtime;
 using System;
 using System.Linq;
 using System.ComponentModel;
+using Unity.VisualScripting;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
@@ -28,6 +29,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     bool _isTurn = true; // 현재 턴 여부
     bool _isCoolFinish = false; // 주사위 쿨타임 완료 여부
     Coroutine runningCoroutine;
+    float second = 5f;
+    public float currentDiceCooldown1 = 5f; //주사위 쿨타임
+    [SerializeField] private float currentDiceCooldown2 = 5f; //UI팝업창 쿨타임
 
     [Header("맵 및 위치 정보")]
     int _mapTurn; // 맵 회전 수
@@ -47,6 +51,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     MapManager _mapInfo;
     TurnBasedManager _turnBasedManager;
     PlayerManager _playerManager;
+
+    Slider mySlider;
+    GameObject mySliderobj;
+
     #endregion
 
     #region Start문, Update문
@@ -61,6 +69,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
         _playerPosIndex = 0;
+
+        mySliderobj = GameObject.Find("CoolTimeGameObject");
+        mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
+        //mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(PhotonNetwork.LocalPlayer.ActorNumber-1).GetComponent<Slider>();
+        //int sdsd = PhotonNetwork.LocalPlayer.ActorNumber * 100;
+        //mySlider.transform.position = new Vector3(mySlider.transform.position.x, mySlider.transform.position.y + sdsd, mySlider.transform.position.z);
+
     }
 
     void Update()
@@ -70,9 +85,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         {
             /*
             //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null)
+            if (runningCoroutine == null && _isCoolFinish ==false)
             {
-                runningCoroutine = StartCoroutine(Dicecooltimedelay(5f));
+                //runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
+                photonView.RPC("ds", RpcTarget.All);
             }
             */
 
@@ -80,6 +96,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             {
                 if (photonView.IsMine && _isTurn == true)
                 {
+
+                    currentDiceCooldown1 = second;
+                    //여기에 기능  //currentDiceCooldown1 주사위굴러가면 초기화 안보이게? 넣으면댐 
+                    //ui를 숨기다던지 //처음에 find로 찾아놓고 바꿔야댐 
+                    photonView.RPC("ds1", RpcTarget.All);
+
                     //_isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
                     //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
@@ -87,8 +109,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
             }
         }
+        
 
-        //주사위 중복 방지
+
+        //주사위 중복 방지 
         // 또는 버튼기능클릭시 ****
         // 구매 쿨타이도 넣어아함 ****
         // 안전빵으로 쿨타임 메서드 두개만들자
@@ -103,6 +127,36 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         }
     }
     #endregion
+
+    [PunRPC]
+    void ds1()
+    {
+        mySlider.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    void ds()
+    {
+        if (PlayerMoveTest.currentTurn == 1)
+        {
+            mySliderobj.transform.localPosition = new Vector3(-720, 269, 0);
+        }
+        else if (PlayerMoveTest.currentTurn == 2)
+        {
+            mySliderobj.transform.localPosition = new Vector3(720, 269, 0);
+        }
+        else if (PlayerMoveTest.currentTurn == 3)
+        {
+            mySliderobj.transform.localPosition = new Vector3(695, -269, 0);
+        }
+        else if (PlayerMoveTest.currentTurn == 4)
+        {
+            mySliderobj.transform.localPosition = new Vector3(687, -287, 0);
+        }
+
+
+        runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
+    }
 
     [PunRPC]
     public void TotalMoney()
@@ -138,15 +192,37 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     }
 
     //주사위 쿨타임
-    IEnumerator Dicecooltimedelay(float second)
+    IEnumerator Dicecooltimedelay(float Second)
     {
-        Debug.Log("10초전");
-        Debug.Log("_isCoolFinish" + _isCoolFinish);
-        yield return new WaitForSeconds(10000000000);
+        currentDiceCooldown1 = Second; 
+        mySlider.gameObject.SetActive(true);
+        //currentDiceCooldown1 주사위굴러가면 초기화 안보이게?
+        while (currentDiceCooldown1 > 0f)
+        {
+            currentDiceCooldown1 -= Time.deltaTime;
+            mySlider.value = currentDiceCooldown1;
+            Debug.Log("currentDiceCooldown1 : " + currentDiceCooldown1);
+            yield return null;
+        }
+        mySlider.gameObject.SetActive(false);
+        //yield return new WaitForSeconds(Second);
         _isCoolFinish = true;
-        Debug.Log("10초후");
-        Debug.Log("_isCoolFinish" + _isCoolFinish);
+        currentDiceCooldown1 = Second;
         runningCoroutine = null; //코루틴 중복 방지
+    }
+
+    //팝업창 쿨타임(구매, 취소등)
+    IEnumerator cooltimedelay(float Second)
+    {
+        while (currentDiceCooldown2 > 0f)
+        {
+            currentDiceCooldown2 -= Time.deltaTime;
+            Debug.Log("currentDiceCooldown2 : " + currentDiceCooldown1);
+            yield return null;
+        }
+        //yield return new WaitForSeconds(Second);
+        currentDiceCooldown2 = Second;
+        PlayerMoveTest.Instance.endTurn();
     }
 
     /// <summary>
@@ -227,7 +303,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             if (photonView.IsMine)
             {
                 //쿨타임
-                //StartCoroutine(cooltimedelay(5f));
+                StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
@@ -240,7 +316,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 if (photonView.IsMine)
                 {  
                     //쿨타임
-                    //StartCoroutine(cooltimedelay(5f));
+                    StartCoroutine(cooltimedelay(second));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }

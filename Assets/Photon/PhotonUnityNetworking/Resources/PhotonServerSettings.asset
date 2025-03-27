@@ -54,8 +54,10 @@ MonoBehaviour:
   - MoneyReturn
   - TileNameSetting
   - TileSetting
-  - AddSeaTile
-  - TotalMoney
+  - SyncSliderValue
+  - SliderValue
+  - ds
+  - ds1
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
