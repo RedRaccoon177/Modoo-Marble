@@ -165,6 +165,9 @@ MonoBehaviour:
   - {fileID: 2127961043408758888}
   - {fileID: 4300264190279331065}
   - {fileID: 450770368380050526}
+  _tilePensionObj: {fileID: 8977827523553440518}
+  _tileCondoObj: {fileID: 7716240937344735836}
+  _tileHotelObj: {fileID: 7500159015021958368}
   _tileKey: 0
   _tileName: 
   _tilePos: {x: 0, y: 0, z: 0}
@@ -18005,6 +18008,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4626781085969470, guid: 7a2f99b3629a166488103a3c0255f58f, type: 3}
   m_PrefabInstance: {fileID: 7498643020175230442}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7500159015021958368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1516201072267530, guid: 7a2f99b3629a166488103a3c0255f58f, type: 3}
+  m_PrefabInstance: {fileID: 7498643020175230442}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7513389195167687921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18567,6 +18575,11 @@ PrefabInstance:
 --- !u!4 &7710262984138865628 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4555252279078314, guid: 58c820f24d534fc42a684fa1c2860048, type: 3}
+  m_PrefabInstance: {fileID: 7714795556291499638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7716240937344735836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1668985641159722, guid: 58c820f24d534fc42a684fa1c2860048, type: 3}
   m_PrefabInstance: {fileID: 7714795556291499638}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7745089962840297496
@@ -21879,6 +21892,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4a521900c27d504aa19df480329f342, type: 3}
+--- !u!1 &8977827523553440518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1648905886851508, guid: a4a521900c27d504aa19df480329f342, type: 3}
+  m_PrefabInstance: {fileID: 8976374700691673778}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8979387587800832460 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4306050776583038, guid: a4a521900c27d504aa19df480329f342, type: 3}

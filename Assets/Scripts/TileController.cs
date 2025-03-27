@@ -15,6 +15,10 @@ public partial class TileController : MonoBehaviourPun
     [Header("보조 타일 타입")] public GameObject BuildPostions;
     [Header("보조 타일 타입")] public GameObject[] InGameTilePrefabs;
 
+    [Header("건물 활성화를 위한 변수")]
+    public GameObject _tilePensionObj;
+    public GameObject _tileCondoObj;
+    public GameObject _tileHotelObj;
 }
 
 public partial class TileController : MonoBehaviourPun
@@ -58,6 +62,18 @@ public partial class TileController : MonoBehaviourPun
         StartCoroutine(SetupTileIfNotMaster());
     }
 
+    public void ActiveObj()
+    {
+        if(_tilePensionOwner != 0) _tilePensionObj.SetActive(true);
+        else _tilePensionObj.SetActive(false);
+
+        if(_tileCondoOwner != 0) _tileCondoObj.SetActive(true);
+        else _tileCondoObj.SetActive(false);
+
+        if(_tileHotelOwner != 0) _tileHotelObj.SetActive(true);
+        else _tileHotelObj.SetActive(false);
+    }
+
     IEnumerator SetupTileIfNotMaster()
     {
         yield return new WaitForSeconds(0.5f);
@@ -79,8 +95,8 @@ public partial class TileController : MonoBehaviourPun
                         if (data._tileKey >= 0 && data._tileKey < map._tiles.Length)
                         {
                             map._tiles[data._tileKey] = this.gameObject;
-                            TileNameSetting(data._tileKey, this.gameObject);
-                            TileSetting(this, this.gameObject);
+                            map.TileNameSetting(data._tileKey, this.gameObject);
+                            map.TileSetting(this, this.gameObject);
                             Debug.Log($"[참가자] _tiles[{data._tileKey}] 등록 완료");
                         }
 
@@ -88,191 +104,6 @@ public partial class TileController : MonoBehaviourPun
                     }
                 }
             }
-        }
-    }
-
-    public void TileNameSetting(int num, GameObject gameObject)
-    {
-        _cityname = gameObject.transform.GetChild(5).GetChild(0).gameObject;
-        _bonusStage = gameObject.transform.GetChild(5).GetChild(1).gameObject;
-
-        switch (gameObject.GetComponent<TileController>()._tileType)
-        {
-            case TileType.Start:
-                _bonusStage.SetActive(true);
-                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _cityname.SetActive(false);
-                break;
-
-            case TileType.Sea:
-                _cityname.SetActive(true);
-                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _bonusStage.SetActive(false);
-                break;
-
-            case TileType.Ground:
-                _cityname.SetActive(true);
-                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _bonusStage.SetActive(false);
-                break;
-
-            case TileType.Item:
-                _cityname.SetActive(true);
-                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _bonusStage.SetActive(false);
-                break;
-
-            case TileType.Island:
-                _bonusStage.SetActive(true);
-                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _cityname.SetActive(false);
-                break;
-
-            case TileType.Olympics:
-                _bonusStage.SetActive(true);
-                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _cityname.SetActive(false);
-                break;
-
-            case TileType.Travel:
-                _bonusStage.SetActive(true);
-                _bonusStage.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _cityname.SetActive(false);
-                break;
-
-            case TileType.revenue:
-                _cityname.SetActive(true);
-                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _bonusStage.SetActive(false);
-                break;
-
-            case TileType.casino:
-                _cityname.SetActive(true);
-                _cityname.GetComponent<TextMeshProUGUI>().text = gameObject.GetComponent<TileController>()._tileName;
-                _bonusStage.SetActive(false);
-                break;
-        }
-    }
-
-    void TileSetting(TileController tile, GameObject tiles)
-    {
-        switch ((int)tile._subTileType)
-        {
-            case 0:
-                tile.InGameTilePrefabs[0].SetActive(true);
-                break;
-
-            case 1:
-                tile.InGameTilePrefabs[1].SetActive(true);
-                break;
-
-            case 2:
-                tile.InGameTilePrefabs[2].SetActive(true);
-                break;
-
-            case 3:
-                tile.InGameTilePrefabs[6].gameObject.SetActive(true);
-                break;
-
-            case 4:
-                tile.InGameTilePrefabs[7].SetActive(true);
-                break;
-
-            case 5:
-                tile.InGameTilePrefabs[8].SetActive(true);
-                break;
-
-            case 6:
-                tile.InGameTilePrefabs[9].SetActive(true);
-                break;
-
-            case 7:
-                break;
-
-            case 8:
-                tile.InGameTilePrefabs[5].SetActive(true);
-                break;
-
-            case 9:
-                tile.InGameTilePrefabs[7].SetActive(true);
-                break;
-
-            case 10:
-                break;
-
-            case 11:
-                tile.InGameTilePrefabs[18].SetActive(true);
-                break;
-
-            case 12:
-                tile.InGameTilePrefabs[26].SetActive(true);
-                break;
-
-            case 13:
-                tile.InGameTilePrefabs[27].SetActive(true);
-                break;
-
-            case 14:
-                tile.InGameTilePrefabs[28].SetActive(true);
-                break;
-
-            case 15:
-                tile.InGameTilePrefabs[14].SetActive(true);
-                break;
-
-            case 16:
-                tile.InGameTilePrefabs[15].SetActive(true);
-                break;
-
-            case 17:
-                tile.InGameTilePrefabs[16].SetActive(true);
-                break;
-
-            case 18:
-                tile.InGameTilePrefabs[22].SetActive(true);
-                break;
-
-            case 19:
-                tile.InGameTilePrefabs[23].SetActive(true);
-                break;
-
-            case 20:
-                tile.InGameTilePrefabs[24].SetActive(true);
-                break;
-
-            case 21:
-                tile.InGameTilePrefabs[25].SetActive(true);
-                break;
-
-            case 22:
-                tile.InGameTilePrefabs[20].SetActive(true);
-                break;
-
-            case 23:
-                tile.InGameTilePrefabs[21].SetActive(true);
-                break;
-
-            case 24:
-                tile.InGameTilePrefabs[29].SetActive(true);
-                break;
-
-            case 25:
-                tile.InGameTilePrefabs[30].SetActive(true);
-                break;
-
-            case 26:
-                tile.InGameTilePrefabs[31].SetActive(true);
-                break;
-
-            case 27:
-                tile.InGameTilePrefabs[32].SetActive(true);
-                break;
-
-            case 28:
-                tile.InGameTilePrefabs[21].SetActive(true);
-                break;
-
-
         }
     }
 
@@ -404,9 +235,9 @@ public partial class TileController : MonoBehaviourPun
                 Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
                 break;
         }
-    }
 
-   
+        ActiveObj();
+    }
 
     public double TotalTollPrice(TileController _tileController)
     {
