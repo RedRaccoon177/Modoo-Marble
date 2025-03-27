@@ -133,7 +133,7 @@ public class MapManager : MonoBehaviourPun
         }
     }
 
-    void TileSetting(TileController tile, GameObject tiles)
+    public void TileSetting(TileController tile, GameObject tiles)
     {
         switch ((int)tile._subTileType)
         {

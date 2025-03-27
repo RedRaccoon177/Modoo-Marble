@@ -25,13 +25,13 @@ MonoBehaviour:
   _tileHotelOwner: 0
   _tileLandMarkOwner: 0
   _tilePriceColor: 0
-  _tileLandPrice: 192000
-  _tilePensionPrice: 80000
-  _tileCondoPrice: 240000
-  _tileHotelPrice: 400000
-  _tileLandMarkPrice: 400000
-  _tileLandToll: 72000
-  _tilePensionToll: 148000
-  _tileCondoToll: 320000
-  _tileHotelToll: 680000
-  _tileLandMarkToll: 600000
+  _tileLandPrice: 10
+  _tilePensionPrice: 20
+  _tileCondoPrice: 30
+  _tileHotelPrice: 40
+  _tileLandMarkPrice: 1
+  _tileLandToll: 100
+  _tilePensionToll: 200
+  _tileCondoToll: 300
+  _tileHotelToll: 400
+  _tileLandMarkToll: 1

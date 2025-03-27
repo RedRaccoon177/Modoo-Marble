@@ -59,9 +59,11 @@ public class TileSeaBuyUI : MonoBehaviour
         //구매 버튼 클릭 시
         _buyButton.onClick.AddListener(() => UIManagerP.instance.OffBuyUIPanel());
         _buyButton.onClick.AddListener(() => BuySeaTile());
+        _buyButton.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
 
         //취소 버튼 클릭 시
         _closeButton.onClick.AddListener(() => UIManagerP.instance.OffBuyUIPanel());
+        _closeButton.onClick.AddListener(() => PlayerMoveTest.Instance.endTurn());
         
         //관광지 팝업 활성화 될 시
         UIManagerP.instance._buyChangeDataSea += SetTileData;
@@ -92,6 +94,8 @@ public class TileSeaBuyUI : MonoBehaviour
     public void SetTileData(TileController data)
     {
         if (data == null) return;
+
+        //SetPlayerData();
 
         _currentTile = data;
 
@@ -151,7 +155,7 @@ public class TileSeaBuyUI : MonoBehaviour
 
         // 관광지 타일 리스트에 현재 타일 추가
         _playerData.photonView.RPC("AddSeaTile", RpcTarget.All, _currentTile.photonView.ViewID);
-
+        _playerData.photonView.RPC("AddPlayerOwnerTileList", RpcTarget.All, _currentTile.photonView.ViewID);
         // 관광지 보유 리스트 최신화
         _playerData.RefreshOwnedSeaTiles();
         _seaBuyCount = _playerData.GetOwnedSeaTileCount();
@@ -171,7 +175,10 @@ public class TileSeaBuyUI : MonoBehaviour
         _tileSheet.text = _seaBuyCount.ToString();
         _tileToll.text = GetTollBySeaCount(_seaBuyCount).ToString();
 
-        Debug.Log($"{_playerKey}번 플레이어가 관광지 {_currentTile._tileName}을 구매했습니다. 현재 보유 수: {_seaBuyCount}");
+        // 총 자산 확인
+        _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
+
+        Debug.Log(_playerData);
     }
 
 
