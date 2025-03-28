@@ -8,33 +8,25 @@ using Photon.Pun;
 /// </summary>
 public class GameOverResultWindow : MonoBehaviour
 {
+    [Header("게임 오버 상황")]
+    public GameObject _gameOverPanel;
+
     [Header("플레이어 결과 UI 프리팹")]
-    public GameObject playerResultUIPrefab;
+    public GameObject _playerResultUIPrefab;
 
     [Header("결과 UI 부모 오브젝트 (Canvas 내부)")]
-    public Transform contentParent;
+    public Transform _contentParent;
 
     [Header("UI 간격 (Y축)")]
-    public float spacingY = -180f;
-
-    void Start()
-    {
-        CreateResultUIs();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CreateResultUIs();
-        }
-    }
+    public float _spacingY = -180f;
 
     /// <summary>
     /// 플레이어 수에 따라 결과 UI를 생성하고 순서대로 배치
     /// </summary>
-    void CreateResultUIs()
+    public void CreateResultUIs()
     {
+        _gameOverPanel.SetActive(true);
+
         // 모든 플레이어 데이터 가져오기
         List<ServerIngamePlayer> allPlayers = new List<ServerIngamePlayer>(ServerIngamePlayer._players.Values);
 
@@ -47,11 +39,11 @@ public class GameOverResultWindow : MonoBehaviour
             ServerIngamePlayer player = allPlayers[i];
 
             // UI 프리팹 인스턴스 생성
-            GameObject uiObj = Instantiate(playerResultUIPrefab, contentParent);
+            GameObject uiObj = Instantiate(_playerResultUIPrefab, _contentParent);
 
             // 위치 설정 (수직으로 차례대로 나열)
             RectTransform rt = uiObj.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(0, spacingY * i);
+            rt.anchoredPosition = new Vector2(0, _spacingY * i);
 
             // PlayerResult 컴포넌트 접근 후 데이터 세팅
             PlayerResult resultUI = uiObj.GetComponent<PlayerResult>();

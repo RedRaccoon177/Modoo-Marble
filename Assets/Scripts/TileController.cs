@@ -27,8 +27,6 @@ public partial class TileController : MonoBehaviourPun
     MeshRenderer _tilePensionMat;
     MeshRenderer _tileCondoMat;
     MeshRenderer _tileHotelMat;
-
-
 }
 
 public partial class TileController : MonoBehaviourPun

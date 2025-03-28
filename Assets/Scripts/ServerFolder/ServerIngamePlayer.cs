@@ -16,9 +16,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 {
     #region 플레이어 기본 정보
     [Header("플레이어 기본 정보")]
-    public int _playerNum; // 플레이어 고유 번호
-    public string _playerNickName; // 닉네임 데이터
-    public int _ranking;
+    public int _playerNum;          // 플레이어 고유 번호
+    public string _playerNickName;  // 닉네임 데이터
+    public int _ranking;            // 플레이어 순위
 
     [Header("플레이어 자산 관련")]
     public double _money;         // 현재 현금 보유액
@@ -190,6 +190,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             Debug.Log("파산");
             FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney);
+            ALLPlayerBankruptcy();
         }
         else
         {
@@ -197,6 +198,35 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice);
         }
     }
+
+    public void ALLPlayerBankruptcy()
+    {
+        // 살아있는 플레이어 수 체크
+        int aliveCount = 0;
+        ServerIngamePlayer lastAlivePlayer = null;
+
+        foreach (var playerData in ServerIngamePlayer._players.Values)
+        {
+            if (playerData._totalMoney > 0)
+            {
+                aliveCount++;
+                lastAlivePlayer = playerData; // 마지막으로 살아남은 사람 저장
+            }
+        }
+
+        // 결과 판단
+        if (aliveCount == 1)
+        {
+            GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
+            gameoverwindow.CreateResultUIs();
+        }
+        else
+        {
+            Debug.Log("아직 게임 중!");
+        }
+    }
+
+
 
     #region Start문, Update문
     void Start()
