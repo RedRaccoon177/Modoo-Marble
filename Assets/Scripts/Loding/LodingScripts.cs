@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LodingScript : MonoBehaviour
 {
-    public Sprite[] frames; // GIF ºÐÇÒ ÇÁ·¹ÀÓµé
+    public Sprite[] frames; // GIF ë¶„í•  í”„ë ˆìž„ë“¤
     public float frameRate = 0.1f;
     private Image image;
     private int currentFrame;
@@ -24,4 +24,5 @@ public class LodingScript : MonoBehaviour
             yield return new WaitForSeconds(frameRate);
         }
     }
+
 }

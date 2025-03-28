@@ -28,7 +28,6 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
         LodingPanel.gameObject.SetActive(true);
-       
     }
 
 
@@ -53,11 +52,16 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 
     public void JoinRoom()
     {
-        PhotonNetwork.JoinRoom(joinRoomInput.text);
+        LodingPanel.gameObject.SetActive(true);
+        StartCoroutine(FakeLodingWaitGameStart());
+        //PhotonNetwork.JoinRoom(joinRoomInput.text);
     }
+
     public void JoinRandomRoom()
     {
-        PhotonNetwork.JoinRandomRoom();
+        LodingPanel.gameObject.SetActive(true);
+        StartCoroutine(FakeLodingWaitRandomRoom());
+        //PhotonNetwork.JoinRandomRoom();
     }
     public void QuitRoom()
     {
@@ -68,11 +72,7 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 
     public override void OnConnectedToMaster()
     {
-        LodingPanel.gameObject.SetActive(false);
-        Debug.Log("서버 연결 완료");
-        PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
-        PhotonNetwork.JoinLobby();
-        PhotonNetworkMgr.Instance.changeScene("RoomScene");
+        StartCoroutine(FakeLodingWait());
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
@@ -86,13 +86,14 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("클라이언트가 방에 입장시에 알아서 호출");
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
-        PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
+        LodingPanel.gameObject.SetActive(true);
+        StartCoroutine(FakeLodingWaitJoinRoom());
     }
     public override void OnJoinedLobby()
     {
+
         Debug.Log("로비 입장");
+
     }
 
     public override void OnLeftLobby()
@@ -119,8 +120,38 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     }
 
 
+    IEnumerator FakeLodingWait()
+    {
+        yield return new WaitForSeconds(2f);
+        LodingPanel.gameObject.SetActive(false);
+        Debug.Log("서버 연결 완료");
+        PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
+        PhotonNetwork.JoinLobby();
+        //PhotonNetworkMgr.Instance.changeScene("RoomScene");
+        PhotonNetworkMgr.Instance.changeScene("RoomScene");
+    }
 
+    IEnumerator FakeLodingWaitJoinRoom()
+    {
+        yield return new WaitForSeconds(2f);
+        LodingPanel.gameObject.SetActive(false);
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
+    }
 
+    IEnumerator FakeLodingWaitGameStart()
+    {
+        yield return new WaitForSeconds(2f);
+        LodingPanel.gameObject.SetActive(false);
+        PhotonNetwork.JoinRoom(joinRoomInput.text);
+    }
+
+    IEnumerator FakeLodingWaitRandomRoom()
+    {
+        yield return new WaitForSeconds(2f);
+        LodingPanel.gameObject.SetActive(false);
+        PhotonNetwork.JoinRandomRoom();
+    }
 
 
 }
