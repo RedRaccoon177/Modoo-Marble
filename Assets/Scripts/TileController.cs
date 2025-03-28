@@ -16,9 +16,19 @@ public partial class TileController : MonoBehaviourPun
     [Header("보조 타일 타입")] public GameObject[] InGameTilePrefabs;
 
     [Header("건물 활성화를 위한 변수")]
+    public GameObject _tileLandObj;
     public GameObject _tilePensionObj;
     public GameObject _tileCondoObj;
     public GameObject _tileHotelObj;
+
+    [Header("메터리얼 배열")] public Material[] materials;
+    Material _currentMat;
+    MeshRenderer _tileLandMat;
+    MeshRenderer _tilePensionMat;
+    MeshRenderer _tileCondoMat;
+    MeshRenderer _tileHotelMat;
+
+
 }
 
 public partial class TileController : MonoBehaviourPun
@@ -60,16 +70,54 @@ public partial class TileController : MonoBehaviourPun
     void Start()
     {
         StartCoroutine(SetupTileIfNotMaster());
+        _tileLandMat = _tileLandObj.GetComponent<MeshRenderer>();
+        _tilePensionMat = _tilePensionObj.GetComponent<MeshRenderer>();
+        _tileCondoMat = _tileCondoObj.GetComponent<MeshRenderer>();
+        _tileHotelMat = _tileHotelObj.GetComponent<MeshRenderer>();
+    }
+
+    public void ChangeMat(int _index)
+    {
+        if (_index == 0) { _tileLandMat.material = _currentMat; }
+        else if (_index == 1) { _tilePensionMat.material = _currentMat; }
+        else if(_index == 2) { _tileCondoMat.material = _currentMat; }
+        else if(_index == 3) { _tileHotelMat.material = _currentMat; }
+    }
+
+    public void GetPlayerMat(int _playerNum)
+    {
+        switch (_playerNum)
+        {
+            case 1:
+                _currentMat = materials[0];
+                break;
+            case 2:
+                _currentMat = materials[1];
+                break;
+            case 3:
+                _currentMat = materials[2];
+                break;
+            case 4:
+                _currentMat = materials[3];
+                break;
+        }
     }
 
     public void ActiveObj()
     {
-        if(_tilePensionOwner != 0) _tilePensionObj.SetActive(true);
+        // 땅만 사고 건물 안샀을 때
+        if (_tileLandOwner != 0 && (_tilePensionOwner == 0 || _tileCondoOwner == 0 || _tileHotelOwner == 0))
+        {
+            _tileLandObj.SetActive(true);
+        }
+        else
+        {
+            _tileLandObj.SetActive(false);
+        }
+        if (_tilePensionOwner != 0) _tilePensionObj.SetActive(true);
         else _tilePensionObj.SetActive(false);
-
         if(_tileCondoOwner != 0) _tileCondoObj.SetActive(true);
         else _tileCondoObj.SetActive(false);
-
         if(_tileHotelOwner != 0) _tileHotelObj.SetActive(true);
         else _tileHotelObj.SetActive(false);
     }
@@ -235,7 +283,8 @@ public partial class TileController : MonoBehaviourPun
                 Debug.LogWarning("잘못된 소유주 인덱스 설정: " + index);
                 break;
         }
-
+        GetPlayerMat(owner);
+        ChangeMat(index);
         ActiveObj();
     }
 
