@@ -21,18 +21,13 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
     public GameObject roomPrefab;
     public GameObject LodingPanel;
 
-
     //서버연결
     public void isServer()
     {
         //서버 연결
         PhotonNetwork.ConnectUsingSettings();
         LodingPanel.gameObject.SetActive(true);
-       
     }
-
-
-    
 
     public void CreateRoom()
     {
@@ -41,7 +36,6 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
             Debug.Log("방만들기 버튼 클릭");
             //일단 인원 제한없음
             PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions()); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
-
         }
         else
         {
@@ -124,7 +118,6 @@ public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
         {
             TurnMgr.leave4 = true;
         }
-
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

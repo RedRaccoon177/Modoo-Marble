@@ -12,7 +12,7 @@ using System;
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
 /// </summary>
-public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagicCallback
+public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
     #region 플레이어 기본 정보
     [Header("플레이어 기본 정보")]
@@ -58,6 +58,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [Header("UI 관련")]
     Slider mySlider;                     // 주사위 쿨타임 슬라이더
     GameObject mySliderobj;             // 슬라이더 오브젝트
+
+    double _tempTotalMoney;
+
+    //[Header("올림픽 관련")]
+    public static event Action<int, int> OnPlayerPositionChanged;
+    public static event Action<bool> OlympicCheck;  // 플레이어가 올림픽을 개최했으면 중복 안되게 해줄 이벤트
     #endregion
 
     // 리스트에 추가, 중복체크
@@ -131,14 +137,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         }
     }
 
-
     /// <summary>
     /// 인자값으로 추가로 내야하는 금액 받음
     /// </summary>
     /// <param name="_SaleAmount"></param>
     [PunRPC]
-    public void AutomaticSale(double _SaleAmount,double currentTileTollPrice)
+    public void AutomaticSale(double _SaleAmount, double currentTileTollPrice, int _tileOwner)
     {
+        _tempTotalMoney = _totalMoney;
         Debug.Log("부족한 금액 : " + _SaleAmount);
         // 현재 소유 타일들을 가격 순으로 정렬
         LowPriceSorting( _playerOwnerTileViewList.ToArray());
@@ -183,6 +189,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         if (i >= _playerOwnerTileList.Count)
         {
             Debug.Log("파산");
+            FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney);
+        }
+        else
+        {
+            Debug.Log("파산 아닐 때");
+            FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice);
         }
     }
 
@@ -223,7 +235,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 20);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
                 }
             }
         }
@@ -488,12 +500,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
                 else // 통행료 지불이 불가한 상태라면
                 {
-                    _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice);
-                    //_view.RPC("DecreaseMoney", RpcTarget.All, _money);
+                    int _tileOwner = currentTile.GetOwner(0); 
+                    _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice, _tileOwner);
                     Debug.Log("땅 밟은 플레이어 돈 : " +_money);
                     Debug.Log("이 금액 부족함 : " + (-_money));
                     _view.RPC("TotalMoney", RpcTarget.All);
-                    FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
                     Debug.Log("땅 주인 플레이어 돈 : " + FindPlayer(currentTile.GetOwner(0)).GetMoney());
                 }
@@ -583,9 +594,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         }
     }
 
-    public static event Action<int, int> OnPlayerPositionChanged;
-    public static event Action<bool> OlympicCheck;            // 플레이어가 올림픽을 개최했으면 중복 안되게 해줄 이벤트
-
     private void OnEnable()
     {
         Olympic.AlreadyCheck += IsSelect;
@@ -594,5 +602,4 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         Olympic.AlreadyCheck -= IsSelect;
     }
-
 }
