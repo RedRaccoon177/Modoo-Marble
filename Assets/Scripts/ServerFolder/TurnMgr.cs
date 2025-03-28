@@ -107,66 +107,26 @@ public class TurnMgr : Singleton<TurnMgr>
         }
     }
 
-    [PunRPC]
-    void NextTurn21321312321()
-    {
-        CurrentTurn = (CurrentTurn + 1) % (playerlist + 1 + leaveNum);
-        //CurrentTurn += leaveNum;
-
-        //플레이어가 없는 번호는 leave =true로
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            if (PhotonNetwork.PlayerList[i] == null)
-            {
-                StopTurn(i, true);
-            }
-        }
-
-        //임시
-        if (leave1 == true && currentTurn == 1)
-        {
-            CurrentTurn = 2;
-        }
-        if (leave2 == true && currentTurn == 2)
-        {
-            CurrentTurn = 3;
-        }
-        if (leave3 == true && currentTurn == 3)
-        {
-            CurrentTurn = 4;
-            if (playerlist == 2) //이쪽만 바꾸면 됨
-            {
-                Debug.Log("null뜸");
-                CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1 + leaveNum);
-            }
-        }
-
-
-        if (leave4 == true && currentTurn == 4)
-        {
-            CurrentTurn = 1;
-        }
-
-
-    }
+   
 
     [PunRPC]
     void NextTurn()
     {
-        int aa = PhotonNetwork.PlayerList.Length;
-        //플레이어가 없는 번호는 leave =true로
-        for (int i = 1; i <= 4; i++)
-        {
-            if (aa >= i)
-            {
+        ////애네를 기억하는 애를 만들어서 그거를 TRUE해야댈듯
+        //int aa = PhotonNetwork.PlayerList.Length;
+        ////플레이어가 없는 번호는 leave =true로
+        //for (int i = 1; i <= 4; i++)
+        //{
+        //    if (aa >= i)
+        //    {
 
-            }
-            else
-            {
-                StopTurn(i, true);
-            }
+        //    }
+        //    else
+        //    {
+        //        StopTurn(i, true);
+        //    }
 
-        }
+        //}
 
         CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1+ leaveNum);
         //CurrentTurn += leaveNum;
