@@ -112,21 +112,6 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     void NextTurn()
     {
-        ////애네를 기억하는 애를 만들어서 그거를 TRUE해야댈듯
-        //int aa = PhotonNetwork.PlayerList.Length;
-        ////플레이어가 없는 번호는 leave =true로
-        //for (int i = 1; i <= 4; i++)
-        //{
-        //    if (aa >= i)
-        //    {
-
-        //    }
-        //    else
-        //    {
-        //        StopTurn(i, true);
-        //    }
-
-        //}
 
         CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1+ leaveNum);
         //CurrentTurn += leaveNum;

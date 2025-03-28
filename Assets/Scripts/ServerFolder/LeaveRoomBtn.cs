@@ -43,7 +43,7 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
 
     public void Live()
     {
-        photonView.RPC("Live", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, false);
+        photonView.RPC("live", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, false);
     }
 
     [PunRPC]
