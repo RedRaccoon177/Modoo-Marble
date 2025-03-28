@@ -20,7 +20,7 @@ public class TurnMgr : Singleton<TurnMgr>
     static public bool leave2 = false;
     static public bool leave3 = false;
     static public bool leave4 = false;
-   
+    public int playerlist;
 
 
     public GameObject[] playerfabs;
@@ -71,6 +71,9 @@ public class TurnMgr : Singleton<TurnMgr>
         }
 
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
+
+        //몇명인지 담음
+        playerlist = PhotonNetwork.PlayerList.Length;
     }
 
     private void Update()
@@ -105,12 +108,15 @@ public class TurnMgr : Singleton<TurnMgr>
         }
     }
 
-    
+   
+
     [PunRPC]
     void NextTurn()
     {
+
         CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1+ leaveNum);
         //CurrentTurn += leaveNum;
+
 
         //임시
         if (leave1 == true && currentTurn == 1)
@@ -124,15 +130,57 @@ public class TurnMgr : Singleton<TurnMgr>
         if (leave3 == true && currentTurn == 3)
         {
             CurrentTurn = 4;
+            //if (PhotonNetwork.PlayerList.Length == 2) //이쪽만 바꾸면 됨
+            //{
+            //    Debug.Log("null뜸");
+            //    CurrentTurn = 1;
+            //}
         }
+
+
         if (leave4 == true && currentTurn == 4)
         {
             CurrentTurn = 1;
         } 
 
          
-
     }
+
+    //파산될때 호출**
+    //StopTurn(MyActorNumber,true);
+    //자기번호 정지시킴
+    //StopTurn(MyActorNumber,false);
+    //자기번호 정지풀음
+    //**endturn함수보다 먼저 수행해야댐
+    [PunRPC]
+    public void StopTurn(int LocalPlayerActorNumber, bool isStop)
+    {
+        switch (LocalPlayerActorNumber)
+        {
+            case 1:
+                leave1 = isStop; break;
+            case 2:
+                leave2 = isStop; break;
+            case 3:
+                leave3 = isStop; break;
+            case 4:
+                leave4 = isStop; break;
+            default: break;
+        }
+    }
+
+    //모든 플레이 턴 정지 풀음
+    //명시적으로 false넣어 주게 시킴
+    [PunRPC]
+    public void ResetTurn(bool isStop)
+    {
+        leave1 = isStop;
+        leave2 = isStop;      
+        leave4 = isStop;
+        leave3 = isStop;
+    }
+
+
 
 
 }

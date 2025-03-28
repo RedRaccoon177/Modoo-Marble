@@ -31,8 +31,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
-
-
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         UpdatePlayerList();
