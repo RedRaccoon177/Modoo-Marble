@@ -138,66 +138,76 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     }
 
     /// <summary>
-    /// 인자값으로 추가로 내야하는 금액 받음
+    /// 자산이 부족할 경우, 플레이어가 소유한 땅을 자동으로 매각하여 부족한 금액을 충당한다
     /// </summary>
-    /// <param name="_SaleAmount"></param>
+    /// <param name="_SaleAmount">부족한 금액 (지불해야 하는 통행료 - 현재 보유 현금)</param>
+    /// <param name="currentTileTollPrice">현재 타일의 통행료 (최종 지불 금액)</param>
+    /// <param name="_tileOwner">현재 타일의 주인 (통행료를 받을 사람)</param>
     [PunRPC]
     public void AutomaticSale(double _SaleAmount, double currentTileTollPrice, int _tileOwner)
     {
-        _tempTotalMoney = _totalMoney;
         Debug.Log("부족한 금액 : " + _SaleAmount);
-        // 현재 소유 타일들을 가격 순으로 정렬
-        LowPriceSorting( _playerOwnerTileViewList.ToArray());
+
+        // 1. 현재 소유 타일들을 가격 기준으로 정렬 (저가순 → 고가순)
+        LowPriceSorting(_playerOwnerTileViewList.ToArray());
+
+        _tempTotalMoney = _totalMoney;
         double _TotalMyLandPrice = 0;
         int i = 0;
-        // 필요한 돈이 확보될 때까지 순차적으로 매각할 타일 수 계산
-        for (i = 0; i < _playerOwnerTileList.Count; i++)
+
+        // 2. 필요한 돈이 확보될 때까지 타일 가격을 누적하며 매각할 개수 계산
+        for (; i < _playerOwnerTileList.Count; i++)
         {
-            Debug.Log("총 땅 리스트  : " + _playerOwnerTileList.Count);
             if (_SaleAmount <= _TotalMyLandPrice)
             {
-                break; // 부족한 금액을 채웠으면 탈출
+                break; // 누적 금액이 부족한 금액을 넘었으면 탈출
             }
             else
             {
-                Debug.Log("타일 누적 금액 : " + _TotalMyLandPrice);
                 _TotalMyLandPrice += _playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]);
             }
         }
-        // 위에서 계산된 i 개수만큼의 타일을 매각 (은행 소유로)
-        Debug.Log("몇 번 팔았는지 : " + i);
+
+        // 3. 실제 매각 처리: 소유자 → 은행(0)으로 변경
         for (int j = 0; j < i; j++)
         {
-            for (int k =0; k<4; k++)
+            for (int k = 0; k < 4; k++)
             {
                 if (_playerOwnerTileList[j].GetOwner(k) == _playerNum)
                 {
-                    _playerOwnerTileList[j].SetOwner(k,0);
+                    _playerOwnerTileList[j].SetOwner(k, 0);
                 }
             }
         }
-        // 소유 리스트에서도 해당 타일 제거
+
+        // 4. 소유 리스트에서 매각한 타일 제거
         for (int h = 0; h < i; h++)
         {
-            var a = _playerOwnerTileList[h].photonView.ViewID;
-            _playerOwnerTileViewList.Remove(a);
+            var viewID = _playerOwnerTileList[h].photonView.ViewID;
+            _playerOwnerTileViewList.Remove(viewID);
         }
+
         Debug.Log("_TotalMyLandPrice : " + _TotalMyLandPrice);
+
+        // 5. 소유 리스트 재갱신
         TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
+
+        // 6. 매각 금액만큼 내 돈 증가 + 통행료만큼 내 돈 차감
         IncreaseMoney(_TotalMyLandPrice);
         DecreaseMoney(currentTileTollPrice);
 
-        if (i > _playerOwnerTileList.Count)
+        // 7. 매각 가능한 자산이 부족했을 경우 → 파산 처리
+        if (_tempTotalMoney < _SaleAmount)
         {
             Debug.Log("파산");
-            TurnMgr.Instance.StopTurn(_playerNum, true);
-            TurnMgr.Instance.endTurn();
-            FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney);
+            TurnMgr.Instance.StopTurn(_playerNum, true); // 플레이어 턴 정지
+            TurnMgr.Instance.endTurn(); // 턴 넘김
+            FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney); // 타일 주인에게 내가 가진 전 재산 지급
         }
         else
         {
             Debug.Log("파산 아닐 때");
-            FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice);
+            FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice); // 정상적으로 통행료 지급
         }
     }
 
@@ -527,6 +537,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                             // 인수 불가 Ui 출력
                             UIManagerP.instance.OnFactorWarningUI();
                         }
+                    }
+                    else
+                    {
+                        TurnMgr.Instance.endTurn();
                     }
                 }
                 else // 통행료 지불이 불가한 상태라면
