@@ -113,7 +113,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     //    }
     //}
 
-    [PunRPC]
+    
     public void LowPriceSorting(int[] _playerOwnerTileViewArr)
     {
         _playerOwnerTileList.Clear();
@@ -149,11 +149,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [PunRPC]
     public void AutomaticSale(double _SaleAmount)
     {
-        _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
+        Debug.Log("부족한 금액 : " + _SaleAmount);
+        LowPriceSorting( _playerOwnerTileViewList.ToArray());
         double _TotalMyLandPrice = 0;
         int i = 0;
         for (i = 0; i < _playerOwnerTileList.Count; i++)
         {
+            Debug.Log("총 땅 리스트  : " + _playerOwnerTileList.Count);
             if (_SaleAmount <= _TotalMyLandPrice)
             {
                 break;
@@ -161,8 +163,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             else
             {
                 _TotalMyLandPrice += _playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]);
+                Debug.Log("타일 누적 금액 : " + _TotalMyLandPrice);
             }
         }
+        Debug.Log("몇 번 팔았는지 : " + i);
         for (int j = 0; j < i; j++)
         {
             for (int k =0; k<4; k++)
@@ -211,7 +215,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
-                photonView.RPC("Dicecooltime", RpcTarget.All);
+                //photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
@@ -485,12 +489,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
                 else // 통행료 지불이 불가한 상태라면
                 {
-                    _view.RPC("DecreaseMoney", RpcTarget.All, _money);
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money);
+                    _view.RPC("DecreaseMoney", RpcTarget.All, _money);
+                    Debug.Log("땅 밟은 플레이어 돈 : " +_money);
+                    Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
                     _view.RPC("TotalMoney", RpcTarget.All);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
-                    Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
+                    Debug.Log("땅 주인 플레이어 돈 : " + FindPlayer(currentTile.GetOwner(0)).GetMoney());
                 }
             }
         }
