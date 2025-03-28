@@ -246,7 +246,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _money = 1100;
         _totalMoney = _money;
-        _players[_playerNum] = this; 
+        _players[_playerNum] = this;
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
@@ -265,7 +265,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             if (runningCoroutine == null && _isCoolFinish == false)
             {
                 //TODO: 테스트용 주석
-                //photonView.RPC("Dicecooltime", RpcTarget.All);
+                photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
@@ -382,7 +382,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 }
             }
         }
-        
+
         Debug.Log(_totalMoney + "dd");
 
         _totalMoney = 0;
@@ -391,9 +391,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         Debug.Log(_totalMoney + "aa");
 
         if (_totalMoney < 0)
-        { 
+        {
             _totalMoney = 0;
-            Debug.Log( _playerNum + "게임 오버");
+            Debug.Log(_playerNum + "게임 오버");
         }
     }
 
@@ -476,7 +476,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 //쿨타임
                 //TODO: 테스트용 주석
-                //StartCoroutine(cooltimedelay(second));
+                StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
@@ -490,7 +490,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 {
                     //쿨타임
                     //TODO: 테스트용 주석
-                    //StartCoroutine(cooltimedelay(second));
+                    StartCoroutine(cooltimedelay(second));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
@@ -501,7 +501,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             }
         }
         // 주인 = 다른 사람
-        else if(currentTile.GetOwner(0) != _playerNum)
+        else if (currentTile.GetOwner(0) != _playerNum)
         {
             double currentTileTollPrice = currentTile.TotalTollPrice(currentTile);
             double currentTileBuyPrice = currentTile.TotalBuyPrice(currentTile);
@@ -511,7 +511,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 if (_money > currentTileTollPrice)
                 {
                     Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
-                    
+
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
 
                     // 총 자산 확인
@@ -527,7 +527,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     if (currentTile._tileType == TileType.Ground)
                     {
                         //TODO: 테스트용 주석
-                        //StartCoroutine(cooltimedelay(5f));
+                        StartCoroutine(cooltimedelay(5f));
                         if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
                         {
                             UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
@@ -545,7 +545,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 }
                 else // 통행료 지불이 불가한 상태라면
                 {
-                    int _tileOwner = currentTile.GetOwner(0); 
+                    int _tileOwner = currentTile.GetOwner(0);
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice, _tileOwner);
                     _view.RPC("TotalMoney", RpcTarget.All);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
@@ -581,7 +581,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         _money -= money;
 
         if (_money < 0)
-        { 
+        {
             _money = 0;
             Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
         }
