@@ -11,24 +11,26 @@ using UnityEngine;
 public class PlayerUIController : MonoBehaviourPunCallbacks
 {
     [Header("UI가 맡을 플레이어 접속 순서 (0~3)")]
-    public int assignedIndex; // 몇 번째로 접속한 플레이어의 정보를 표시할 것인지 (0 = 첫 번째, 1 = 두 번째 ...)
+    public int _assignedIndex; // 몇 번째로 접속한 플레이어의 정보를 표시할 것인지 (0 = 첫 번째, 1 = 두 번째 ...)
+    public int _ranking;
 
     [Header("텍스트 필드")]
-    public TextMeshProUGUI playerNameText; // 닉네임
-    public TextMeshProUGUI moneyText;      // 현재 보유 현금
-    public TextMeshProUGUI totalMoneyText; // 총 자산(현금 + 건물/토지 자산)
+    public TextMeshProUGUI _rankingText;
+    public TextMeshProUGUI _playerNameText; // 닉네임
+    public TextMeshProUGUI _moneyText;      // 현재 보유 현금
+    public TextMeshProUGUI _totalMoneyText; // 총 자산(현금 + 건물/토지 자산)
 
-    private int targetActorNumber; // 각 플레이어의 Photon ActorNumber (고유 번호)
+    private int _targetActorNumber; // 각 플레이어의 Photon ActorNumber (고유 번호)
 
     void Start()
     {
-        Player targetPlayer = PhotonNetwork.PlayerList[assignedIndex];
+        Player targetPlayer = PhotonNetwork.PlayerList[_assignedIndex];
 
-        targetActorNumber = targetPlayer.ActorNumber;
+        _targetActorNumber = targetPlayer.ActorNumber;
 
         // 닉네임 출력, 닉네임이 비어있다면 기본 이름으로 대체
-        playerNameText.text = !string.IsNullOrEmpty(targetPlayer.NickName)
-            ? targetPlayer.NickName : $"Player {assignedIndex + 1}";
+        _playerNameText.text = !string.IsNullOrEmpty(targetPlayer.NickName)
+            ? targetPlayer.NickName : $"Player {_assignedIndex + 1}";
 
         // 일정 주기마다 플레이어 자산 정보를 UI에 갱신함. 추후 변경해도 됨.
         InvokeRepeating(nameof(UpdatePlayerUI), 1f, 1f);
@@ -40,10 +42,10 @@ public class PlayerUIController : MonoBehaviourPunCallbacks
     void UpdatePlayerUI()
     {
         // 전역 플레이어 딕셔너리에서 ActorNumber로 해당 플레이어 데이터를 찾아옴
-        if (!ServerIngamePlayer._players.TryGetValue(targetActorNumber, out var playerData))
+        if (!ServerIngamePlayer._players.TryGetValue(_targetActorNumber, out var playerData))
             return;
 
-        moneyText.text = $"{playerData._money:N0} G";           // 예: 1,000,000 G
-        totalMoneyText.text = $"{playerData._totalMoney:N0} G"; // 예: 3,200,000 G
+        _moneyText.text = $"{playerData._money:N0} G";           // 예: 1,000,000 G
+        _totalMoneyText.text = $"{playerData._totalMoney:N0} G"; // 예: 3,200,000 G
     }
 }

@@ -18,17 +18,21 @@ public class PlayerManager : MonoBehaviour
         _view = GetComponent<PhotonView>();
     }
 
-    [PunRPC]
-    public void IncreaseMoney(double money)
-    {
-        _money += money;
-    }
+    //[PunRPC]
+    //public void IncreaseMoney(double money)
+    //{
+    //    Debug.Log("전 플레이어 돈:"+ _money + "더해지는 돈" + money);
+    //    _money += money;
+    //    Debug.Log("후 플레이어 돈:" + _money + "더해지는 돈" + money);
+    //}
 
-    [PunRPC]
-    public void DecreaseMoney(double money)
-    {
-        _money -= money;
-    }
+    //[PunRPC]
+    //public void DecreaseMoney(double money)
+    //{
+    //    Debug.Log("전 플레이어 돈:" + _money + "빼지는 돈" + money);
+    //    _money -= money;
+    //    Debug.Log("후 플레이어 돈:" + _money + "빼지는 돈" + money);
+    //}
 
     public double GetMoney()
     {

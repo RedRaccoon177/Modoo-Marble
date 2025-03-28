@@ -71,62 +71,50 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
     public List<int> _playerOwnerTileViewList = new List<int>();
 
+    // 플레이어 소유 타일에 새 타일을 추가하는 RPC
     [PunRPC]
 
     public void AddPlayerOwnerTileList(int _tileViewNum)
     {
+        // 중복이 아닐 경우에만 추가
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == false)
         {
             Debug.Log(_playerNum + " 에게 땅 추가" + (_tileViewNum));
-            _playerOwnerTileViewList.Add(_tileViewNum);
+            _playerOwnerTileViewList.Add(_tileViewNum); // 뷰 ID 저장
         }
     }
 
+    // 플레이어 소유 타일에서 타일을 제거하는 RPC
     [PunRPC]
     public void MinusPlayerOwnerTileList(int _tileViewNum)
     {
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == true)
         {
-            Debug.Log(_playerNum + " 에게 땅 없애" + (_tileViewNum));
-            _playerOwnerTileViewList.Remove(_tileViewNum);
+            Debug.Log(_playerNum + " 의 땅 없애" + (_tileViewNum));
+            _playerOwnerTileViewList.Remove(_tileViewNum); // 뷰 ID 제거
+        }
+    }
+
+    // ViewID 배열을 기반으로 실제 타일 객체들을 리스트에 저장
+    public void TileControllerListRecorder(int[] _playerOwnerTileViewArr)
+    {
+        _playerOwnerTileList.Clear(); // 기존 리스트 초기화
+
+        for (int i = 0; i < _playerOwnerTileViewArr.Length; i++)
+        {
+            PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]); // ViewID -> PhotonView 찾기
+            TileController _currentTileController = _tileViewId.GetComponent<TileController>(); // 실제 TileController 컴포넌트 얻기
+            _playerOwnerTileList.Add(_currentTileController); // 리스트에 추가
         }
     }
 
     /// <summary>
-    ///  비용이 마련될 때까지 매각 해버림
+    /// 타일 ViewID 배열을 받아 소유 타일 리스트를 갱신하고,
+    /// 가격이 낮은 순으로 정렬한다 (버블 정렬)
     /// </summary>
-    /// <param name="_playerOwnerTileList"></param>
-    //[PunRPC]
-    //public void LowPriceSorting(List<TileController> _playerOwnerTileList)
-    //{
-    //    // 버블 정렬 (낮은 가격 순)
-    //    for (int i=0; i < _playerOwnerTileList.Count() - 1; i++)
-    //    {
-    //        for (int j=0; j< _playerOwnerTileList.Count() - i - 1; j++)
-    //        {
-    //            if (_playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]) > _playerOwnerTileList[i+1].TotalBuyPrice(_playerOwnerTileList[i+1]))
-    //            {
-    //                var _temp = _playerOwnerTileList[i]; 
-    //                _playerOwnerTileList[i] = _playerOwnerTileList[i + 1];
-    //                _playerOwnerTileList[i + 1] = _temp;
-    //            }
-    //        }
-    //    }
-    //}
-
-    [PunRPC]
     public void LowPriceSorting(int[] _playerOwnerTileViewArr)
     {
-        _playerOwnerTileList.Clear();
-
-        // 타일 viewID 로 받은거 다시 플레이어 리스트에 넣어주기
-        for (int i =0; i < _playerOwnerTileViewArr.Length; i++)
-        {
-            PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]);
-            TileController _currentTileController = _tileViewId.GetComponent<TileController>();
-            _playerOwnerTileList.Add(_currentTileController);
-        }
-
+        TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
         // 버블 정렬 (낮은 가격 순)
         for (int i = 0; i < _playerOwnerTileList.Count() - 1; i++)
         {
@@ -148,22 +136,29 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     /// </summary>
     /// <param name="_SaleAmount"></param>
     [PunRPC]
-    public void AutomaticSale(double _SaleAmount)
+    public void AutomaticSale(double _SaleAmount,double currentTileTollPrice)
     {
-        _view.RPC("LowPriceSorting", RpcTarget.All, _playerOwnerTileViewList.ToArray());
+        Debug.Log("부족한 금액 : " + _SaleAmount);
+        // 현재 소유 타일들을 가격 순으로 정렬
+        LowPriceSorting( _playerOwnerTileViewList.ToArray());
         double _TotalMyLandPrice = 0;
         int i = 0;
+        // 필요한 돈이 확보될 때까지 순차적으로 매각할 타일 수 계산
         for (i = 0; i < _playerOwnerTileList.Count; i++)
         {
+            Debug.Log("총 땅 리스트  : " + _playerOwnerTileList.Count);
             if (_SaleAmount <= _TotalMyLandPrice)
             {
-                break;
+                break; // 부족한 금액을 채웠으면 탈출
             }
             else
             {
+                Debug.Log("타일 누적 금액 : " + _TotalMyLandPrice);
                 _TotalMyLandPrice += _playerOwnerTileList[i].TotalBuyPrice(_playerOwnerTileList[i]);
             }
         }
+        // 위에서 계산된 i 개수만큼의 타일을 매각 (은행 소유로)
+        Debug.Log("몇 번 팔았는지 : " + i);
         for (int j = 0; j < i; j++)
         {
             for (int k =0; k<4; k++)
@@ -174,16 +169,20 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
             }
         }
+        // 소유 리스트에서도 해당 타일 제거
         for (int h = 0; h < i; h++)
         {
             var a = _playerOwnerTileList[h].photonView.ViewID;
             _playerOwnerTileViewList.Remove(a);
         }
+        Debug.Log("_TotalMyLandPrice : " + _TotalMyLandPrice);
+        TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
+        IncreaseMoney(_TotalMyLandPrice);
+        DecreaseMoney(currentTileTollPrice);
         if (i >= _playerOwnerTileList.Count)
         {
             Debug.Log("파산");
         }
-
     }
 
     #region Start문, Update문
@@ -191,7 +190,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 1000;
+        _playerOwnerTileList = new List<TileController> ();
+        _money = 1100;
         _totalMoney = _money;
         _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
@@ -221,7 +221,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 {
                     currentDiceCooldown1 = second;
                     photonView.RPC("HideSlider", RpcTarget.All);
-
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, 20);
@@ -489,12 +488,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                 }
                 else // 통행료 지불이 불가한 상태라면
                 {
-                    _view.RPC("DecreaseMoney", RpcTarget.All, _money);
-                    _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money);
+                    _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice);
+                    //_view.RPC("DecreaseMoney", RpcTarget.All, _money);
+                    Debug.Log("땅 밟은 플레이어 돈 : " +_money);
+                    Debug.Log("이 금액 부족함 : " + (-_money));
                     _view.RPC("TotalMoney", RpcTarget.All);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
-                    Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
+                    Debug.Log("땅 주인 플레이어 돈 : " + FindPlayer(currentTile.GetOwner(0)).GetMoney());
                 }
             }
         }
@@ -508,21 +509,25 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         return _players[_actorNum];
     }
 
-    public void StartPointPass()
-    {
-        _playerManager.IncreaseMoney(1000);
-    }
+    //public void StartPointPass()
+    //{
+    //    _playerManager.IncreaseMoney(1000);
+    //}
 
     [PunRPC]
     public void IncreaseMoney(double money)
     {
+        Debug.Log("전 플레이어 돈:" + _money + "더해지는 돈" + money);
         _money += money;
+        Debug.Log("후 플레이어 돈:" + _money + "더해지는 돈" + money);
     }
 
     [PunRPC]
     public void DecreaseMoney(double money)
     {
+        Debug.Log("전 플레이어 돈:" + _money + "빼지는 돈" + money);
         _money -= money;
+        Debug.Log("후 플레이어 돈:" + _money + "빼지는 돈" + money);
     }
 
     [PunRPC]
@@ -547,8 +552,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         return _money;
     }
-
-   
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
