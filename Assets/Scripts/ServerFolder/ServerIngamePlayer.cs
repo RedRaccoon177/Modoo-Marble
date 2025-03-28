@@ -265,7 +265,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             if (runningCoroutine == null && _isCoolFinish == false)
             {
                 //TODO: 테스트용 주석
-                //hotonView.RPC("Dicecooltime", RpcTarget.All);
+                //photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)

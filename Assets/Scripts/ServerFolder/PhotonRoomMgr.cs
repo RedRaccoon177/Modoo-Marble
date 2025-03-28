@@ -9,7 +9,7 @@ using Photon.Realtime;
 using TMPro;
 
 //ΩÃ±€≈Ê
-public class PhotonRoomMgr : Singleton<PhotonRoomMgr>
+public class PhotonRoomMgr : MonoBehaviourPunCallbacks
 {
     public TMP_InputField createRoomInput;
     public TMP_InputField joinRoomInput;

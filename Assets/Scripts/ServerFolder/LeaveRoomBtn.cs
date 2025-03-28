@@ -28,14 +28,15 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         Debug.Log("방나가는버튼클릭햇음");
-        PhotonRoomMgr.Instance.QuitRoom();
+        Die();
+        PhotonNetwork.LeaveRoom(this);
+        PhotonNetworkMgr.Instance.changeScene("RoomScene");
     }
-
-    //턴 중단
     public void Die()
     {
-        photonView.RPC("die", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber,true);
+        photonView.RPC("die", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, true);
     }
+
     [PunRPC]
     public void die(int a, bool b)
     {
