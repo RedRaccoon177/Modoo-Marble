@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerNum: 0
+  _ranking: 0
   _money: 200
   _totalMoney: 0
   currentDiceCooldown1: 5

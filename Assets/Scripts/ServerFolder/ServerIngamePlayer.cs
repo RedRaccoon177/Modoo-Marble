@@ -528,17 +528,19 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     public void IncreaseMoney(double money)
     {
-        Debug.Log("전 플레이어 돈:" + _money + "더해지는 돈" + money);
         _money += money;
-        Debug.Log("후 플레이어 돈:" + _money + "더해지는 돈" + money);
     }
 
     [PunRPC]
     public void DecreaseMoney(double money)
     {
-        Debug.Log("전 플레이어 돈:" + _money + "빼지는 돈" + money);
         _money -= money;
-        Debug.Log("후 플레이어 돈:" + _money + "빼지는 돈" + money);
+
+        if (_money < 0)
+        { 
+            _money = 0;
+            Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
+        }
     }
 
     [PunRPC]
