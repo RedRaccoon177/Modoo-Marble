@@ -68,6 +68,10 @@ MonoBehaviour:
   - LowPriceSorting
   - MinusPlayerOwnerTileList
   - ApplyOlympicEffect
+  - die
+  - live
+  - ResetTurn
+  - StopTurn
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

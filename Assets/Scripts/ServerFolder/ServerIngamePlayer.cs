@@ -186,11 +186,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
         IncreaseMoney(_TotalMyLandPrice);
         DecreaseMoney(currentTileTollPrice);
-        if (i >= _playerOwnerTileList.Count)
+
+        if (i > _playerOwnerTileList.Count)
         {
             Debug.Log("파산");
+            TurnMgr.Instance.StopTurn(_playerNum, true);
+            TurnMgr.Instance.endTurn();
             FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney);
-            ALLPlayerBankruptcy();
         }
         else
         {
@@ -223,10 +225,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         else
         {
             Debug.Log("아직 게임 중!");
+            Debug.Log(aliveCount);
         }
     }
-
-
 
     #region Start문, Update문
     void Start()
@@ -532,17 +533,16 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 {
                     int _tileOwner = currentTile.GetOwner(0); 
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice, _tileOwner);
-                    Debug.Log("땅 밟은 플레이어 돈 : " +_money);
-                    Debug.Log("이 금액 부족함 : " + (-_money));
                     _view.RPC("TotalMoney", RpcTarget.All);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
                     Debug.Log("땅 주인 플레이어 돈 : " + FindPlayer(currentTile.GetOwner(0)).GetMoney());
                 }
             }
         }
+
+        ALLPlayerBankruptcy();
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
         OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
-        Debug.Log(_playerPosIndex +" 이것는 테스트를 위한 것이요.");
     }
 
     public ServerIngamePlayer FindPlayer(int _actorNum)

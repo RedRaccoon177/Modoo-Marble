@@ -24,23 +24,25 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
         }
     }
 
+    //방 나가기
     public void LeaveRoom()
     {
         Debug.Log("방나가는버튼클릭햇음");
         PhotonRoomMgr.Instance.QuitRoom();
     }
 
+    //턴 중단
     public void Die()
     {
         photonView.RPC("die", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber,true);
     }
-
     [PunRPC]
     public void die(int a, bool b)
     {
         TurnMgr.Instance.StopTurn(a,b);
     }
 
+    //턴 
     public void Live()
     {
         photonView.RPC("live", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, false);
@@ -51,7 +53,4 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
     {
         TurnMgr.Instance.StopTurn(a, b);
     }
-
-    
-
 }
