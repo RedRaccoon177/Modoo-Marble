@@ -276,7 +276,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 1);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                 }
             }
         }

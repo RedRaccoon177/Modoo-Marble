@@ -29,9 +29,9 @@ MonoBehaviour:
   _tilePensionPrice: 20
   _tileCondoPrice: 30
   _tileHotelPrice: 40
-  _tileLandMarkPrice: 1
-  _tileLandToll: 100
-  _tilePensionToll: 200
-  _tileCondoToll: 300
-  _tileHotelToll: 400
+  _tileLandMarkPrice: 50
+  _tileLandToll: 15
+  _tilePensionToll: 25
+  _tileCondoToll: 35
+  _tileHotelToll: 45
   _tileLandMarkToll: 1
