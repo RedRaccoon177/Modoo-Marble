@@ -87,6 +87,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void StartPointPass()
     {
-        _playerManager.IncreaseMoney(1000);
+        //_playerManager.IncreaseMoney(1000);
     }
 }

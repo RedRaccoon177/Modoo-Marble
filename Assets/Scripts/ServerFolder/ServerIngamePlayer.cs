@@ -69,10 +69,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     [PunRPC]
     public void AddPlayerOwnerTileList(int _tileViewNum)
     {
+        // 중복이 아닐 경우에만 추가
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == false)
         {
             Debug.Log(_playerNum + " 에게 땅 추가" + (_tileViewNum));
-            _playerOwnerTileViewList.Add(_tileViewNum);
+            _playerOwnerTileViewList.Add(_tileViewNum); // 뷰 ID 저장
         }
     }
 
@@ -83,20 +84,20 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == true)
         {
             Debug.Log(_playerNum + " 의 땅 없애" + (_tileViewNum));
-            _playerOwnerTileViewList.Remove(_tileViewNum);
+            _playerOwnerTileViewList.Remove(_tileViewNum); // 뷰 ID 제거
         }
     }
 
-    // List<int>받은 거 정보로 List<타일> 정리
+    // ViewID 배열을 기반으로 실제 타일 객체들을 리스트에 저장
     public void TileControllerListRecorder(int[] _playerOwnerTileViewArr)
     {
-        _playerOwnerTileList.Clear();
-        // ViewID를 통해 실제 TileController 참조 리스트 생성
-        for (int i =0; i < _playerOwnerTileViewArr.Length; i++)
+        _playerOwnerTileList.Clear(); // 기존 리스트 초기화
+
+        for (int i = 0; i < _playerOwnerTileViewArr.Length; i++)
         {
-            PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]);
-            TileController _currentTileController = _tileViewId.GetComponent<TileController>();
-            _playerOwnerTileList.Add(_currentTileController);
+            PhotonView _tileViewId = PhotonView.Find(_playerOwnerTileViewArr[i]); // ViewID -> PhotonView 찾기
+            TileController _currentTileController = _tileViewId.GetComponent<TileController>(); // 실제 TileController 컴포넌트 얻기
+            _playerOwnerTileList.Add(_currentTileController); // 리스트에 추가
         }
     }
 
@@ -169,8 +170,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         }
         Debug.Log("_TotalMyLandPrice : " + _TotalMyLandPrice);
         TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
-        //_view.RPC("IncreaseMoney", RpcTarget.All, _TotalMyLandPrice); // 토지 매각 후 나온 돈 증가
-        //_view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice); // 통행료 지불
+        IncreaseMoney(_TotalMyLandPrice);
+        DecreaseMoney(currentTileTollPrice);
         if (i >= _playerOwnerTileList.Count)
         {
             Debug.Log("파산");
@@ -480,7 +481,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice);
                     //_view.RPC("DecreaseMoney", RpcTarget.All, _money);
                     Debug.Log("땅 밟은 플레이어 돈 : " +_money);
-                    Debug.Log("이 금액 부족함 : " + (currentTileTollPrice - _money));
+                    Debug.Log("이 금액 부족함 : " + (-_money));
                     _view.RPC("TotalMoney", RpcTarget.All);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
@@ -496,21 +497,25 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
         return _players[_actorNum];
     }
 
-    public void StartPointPass()
-    {
-        _playerManager.IncreaseMoney(1000);
-    }
+    //public void StartPointPass()
+    //{
+    //    _playerManager.IncreaseMoney(1000);
+    //}
 
     [PunRPC]
     public void IncreaseMoney(double money)
     {
+        Debug.Log("전 플레이어 돈:" + _money + "더해지는 돈" + money);
         _money += money;
+        Debug.Log("후 플레이어 돈:" + _money + "더해지는 돈" + money);
     }
 
     [PunRPC]
     public void DecreaseMoney(double money)
     {
+        Debug.Log("전 플레이어 돈:" + _money + "빼지는 돈" + money);
         _money -= money;
+        Debug.Log("후 플레이어 돈:" + _money + "빼지는 돈" + money);
     }
 
     [PunRPC]
@@ -535,8 +540,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks,IPunInstantiateMagic
     {
         return _money;
     }
-
-   
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {

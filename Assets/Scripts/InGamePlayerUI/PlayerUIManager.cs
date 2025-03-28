@@ -29,7 +29,7 @@ public class PlayerUIManager : MonoBehaviourPunCallbacks
                 if (uiController != null)
                 {
                     // 해당 UI가 표시할 플레이어 인덱스를 설정함
-                    uiController.assignedIndex = i;
+                    uiController._assignedIndex = i;
                 }
             }
             else
