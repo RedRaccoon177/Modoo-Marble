@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -33,7 +34,7 @@ public class PlayerUIController : MonoBehaviourPunCallbacks
             ? targetPlayer.NickName : $"Player {_assignedIndex + 1}";
 
         // 일정 주기마다 플레이어 자산 정보를 UI에 갱신함. 추후 변경해도 됨.
-        InvokeRepeating(nameof(UpdatePlayerUI), 1f, 1f);
+        InvokeRepeating(nameof(UpdatePlayerUI), 0.3f, 0.3f);
     }
 
     /// <summary>
@@ -44,8 +45,56 @@ public class PlayerUIController : MonoBehaviourPunCallbacks
         // 전역 플레이어 딕셔너리에서 ActorNumber로 해당 플레이어 데이터를 찾아옴
         if (!ServerIngamePlayer._players.TryGetValue(_targetActorNumber, out var playerData))
             return;
-
+        
+        _rankingText.text = $"{_ranking}위";
         _moneyText.text = $"{playerData._money:N0} G";           // 예: 1,000,000 G
         _totalMoneyText.text = $"{playerData._totalMoney:N0} G"; // 예: 3,200,000 G
+
+        SetPlayerRanking();
+    }
+
+    /// <summary>
+    /// 로컬 플레이어 정보 가져오기
+    /// </summary>
+    void SetPlayerRanking()
+    {
+        var allPlayers = ServerIngamePlayer._players.Values.ToList();
+
+        // 자산 기준으로 내림차순 정렬
+        var sortedPlayers = allPlayers.OrderByDescending(p => p._totalMoney).ToList();
+
+        int currentRank = 1;
+        int sameRankCount = 1;
+
+        for (int i = 0; i < sortedPlayers.Count; i++)
+        {
+            // 첫 번째 플레이어는 무조건 1등
+            if (i == 0)
+            {
+                sortedPlayers[i]._ranking = currentRank;
+            }
+            else
+            {
+                if (sortedPlayers[i]._totalMoney == sortedPlayers[i - 1]._totalMoney)
+                {
+                    // 이전 플레이어와 자산이 같다면 같은 등수
+                    sortedPlayers[i]._ranking = currentRank;
+                    sameRankCount++;
+                }
+                else
+                {
+                    // 자산이 다르면 순위 + 중복된 순위 수 만큼 건너뜀
+                    currentRank += sameRankCount;
+                    sortedPlayers[i]._ranking = currentRank;
+                    sameRankCount = 1;
+                }
+            }
+
+            // 이 오브젝트가 맡은 플레이어라면 랭킹 저장
+            if (sortedPlayers[i]._playerNum == _targetActorNumber)
+            {
+                _ranking = sortedPlayers[i]._ranking;
+            }
+        }
     }
 }
