@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -1.6277, y: -3.7224}
-  m_SizeDelta: {x: 98.969, y: 71.445}
+  m_SizeDelta: {x: 100, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3914964911263894498
 CanvasRenderer:
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 63.2
+  m_fontSize: 61.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -935,10 +935,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06674bf9832eb0945929e9840d3f6b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assignedIndex: 0
-  playerNameText: {fileID: 2599646079473190196}
-  moneyText: {fileID: 8417260757129325618}
-  totalMoneyText: {fileID: 2175913048619660349}
+  _assignedIndex: 0
+  _ranking: 0
+  _rankingText: {fileID: 1974847358756248350}
+  _playerNameText: {fileID: 2599646079473190196}
+  _moneyText: {fileID: 8417260757129325618}
+  _totalMoneyText: {fileID: 2175913048619660349}
 --- !u!1 &7155105017600763959
 GameObject:
   m_ObjectHideFlags: 0
