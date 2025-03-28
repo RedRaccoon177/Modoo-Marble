@@ -68,6 +68,8 @@ MonoBehaviour:
   - LowPriceSorting
   - MinusPlayerOwnerTileList
   - ApplyOlympicEffect
+  - RandomDiceNum
+  - DiceStart
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
