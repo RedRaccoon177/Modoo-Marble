@@ -63,6 +63,16 @@ MonoBehaviour:
   - TotalMoney
   - Dicecooltime
   - HideSlider
+  - AddPlayerOwnerTileList
+  - AutomaticSale
+  - MinusPlayerOwnerTileList
+  - LowPriceSorting
+  - ResetTurn
+  - StopTurn
+  - dsd
+  - die
+  - NextTurn21321312321
+  - live
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
