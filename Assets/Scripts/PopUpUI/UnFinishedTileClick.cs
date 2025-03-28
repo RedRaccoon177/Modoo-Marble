@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviour
+public class UnFinishedTileClick : MonoBehaviour
 {
     public TextMeshProUGUI _name;
     public Button _closeButton;
