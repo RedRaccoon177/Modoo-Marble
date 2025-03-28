@@ -50,7 +50,8 @@ public class TurnMgr : Singleton<TurnMgr>
     private void Start()
     {
         int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
-        object[] initData = new object[] { actorNumber };
+        string nickname = PhotonNetwork.LocalPlayer.NickName;
+        object[] initData = new object[] { actorNumber, nickname };
 
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
         {

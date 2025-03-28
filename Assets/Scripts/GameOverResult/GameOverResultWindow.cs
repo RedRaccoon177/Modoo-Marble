@@ -15,7 +15,7 @@ public class GameOverResultWindow : MonoBehaviour
     public Transform contentParent;
 
     [Header("UI 간격 (Y축)")]
-    public float spacingY = -120f;
+    public float spacingY = -180f;
 
     void Start()
     {
@@ -38,8 +38,6 @@ public class GameOverResultWindow : MonoBehaviour
         // 모든 플레이어 데이터 가져오기
         List<ServerIngamePlayer> allPlayers = new List<ServerIngamePlayer>(ServerIngamePlayer._players.Values);
 
-        Debug.Log("인원수"  + allPlayers.Count);
-
         // 총 자산 기준으로 내림차순 정렬
         allPlayers.Sort((a, b) => b._totalMoney.CompareTo(a._totalMoney));
 
@@ -55,13 +53,11 @@ public class GameOverResultWindow : MonoBehaviour
             RectTransform rt = uiObj.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(0, spacingY * i);
 
-            // 내부 텍스트 설정
-            TextMeshProUGUI[] texts = uiObj.GetComponentsInChildren<TextMeshProUGUI>();
-            foreach (var t in texts)
+            // PlayerResult 컴포넌트 접근 후 데이터 세팅
+            PlayerResult resultUI = uiObj.GetComponent<PlayerResult>();
+            if (resultUI != null)
             {
-                if (t.name == "RankingText") t.text = $"{i + 1}등";
-                if (t.name == "NameText") t.text = $"Player {player._playerNum}";
-                if (t.name == "AssetText") t.text = $"{player._totalMoney:N0} G";
+                resultUI.Setup(i + 1, $"{player._playerNickName}", player._totalMoney);
             }
         }
     }

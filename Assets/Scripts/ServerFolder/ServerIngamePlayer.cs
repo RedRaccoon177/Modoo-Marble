@@ -17,7 +17,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     #region 플레이어 기본 정보
     [Header("플레이어 기본 정보")]
     public int _playerNum; // 플레이어 고유 번호
-    int _playerNickName; // (미사용 중) 닉네임 데이터
+    public string _playerNickName; // 닉네임 데이터
     public int _ranking;
 
     [Header("플레이어 자산 관련")]
@@ -572,7 +572,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (data != null && data.Length > 0)
         {
             _playerNum = (int)data[0];
-            Debug.Log(_playerNum + "생성");
+            _playerNickName = (string)data[1];
         }
     }
 

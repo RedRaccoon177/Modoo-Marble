@@ -91,6 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2736e518a83bba6439f266fe6ff8d9a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ranking: {fileID: 6820716958396298911}
+  _nickName: {fileID: 4859350678923061947}
+  _totalMoney: {fileID: 44675379755169046}
 --- !u!1 &391044494520001356
 GameObject:
   m_ObjectHideFlags: 0

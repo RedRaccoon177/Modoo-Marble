@@ -43,6 +43,7 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
 
             if (FirebaseLoginMgr.user != null)
             {
+                //TODO:초기 저장 바꾸기 12000
                 SaveUserData(FirebaseLoginMgr.user.DisplayName, "money",12000);
                 userMoney = await LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", userMoney);
                 Debug.Log("유저 닉네임 : " + FirebaseLoginMgr.user.DisplayName);
