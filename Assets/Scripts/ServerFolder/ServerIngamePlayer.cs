@@ -264,6 +264,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
+                currentDiceCooldown1 = second;
                 //TODO: 테스트용 주석
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
@@ -272,7 +273,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 if (photonView.IsMine && _isTurn == true)
                 {
-                    currentDiceCooldown1 = second;
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
@@ -294,6 +294,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     void HideSlider()
     {
+        currentDiceCooldown1 = second;
+        //runningCoroutine = null;
+        //StopCoroutine("Dicecooltimedelay");
         mySlider.gameObject.SetActive(false);
     }
 
@@ -328,16 +331,28 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
+        double startTime = PhotonNetwork.Time; 
+        double targetTime = startTime + Second; 
+        mySlider.maxValue = Second;
+
         currentDiceCooldown1 = Second;
+        mySlider.value = Second;
         mySlider.gameObject.SetActive(true);
 
-        //currentDiceCooldown1 주사위굴러가면 초기화 안보이게?
-        while (currentDiceCooldown1 > 0f)
+        while (PhotonNetwork.Time < targetTime)
         {
-            currentDiceCooldown1 -= Time.deltaTime;
+            currentDiceCooldown1 = (float)(targetTime - PhotonNetwork.Time);
             mySlider.value = currentDiceCooldown1;
             yield return null;
         }
+
+        ////currentDiceCooldown1 주사위굴러가면 초기화 안보이게?
+        //while (currentDiceCooldown1 > 0f)
+        //{
+        //    currentDiceCooldown1 -= Time.deltaTime;
+        //    mySlider.value = currentDiceCooldown1;
+        //    yield return null;
+        //}
         mySlider.gameObject.SetActive(false);
         //yield return new WaitForSeconds(Second);
         _isCoolFinish = true;
