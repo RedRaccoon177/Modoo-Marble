@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class TurnBasedManager : MonoBehaviour
+public class TurnBasedManager : MonoBehaviourPun,IPunObservable
 {
     int _diceNumFirst;
     int _diceNumSecond;
@@ -12,6 +12,8 @@ public class TurnBasedManager : MonoBehaviour
     public GameObject _blueDicePrefab;
     DiceManager _redDice;
     DiceManager _blueDice;
+    int _redDiceViewID;
+    int _blueDiceViewID;
 
     //public int Dice()
     //{

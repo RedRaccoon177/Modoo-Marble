@@ -39,7 +39,7 @@ public class DiceManager : MonoBehaviourPun
             yield return new WaitForSeconds(0.1f);
         }
     }
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "DiceGround")
         {
