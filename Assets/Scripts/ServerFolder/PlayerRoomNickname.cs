@@ -8,7 +8,7 @@ using Photon.Pun;
 using Photon.Realtime;
 
 // 룸 안의 플레이어 닉네임을 UI에 표시함
-public class PlayerRoomTest : Singleton<PhotonRoomMgr>
+public class PlayerRoomNickname : Singleton<PhotonRoomMgr>
 {
     // 첫 번째 플레이어 닉네임을 표시할 텍스트
     public Text playerNickName1;
