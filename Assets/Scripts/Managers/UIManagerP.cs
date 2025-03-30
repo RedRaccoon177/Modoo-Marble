@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class UIManagerP : MonoBehaviour
@@ -119,6 +120,10 @@ public class UIManagerP : MonoBehaviour
             {
                 _tileBuyUI[1].SetActive(true);
             }
+            else if (_tileType == TileType.Item)
+            {
+                Debug.Log("보너스 카드 팝업 출력");
+            }
             else
             {
                 _tileBuyUI[2].SetActive(true);
@@ -140,6 +145,10 @@ public class UIManagerP : MonoBehaviour
         else if (_tileType == TileType.Sea)
         {
             _buyChangeDataSea.Invoke(_currentTile);
+        }
+        else if (_tileType == TileType.Item)
+        {
+            Debug.Log("보너스 카드 실행");
         }
         else
         {

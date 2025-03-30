@@ -290,7 +290,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     }
     #endregion
 
-    #region 뭔지 모를 함수들
     [PunRPC]
     void HideSlider()
     {
@@ -325,7 +324,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
-    #endregion
 
     #region 주사위 쿨타임
     //주사위 쿨타임
