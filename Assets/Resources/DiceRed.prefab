@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _photonView: {fileID: 0}
+  _diceNum: 0
 --- !u!114 &2088546715729011205
 MonoBehaviour:
   m_ObjectHideFlags: 0

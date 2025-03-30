@@ -1,15 +1,17 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class DiceManager : MonoBehaviourPun
+public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
+    public event Action<int, int> _dicePlayerMove;
+    public int diceID;
     bool isGroundOn;
     Rigidbody _rb;
     Coroutine _diceCor;
     public PhotonView _photonView;
-    public int _diceNum { get; private set; }
+    public int _diceNum;
     Quaternion one = Quaternion.Euler(-90, 0, 0);
     Quaternion two = Quaternion.Euler(0, 0, 0);
     Quaternion three = Quaternion.Euler(0, 90, -90);
@@ -23,10 +25,11 @@ public class DiceManager : MonoBehaviourPun
         _rb = GetComponent<Rigidbody>();
     }
     [PunRPC]
-    public void DiceStart()
+    public void DiceStart(int _diceNum)
     {
-        _diceNum = Random.Range(1, 7);
-        _rb.AddForce(0, 10, 0, ForceMode.Impulse);
+        this._diceNum = _diceNum;
+        Debug.Log(gameObject.name +"주사위 현재 숫자 : " + this._diceNum);
+        _rb.AddForce(0, 5, 0, ForceMode.Impulse);
         _diceCor = StartCoroutine(RollingDice());
     }
 
@@ -35,7 +38,7 @@ public class DiceManager : MonoBehaviourPun
         isGroundOn = true;
         while (isGroundOn == true)
         {
-            transform.rotation = Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
+            transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -46,6 +49,7 @@ public class DiceManager : MonoBehaviourPun
             isGroundOn = false;
             StopCoroutine(RollingDice());
             ChangeRotation(_diceNum);
+            _dicePlayerMove?.Invoke(diceID, _diceNum);
         }
     }
 
@@ -59,9 +63,12 @@ public class DiceManager : MonoBehaviourPun
         else if (num == 6) { transform.rotation = six; }
     }
 
-    public int RandomDiceNum()
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        return _diceNum = Random.Range(1, 7);
+        object[] data = info.photonView.InstantiationData;
+        if (data != null && data.Length > 0)
+        {
+            diceID = (int)data[0];
+        }
     }
-
 }

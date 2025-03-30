@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void asd()
     {
         Debug.Log("RpcMovePlayer µé¾î¿È");
-        photonView.RPC("RpcMovePlayer", RpcTarget.All, _turnBasedManager.Dice());
+        //photonView.RPC("RpcMovePlayer", RpcTarget.All, _turnBasedManager.Dice());
     }
 
     [PunRPC]
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
     
         Debug.Log("RpcMovePlayer 213µé¾î¿È");
-        StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
+        //StartCoroutine(MovePlayer(_turnBasedManager.Dice()));
     }
 
 

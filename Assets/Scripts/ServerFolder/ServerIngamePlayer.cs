@@ -8,6 +8,7 @@ using System.Linq;
 using System.ComponentModel;
 using Unity.VisualScripting;
 using System;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
@@ -218,27 +219,27 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void Update()
     {
         //내턴 and (쿨타임 or 주사위)
-        if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
-        {
-            //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null && _isCoolFinish == false)
-            {
-                //TODO: 테스트용 주석
-                //hotonView.RPC("Dicecooltime", RpcTarget.All);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
-            {
-                if (photonView.IsMine && _isTurn == true)
-                {
-                    currentDiceCooldown1 = second;
-                    photonView.RPC("HideSlider", RpcTarget.All);
-                    _isTurn = false;
-                    int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
-                }
-            }
-        }
+        //if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
+        //{
+        //    //내턴 될때 쿹타임 10초 
+        //    if (runningCoroutine == null && _isCoolFinish == false)
+        //    {
+        //        //TODO: 테스트용 주석
+        //        //hotonView.RPC("Dicecooltime", RpcTarget.All);
+        //    }
+        //
+        //    if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
+        //    {
+        //        if (photonView.IsMine && _isTurn == true)
+        //        {
+        //            currentDiceCooldown1 = second;
+        //            photonView.RPC("HideSlider", RpcTarget.All);
+        //            _isTurn = false;
+        //            int _diceNum = _turnBasedManager.Dice();
+        //            photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+        //        }
+        //    }
+        //}
 
         //주사위 중복 방지 
         if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)

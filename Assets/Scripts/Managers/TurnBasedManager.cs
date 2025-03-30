@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class TurnBasedManager : MonoBehaviourPun,IPunObservable
+public class TurnBasedManager : MonoBehaviourPun
 {
     int _diceNumFirst;
     int _diceNumSecond;
-
+      private int?[] diceResults = new int?[2]; // 주사위 2개라고 가정
     public GameObject _redDicePrefab;
     public GameObject _blueDicePrefab;
     DiceManager _redDice;
@@ -27,15 +27,41 @@ public class TurnBasedManager : MonoBehaviourPun,IPunObservable
     {
         if (PhotonNetwork.IsMasterClient == true)
         {
-            _redDice = PhotonNetwork.Instantiate("DiceRed",new Vector3(7,0,-7), Quaternion.identity).GetComponent<DiceManager>();
-            _blueDice = PhotonNetwork.Instantiate("DiceBlue", new Vector3(8, 0, -8), Quaternion.identity).GetComponent<DiceManager>();
+            _redDice = PhotonNetwork.Instantiate("DiceRed",new Vector3(7,0,-7), Quaternion.identity,0, new object[] { 0 }).GetComponent<DiceManager>();
+            _blueDice = PhotonNetwork.Instantiate("DiceBlue", new Vector3(8, 0, -8), Quaternion.identity, 0, new object[] { 1 }).GetComponent<DiceManager>();
+            _redDiceViewID = _redDice.photonView.ViewID;
+            _blueDiceViewID = _blueDice.photonView.ViewID;
+            _redDice._dicePlayerMove += PlayerMove;
+            _blueDice._dicePlayerMove += PlayerMove;
+            photonView.RPC("testt",RpcTarget.Others, _redDiceViewID, _blueDiceViewID);
         }
     }
-
-    public int Dice()
+    [PunRPC]
+    public void testt(int _redDiceView, int _blueView)
     {
-        _redDice._photonView.RPC("DiceStart", RpcTarget.All);
-        _blueDice._photonView.RPC("DiceStart", RpcTarget.All);
-        return _redDice._diceNum + _blueDice._diceNum;
+        _redDice = PhotonView.Find(_redDiceView).GetComponent<DiceManager>();
+        _blueDice = PhotonView.Find(_blueView).GetComponent<DiceManager>();
+        _redDice._dicePlayerMove += PlayerMove;
+        _blueDice._dicePlayerMove += PlayerMove;
+    }
+
+    public void Dice()
+    {
+        _redDice._diceNum = Random.Range(1,7);
+        _blueDice._diceNum = Random.Range(1,7);
+        _redDice._photonView.RPC("DiceStart", RpcTarget.All, _redDice._diceNum);
+        _blueDice._photonView.RPC("DiceStart", RpcTarget.All, _blueDice._diceNum);
+        //return _redDice._diceNum + _blueDice._diceNum;  
+    }
+
+    public void PlayerMove(int diceKey, int diceNum)
+    {
+        diceResults[diceKey] = diceNum;
+    
+        if (diceResults[0] != null && diceResults[1] != null)
+        {
+            int total = diceResults[0].Value + diceResults[1].Value;
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
+        }
     }
 }

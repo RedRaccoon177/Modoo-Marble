@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
 {
     public Image _gageBackGroud;
+    public TurnBasedManager turnBasedManager;
     public Image _gage;
     public Button _diceBtn;
     Coroutine cor_;
     bool _isClicking;
     float _test;
     bool tt;
+
 
     private void Start()
     {
@@ -20,7 +22,6 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("시작!");
         _isClicking = true;
         _gage.fillAmount = 0;
         if (cor_ == null)
@@ -31,12 +32,13 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log("정지!");
         _isClicking = false;
         if (cor_ !=null)
         {
             StopCoroutine(cor_);
             cor_ = null;
+            turnBasedManager.Dice();
+
         }
     }
 
