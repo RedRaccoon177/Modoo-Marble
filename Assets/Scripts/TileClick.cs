@@ -6,29 +6,34 @@ using UnityEngine.UI;
 public class TileClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     TileController _tileController;
+    public GameObject _overPrefab;
+    Vector3 _originalPos;
+    float _pointertileUp;
     int _ClickEventType;
-
+    bool _isHovered;
     private void Awake()
     {
+        _isHovered = false;
         _tileController = GetComponent<TileController>();
         _ClickEventType = 0;
+        _pointertileUp = 0.001f;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("클릭 작동");
+        // 내 턴이고
         if (TurnMgr.currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
-        Debug.Log("현재 내턴 때 클릭");
-        Debug.Log("누구 턴인가 : " + PhotonNetwork.LocalPlayer.ActorNumber);
             var a = ServerIngamePlayer._players[PhotonNetwork.LocalPlayer.ActorNumber];
-        Debug.Log("여행 참인지 : " + a._isTravel);
-            if (a._isTravel == true)
+            if (a._isTravel == true) // 여행 상태라면
             {
-        Debug.Log("현재 내턴, 여행 때 클릭");
-                a._isTravelClickTile = true;
-                a._travelClickTileNum = _tileController._tileKey;
-                _ClickEventType = 1;
+                // 세계여행에서 또 세계여행으로 못가게
+                if (_tileController._tileType != TileType.Travel)
+                {
+                    a._isTravelClickTile = true;
+                    a._travelClickTileNum = _tileController._tileKey;
+                    _ClickEventType = 1;
+                }
             }
         }
         if (_ClickEventType == 0)
@@ -36,19 +41,15 @@ public class TileClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
             UIManagerP.instance.InvokeClickUI(_tileController, _tileController._tileType);
             UIManagerP.instance.OnClickUI(_tileController._tileType);
         }
-        else 
-        {
-            Debug.Log("여행");
-        }
     }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
-        GetComponent<Outline>().enabled = true; // 강제로 켜보기
+        _originalPos =_overPrefab.transform.position;
+        _overPrefab.transform.position = new Vector3(transform.position.x, transform.position.y + _pointertileUp, transform.position.z);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        GetComponent<Outline>().enabled = false; // 강제로 켜보기
+        _overPrefab.transform.position = _originalPos;
     }
 }
