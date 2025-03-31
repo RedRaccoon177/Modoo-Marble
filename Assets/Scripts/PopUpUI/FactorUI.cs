@@ -55,7 +55,7 @@ public class FactorUI : MonoBehaviour
         if (_skipNextClick == false)
         {
             UIManagerP.instance.OnBuyUI(TileType.Ground);
-            UIManagerP.instance.InvokeBuyUI(_currentTile, TileType.Ground);
+            UIManagerP.instance.InvokeBuyUI(_currentTile, TileType.Ground, _currentPlayer);
         }
     }
 

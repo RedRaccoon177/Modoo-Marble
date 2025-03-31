@@ -259,6 +259,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             Debug.Log("파산 아닐 때");
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice); // 정상적으로 통행료 지급
         }
+
+        TotalMoney();
     }
 
     //게임 오버를 위한 조건 (나를 제외한 모든 플레이어가 파산했나?)
@@ -391,17 +393,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             }
         }
 
-        Debug.Log(_totalMoney + "dd");
-
         _totalMoney = 0;
         _totalMoney = _money + tileAssetTotal;
-
-        Debug.Log(_totalMoney + "aa");
 
         if (_totalMoney < 0)
         {
             _totalMoney = 0;
-            Debug.Log(_playerNum + "게임 오버");
         }
     }
 
@@ -486,7 +483,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 //TODO: 테스트용 주석
                 StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
-                UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType, this);
             }
         }
         // 주인 = 나, 타일 타입 = 그라운드
@@ -500,7 +497,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     //TODO: 테스트용 주석
                     StartCoroutine(cooltimedelay(second));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
-                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
+                    UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType, this);
                 }
             }
             else
@@ -523,14 +520,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
 
                     // 총 자산 확인
-                    _view.RPC("TotalMoney", RpcTarget.All);
+                    //_view.RPC("TotalMoney", RpcTarget.All);
 
                     // 토지주인의 돈 증가 함수 실행
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
 
                     // 총 자산 확인
-                    FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
+                    //FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
 
                     if (currentTile._tileType == TileType.Ground)
                     {
@@ -581,6 +578,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public void IncreaseMoney(double money)
     {
         _money += money;
+        TotalMoney();
     }
 
     [PunRPC]
@@ -593,6 +591,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             _money = 0;
             Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
         }
+        TotalMoney();
     }
 
     [PunRPC]
