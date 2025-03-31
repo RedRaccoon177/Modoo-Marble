@@ -6,8 +6,8 @@ using Photon.Pun;
 using Photon;
 using System.Linq;
 using System.ComponentModel;
-using Unity.VisualScripting;
 using System;
+using UnityEngine.SocialPlatforms;
 
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
@@ -268,9 +268,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 //TODO: 테스트용 주석
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
-
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
             {
+                //StopCoroutine(runningCoroutine);
+                currentDiceCooldown1 = second;
+                //runningCoroutine = null;
+                
                 if (photonView.IsMine && _isTurn == true)
                 {
                     photonView.RPC("HideSlider", RpcTarget.All);
@@ -279,6 +282,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                 }
             }
+
         }
 
         //주사위 중복 방지 
@@ -286,19 +290,21 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             _isTurn = true;
             _isCoolFinish = false;
+            currentDiceCooldown1 = second;
         }
     }
     #endregion
 
     #region 뭔지 모를 함수들
+    
     [PunRPC]
     void HideSlider()
     {
+        mySlider.value = second;
         currentDiceCooldown1 = second;
-        //runningCoroutine = null;
-        //StopCoroutine("Dicecooltimedelay");
         mySlider.gameObject.SetActive(false);
     }
+
 
     //각턴 위치값 변경, 주사위 쿨타임
     [PunRPC]
@@ -322,42 +328,47 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             mySliderobj.transform.localPosition = new Vector3(687, -287, 0);
         }
-
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
     #endregion
+
+    [PunRPC]
+    void stop()
+    {
+        StopCoroutine(runningCoroutine);
+        runningCoroutine = null;
+    }
 
     #region 주사위 쿨타임
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
-        double startTime = PhotonNetwork.Time; 
-        double targetTime = startTime + Second; 
+        mySlider.gameObject.SetActive(true);
+        double startTime = PhotonNetwork.Time;
+        double targetTime = startTime + Second;
         mySlider.maxValue = Second;
 
         currentDiceCooldown1 = Second;
         mySlider.value = Second;
-        mySlider.gameObject.SetActive(true);
 
-        while (PhotonNetwork.Time < targetTime)
+        while (PhotonNetwork.Time < targetTime )
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                photonView.RPC("stop", RpcTarget.All);
+                //StopCoroutine(runningCoroutine);
+                break;
+            }
             currentDiceCooldown1 = (float)(targetTime - PhotonNetwork.Time);
             mySlider.value = currentDiceCooldown1;
             yield return null;
         }
 
-        ////currentDiceCooldown1 주사위굴러가면 초기화 안보이게?
-        //while (currentDiceCooldown1 > 0f)
-        //{
-        //    currentDiceCooldown1 -= Time.deltaTime;
-        //    mySlider.value = currentDiceCooldown1;
-        //    yield return null;
-        //}
-        mySlider.gameObject.SetActive(false);
-        //yield return new WaitForSeconds(Second);
         _isCoolFinish = true;
         currentDiceCooldown1 = Second;
-        runningCoroutine = null; //코루틴 중복 방지
+        mySlider.gameObject.SetActive(false);
+
+        runningCoroutine = null;
     }
 
     //팝업창 쿨타임(구매, 취소등)

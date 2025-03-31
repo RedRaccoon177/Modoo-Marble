@@ -72,6 +72,10 @@ MonoBehaviour:
   - live
   - ResetTurn
   - StopTurn
+  - CooltimeReset
+  - ShowSlider
+  - UpdateSlider
+  - stop
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
