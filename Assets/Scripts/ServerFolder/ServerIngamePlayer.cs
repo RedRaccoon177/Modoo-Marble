@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using Photon;
 using System.Linq;
-using System.ComponentModel;
-using Unity.VisualScripting;
 using System;
 
 /// <summary>
@@ -19,10 +16,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public int _playerNum;          // 플레이어 고유 번호
     public string _playerNickName;  // 닉네임 데이터
     public int _ranking;            // 플레이어 순위
+    public Coroutine _moveCor;            // 플레이어 순위
 
     [Header("플레이어 자산 관련")]
     public double _money;         // 현재 현금 보유액
     public double _totalMoney;           // 총 자산 (현금 + 소유 부동산 자산 포함)
+
+    public bool _isTravel; // 세계여행 중인지
+    public int _travelClickTileNum; // 세계여행 중 클릭 타일 번호
+    public bool _isTravelClickTile; // 세계여행 중 클릭 했는지
+    public int _travelMoveNum; // 세계여행 몇 칸 이동할찌
+    public bool _waitTravelTurn; // 세계여행 이동 가능한 턴 왔는지
 
     [Header("플레이어 상태")]
     bool _isLoan;                        // 대출 여부
@@ -285,8 +289,96 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
             gameoverwindow.CreateResultUIs();
         }
+        else
+        {
+            Debug.Log("아직 게임 중!");
+            Debug.Log(aliveCount);
+        }
     }
 
+    #region Start문, Update문
+    void Start()
+    {
+        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
+        //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _waitTravelTurn = false;
+        _money = 1100;
+        _totalMoney = _money;
+        _players[_playerNum] = this; 
+        _view = GetComponent<PhotonView>();
+        _mapInfo = FindObjectOfType<MapManager>();
+        _turnBasedManager = FindObjectOfType<TurnBasedManager>();
+        _playerPosIndex = 0;
+
+        mySliderobj = GameObject.Find("CoolTimeGameObject");
+        mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
+    }
+
+    private void FixedUpdate()
+    {
+    }
+    void Update()
+    {
+        //내턴 and (쿨타임 or 주사위)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
+        {
+            //내턴 될때 쿹타임 10초 
+            if (runningCoroutine == null && _isCoolFinish == false)
+            {
+                //TODO: 테스트용 주석
+                //hotonView.RPC("Dicecooltime", RpcTarget.All);
+            }
+
+            if ((Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true) && _isTravel == false)
+            {
+                if (photonView.IsMine && _isTurn == true)
+                {
+                    currentDiceCooldown1 = second;
+                    photonView.RPC("HideSlider", RpcTarget.All);
+                    _isTurn = false;
+                    int _diceNum = _turnBasedManager.Dice();
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 30);
+                }
+            }
+            if (_isTravel == true) // 여행 상태
+            {
+                if (_view.IsMine == true && _isTurn == true)
+                {
+                    _waitTravelTurn = true;
+                    if (_waitTravelTurn == true) // 이동 가능?
+                    {
+                        UIManagerP.instance.OnTravelUI();
+                        _waitTravelTurn = false;
+                    }
+                    if (_isTravelClickTile == true) // 타일 클릭 했는지
+                    {
+                        UIManagerP.instance.OffTravelUI();
+                        if ((_travelClickTileNum - 30) > 0) // 30 = 세계여행 위치
+                        {
+                            _travelMoveNum = _travelClickTileNum - 30;
+                        }
+                        else
+                        {
+                            _travelMoveNum = (_travelClickTileNum - 30) + 40;
+                        }
+                        photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
+                        _isTravel = false;
+                        _isTravelClickTile = false;
+                    }
+                }
+            }
+        }
+
+        //주사위 중복 방지 
+        if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
+        {
+            _isTurn = true;
+            _isCoolFinish = false;
+        }
+    }
+    #endregion
+
+    #region 뭔지 모를 함수들
     [PunRPC]
     void HideSlider()
     {
@@ -441,7 +533,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     public void RpcMovePlayer(int num)
     {
-        StartCoroutine(MovePlayer(num));
+        if (_playerMoveCor == null)
+        {
+            _playerMoveCor = StartCoroutine(MovePlayer(num));
+        }
+        else
+        {
+            StopCoroutine(_playerMoveCor);
+        }
     }
 
     /// <summary>
@@ -474,11 +573,16 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
 
-        // 주인 없을때
         if (currentTile.GetOwner(0) == 0)
         {
             if (photonView.IsMine)
             {
+                if (currentTile._tileType == TileType.Travel)
+                {
+                    TurnMgr.Instance.endTurn();
+                    _isTravel = true;
+                    _waitTravelTurn = false;
+                }
                 //쿨타임
                 StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
@@ -543,7 +647,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 {
                     int _tileOwner = currentTile.GetOwner(0);
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice, _tileOwner);
-                    Debug.Log("땅 주인 플레이어 돈 : " + FindPlayer(currentTile.GetOwner(0)).GetMoney());
+                    _view.RPC("TotalMoney", RpcTarget.All);
+                    FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
+                    if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
+                    {
+                        UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
+                    }
+                    else
+                    {
+                        // 인수 불가 Ui 출력
+                        UIManagerP.instance.OnFactorWarningUI();
+                    }
                 }
             }
         }
