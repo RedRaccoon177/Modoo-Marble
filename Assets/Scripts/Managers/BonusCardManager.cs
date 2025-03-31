@@ -24,7 +24,7 @@ public class BonusCardManager : MonoBehaviourPun
     /// </summary>
     public void TriggerBonusCard(ServerIngamePlayer player)
     {
-        int randomOption = UnityEngine.Random.Range(2, 3);
+        int randomOption = UnityEngine.Random.Range(0, 3);
         Rpc_ShowBonusCard(randomOption, player);
     }
 

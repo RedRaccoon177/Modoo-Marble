@@ -76,6 +76,10 @@ MonoBehaviour:
   - Rpc_ShowBonusCard
   - ShowBonus
   - BonusCardMovePlayer
+  - SetSliderActive
+  - Slider2Value
+  - StopCooldownSlider1
+  - StopCooldownSlider2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

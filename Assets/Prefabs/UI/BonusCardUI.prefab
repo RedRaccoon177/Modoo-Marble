@@ -141,7 +141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC1C\uBC1C \uC9C4\uD589\uC911."
+  m_text: "\uBCF4\uB108\uC2A4 \uCE74\uB4DC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -670,7 +670,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -70, y: -70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8369790725283068787
 CanvasRenderer:
@@ -700,7 +700,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC1C\uBC1C \uC9C4\uD589\uC911."
+  m_text: "\uBCF4\uB108\uC2A4 \uCE74\uB4DC \uB0B4\uC6A9"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
