@@ -1,33 +1,49 @@
-using System.Collections;
+// BonusCardUI.cs - UI 출력 전용
+using JetBrains.Annotations;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class BonusCardUI : MonoBehaviour
+public class BonusCardUI : MonoBehaviourPun
 {
-    public GameObject _panel;
-    public TMP_Text _description;
+    public TextMeshProUGUI _name;
+    public TextMeshProUGUI _description;
+    public Button _closeButton;
 
-    public void ShowCard(BonusCardType type)
+    private void Awake()
     {
-        _panel.SetActive(true);
-
-        switch (type)
-        {
-            case BonusCardType.GetMoney:
-                _description.text = "ex) 30만원을 획득했습니다!";
-                break;
-            case BonusCardType.LoseMoney:
-                _description.text = "ex) 15만원을 잃었습니다!";
-                break;
-        }
-
-        StartCoroutine(CloseAfterDelay(3f)); // 3초 뒤 자동 종료
+        UIManagerP.instance._bonusCardUI += SetData;
+        _closeButton.onClick.AddListener(() => UIManagerP.instance.OffClickUI());
+        _closeButton.onClick.AddListener(() => TurnMgr.Instance.endTurn());
     }
 
-    
-    IEnumerator CloseAfterDelay(float seconds)
+    public void SetData(TileController _data)
     {
-        yield return new WaitForSeconds(seconds);
-        _panel.SetActive(false);
+        int randomOption = Random.Range(0, 4);
+        _name.text = _data._tileName;
+        photonView.RPC("ShowBonus", RpcTarget.All, randomOption);
+    }
+
+    [PunRPC]
+    public void ShowBonus(int selectedOption)
+    {
+        Debug.Log("보너스 카드 선택지: " + selectedOption);
+
+        switch (selectedOption)
+        {
+            case 0:
+                _description.text = "돈을 받았습니다!";
+                break;
+            case 1:
+                _description.text = "돈을 잃었습니다!";
+                break;
+            case 2:
+                _description.text = "한 칸 앞으로 이동!";
+                break;
+            case 3:
+                _description.text = "턴이 스킵됩니다!";
+                break;
+        }
     }
 }

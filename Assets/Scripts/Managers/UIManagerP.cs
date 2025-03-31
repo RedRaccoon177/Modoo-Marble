@@ -26,6 +26,7 @@ public class UIManagerP : MonoBehaviour
     public event Action<int,int> _diceNumEvent;                     // 주사위 텍스트 변화 이벤트
     public event Action<TileController> _buyChangeDataGround;       // 토지 구매 UI 이벤트
     public event Action<TileController> _buyChangeDataSea;          // 관광지 구매 UI 이벤트
+    public event Action<TileController> _bonusCardUI;               // 보너스 카드 UI 이벤트
 
 
     private void Awake()
@@ -44,6 +45,7 @@ public class UIManagerP : MonoBehaviour
         OffBuyUIPanel();    // 구매할 때 나타나는 UI 비활성화
         _factorUI = Instantiate(_factorUI, canvus);
         _factorUI.SetActive(false);
+
         _factorWarningUI = Instantiate(_factorWarningUI, canvus);
         _factorWarningUI.SetActive(false);
     }
@@ -122,7 +124,7 @@ public class UIManagerP : MonoBehaviour
             }
             else if (_tileType == TileType.Item)
             {
-                Debug.Log("보너스 카드 팝업 출력");
+                _tileBuyUI[3].SetActive(true);
             }
             else
             {
@@ -148,12 +150,16 @@ public class UIManagerP : MonoBehaviour
         }
         else if (_tileType == TileType.Item)
         {
-            Debug.Log("보너스 카드 실행");
+            _bonusCardUI.Invoke(_currentTile);
         }
         else
         {
             _DataUnfinished.Invoke(_currentTile);
         }
+    }
+    public void InvokeBonusCardUI(TileController tile)
+    {
+        _bonusCardUI?.Invoke(tile);
     }
 
     /// <summary>

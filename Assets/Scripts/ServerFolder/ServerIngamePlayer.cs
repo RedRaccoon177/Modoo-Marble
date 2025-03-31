@@ -103,7 +103,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, 7);
                 }
             }
         }
@@ -131,7 +131,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     // 플레이어 소유 타일에 새 타일을 추가하는 RPC
     [PunRPC]
-
     public void AddPlayerOwnerTileList(int _tileViewNum)
     {
         // 중복이 아닐 경우에만 추가
@@ -283,11 +282,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
             gameoverwindow.CreateResultUIs();
-        }
-        else
-        {
-            Debug.Log("아직 게임 중!");
-            Debug.Log(aliveCount);
         }
     }
 

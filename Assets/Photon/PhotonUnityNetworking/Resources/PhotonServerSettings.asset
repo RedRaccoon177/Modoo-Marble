@@ -72,6 +72,9 @@ MonoBehaviour:
   - live
   - ResetTurn
   - StopTurn
+  - BonusCardRandom
+  - Rpc_ShowBonusCard
+  - ShowBonus
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -191,33 +191,7 @@ public partial class TileController : MonoBehaviourPun
         _tileCondoToll = data._tileCondoToll;
         _tileHotelToll = data._tileHotelToll;
         _tileLandMarkToll = data._tileLandMarkToll;
-
-
-        //// 타일 색상 적용 (MeshRenderer가 있다고 가정)
-        //Renderer renderer = GetComponent<Renderer>();
-        //if (renderer != null)
-        //{
-        //    renderer.material.color = GetTileColor(_tileType);
-        //}
     }
-
-    // 타일 타입별 색상 반환 메서드
-    //private Color GetTileColor(TileType type)
-    //{
-    //    switch (type)
-    //    {
-    //        case TileType.Ground: return Color.green;
-    //        case TileType.Sea: return Color.blue;
-    //        case TileType.Item: return Color.yellow;
-    //        case TileType.Start: return Color.red;
-    //        case TileType.Island: return Color.gray;
-    //        case TileType.Olympics: return Color.magenta;
-    //        case TileType.Travel: return Color.cyan;
-    //        case TileType.revenue: return Color.black;
-    //        case TileType.casino: return Color.white;
-    //        default: return Color.white;
-    //    }
-    //}
 
     /// <summary>
     /// 타일 가격 가져오기
