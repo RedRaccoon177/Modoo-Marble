@@ -66,6 +66,57 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public static event Action<bool> OlympicCheck;  // 플레이어가 올림픽을 개최했으면 중복 안되게 해줄 이벤트
     #endregion
 
+    #region Start문, Update문
+    void Start()
+    {
+        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
+        //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _money = 1100;
+        _totalMoney = _money;
+        _players[_playerNum] = this;
+        _view = GetComponent<PhotonView>();
+        _mapInfo = FindObjectOfType<MapManager>();
+        _turnBasedManager = FindObjectOfType<TurnBasedManager>();
+        _playerPosIndex = 0;
+
+        mySliderobj = GameObject.Find("CoolTimeGameObject");
+        mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
+    }
+
+    void Update()
+    {
+        //내턴 and (쿨타임 or 주사위)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
+        {
+            //내턴 될때 쿹타임 10초 
+            if (runningCoroutine == null && _isCoolFinish == false)
+            {
+                currentDiceCooldown1 = second;
+                //TODO: 테스트용 주석
+                photonView.RPC("Dicecooltime", RpcTarget.All);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
+            {
+                if (photonView.IsMine && _isTurn == true)
+                {
+                    photonView.RPC("HideSlider", RpcTarget.All);
+                    _isTurn = false;
+                    int _diceNum = _turnBasedManager.Dice();
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+                }
+            }
+        }
+
+        //주사위 중복 방지 
+        if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
+        {
+            _isTurn = true;
+            _isCoolFinish = false;
+        }
+    }
+    #endregion
+
     // 리스트에 추가, 중복체크
     //[PunRPC]
     //public void AddPlayerOwnerTileList(TileController _currentTile)
@@ -238,57 +289,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             Debug.Log(aliveCount);
         }
     }
-
-    #region Start문, Update문
-    void Start()
-    {
-        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
-        //나중에  생각하면 싱글톤도 생각해봐야할듯
-        _money = 1100;
-        _totalMoney = _money;
-        _players[_playerNum] = this;
-        _view = GetComponent<PhotonView>();
-        _mapInfo = FindObjectOfType<MapManager>();
-        _turnBasedManager = FindObjectOfType<TurnBasedManager>();
-        _playerPosIndex = 0;
-
-        mySliderobj = GameObject.Find("CoolTimeGameObject");
-        mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
-    }
-
-    void Update()
-    {
-        //내턴 and (쿨타임 or 주사위)
-        if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
-        {
-            //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null && _isCoolFinish == false)
-            {
-                currentDiceCooldown1 = second;
-                //TODO: 테스트용 주석
-                photonView.RPC("Dicecooltime", RpcTarget.All);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
-            {
-                if (photonView.IsMine && _isTurn == true)
-                {
-                    photonView.RPC("HideSlider", RpcTarget.All);
-                    _isTurn = false;
-                    int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
-                }
-            }
-        }
-
-        //주사위 중복 방지 
-        if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
-        {
-            _isTurn = true;
-            _isCoolFinish = false;
-        }
-    }
-    #endregion
 
     [PunRPC]
     void HideSlider()

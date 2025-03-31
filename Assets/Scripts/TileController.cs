@@ -103,21 +103,26 @@ public partial class TileController : MonoBehaviourPun
 
     public void ActiveObj()
     {
-        // 땅만 사고 건물 안샀을 때
-        if (_tileLandOwner != 0 && (_tilePensionOwner == 0 || _tileCondoOwner == 0 || _tileHotelOwner == 0))
+        if(_tileType == TileType.Ground)
         {
-            _tileLandObj.SetActive(true);
+            // 땅만 사고 건물 안샀을 때
+            if (_tileLandOwner != 0 && _tilePensionOwner == 0 && _tileCondoOwner == 0 && _tileHotelOwner == 0) _tileLandObj.SetActive(true);
+            else _tileLandObj.SetActive(false);
+
+            if (_tilePensionOwner != 0) _tilePensionObj.SetActive(true);
+            else _tilePensionObj.SetActive(false);
+            
+            if (_tileCondoOwner != 0) _tileCondoObj.SetActive(true);
+            else _tileCondoObj.SetActive(false);
+            
+            if (_tileHotelOwner != 0) _tileHotelObj.SetActive(true);
+            else _tileHotelObj.SetActive(false);
         }
-        else
+        else if (_tileType == TileType.Sea)
         {
-            _tileLandObj.SetActive(false);
+            if(_tileLandOwner != 0) _tileLandObj.SetActive(true);
+            else _tileLandObj.SetActive(false);
         }
-        if (_tilePensionOwner != 0) _tilePensionObj.SetActive(true);
-        else _tilePensionObj.SetActive(false);
-        if(_tileCondoOwner != 0) _tileCondoObj.SetActive(true);
-        else _tileCondoObj.SetActive(false);
-        if(_tileHotelOwner != 0) _tileHotelObj.SetActive(true);
-        else _tileHotelObj.SetActive(false);
     }
 
     IEnumerator SetupTileIfNotMaster()
@@ -188,31 +193,31 @@ public partial class TileController : MonoBehaviourPun
         _tileLandMarkToll = data._tileLandMarkToll;
 
 
-        // 타일 색상 적용 (MeshRenderer가 있다고 가정)
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material.color = GetTileColor(_tileType);
-        }
+        //// 타일 색상 적용 (MeshRenderer가 있다고 가정)
+        //Renderer renderer = GetComponent<Renderer>();
+        //if (renderer != null)
+        //{
+        //    renderer.material.color = GetTileColor(_tileType);
+        //}
     }
 
     // 타일 타입별 색상 반환 메서드
-    private Color GetTileColor(TileType type)
-    {
-        switch (type)
-        {
-            case TileType.Ground: return Color.green;
-            case TileType.Sea: return Color.blue;
-            case TileType.Item: return Color.yellow;
-            case TileType.Start: return Color.red;
-            case TileType.Island: return Color.gray;
-            case TileType.Olympics: return Color.magenta;
-            case TileType.Travel: return Color.cyan;
-            case TileType.revenue: return Color.black;
-            case TileType.casino: return Color.white;
-            default: return Color.white;
-        }
-    }
+    //private Color GetTileColor(TileType type)
+    //{
+    //    switch (type)
+    //    {
+    //        case TileType.Ground: return Color.green;
+    //        case TileType.Sea: return Color.blue;
+    //        case TileType.Item: return Color.yellow;
+    //        case TileType.Start: return Color.red;
+    //        case TileType.Island: return Color.gray;
+    //        case TileType.Olympics: return Color.magenta;
+    //        case TileType.Travel: return Color.cyan;
+    //        case TileType.revenue: return Color.black;
+    //        case TileType.casino: return Color.white;
+    //        default: return Color.white;
+    //    }
+    //}
 
     /// <summary>
     /// 타일 가격 가져오기
