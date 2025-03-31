@@ -5,11 +5,12 @@ using UnityEngine;
 public class BonusCardManager : MonoBehaviourPun
 {
     public static BonusCardManager instance; 
-    public event Action<int> _bonusCardUI;
+    public event Action<int, double> _bonusCardUI;
     public ServerIngamePlayer _player;
 
-    double _increaseMoney = 11;
-    double _decreaseMoney = 22;
+    double _increaseMoney = 500;
+    double _decreaseMoney = 300;
+    double _noting = 0;
 
 
     private void Awake()
@@ -23,11 +24,8 @@ public class BonusCardManager : MonoBehaviourPun
     /// </summary>
     public void TriggerBonusCard(ServerIngamePlayer player)
     {
-        int randomOption = UnityEngine.Random.Range(0, 2);
+        int randomOption = UnityEngine.Random.Range(2, 3);
         Rpc_ShowBonusCard(randomOption, player);
-        _bonusCardUI.Invoke(randomOption);
-
-        //photonView.RPC("Rpc_ShowBonusCard", RpcTarget.All, randomOption);
     }
 
     /// <summary>
@@ -39,20 +37,27 @@ public class BonusCardManager : MonoBehaviourPun
         switch (selectedOption)
         {
             case 0:
+                //금액 증가
                 player.photonView.RPC("IncreaseMoney", RpcTarget.All, _increaseMoney);
+                _bonusCardUI.Invoke(selectedOption, _increaseMoney);
 
                 break;
             case 1:
+                //금액 감소
                 player.photonView.RPC("DecreaseMoney", RpcTarget.All, _decreaseMoney);
-                
+                _bonusCardUI.Invoke(selectedOption, _decreaseMoney);
+
                 break;
             case 2:
-                Debug.Log("[보너스] 앞으로 한 칸 이동!");
-                
+                //시작 칸으로 가기
+                player.photonView.RPC("BonusCardMovePlayer", RpcTarget.All);
+                _bonusCardUI.Invoke(selectedOption, _noting);
+
                 break;
             case 3:
-                Debug.Log("[보너스] 턴 스킵!");
-                
+                //
+
+                _bonusCardUI.Invoke(selectedOption, _noting);
                 break;
         }
     }

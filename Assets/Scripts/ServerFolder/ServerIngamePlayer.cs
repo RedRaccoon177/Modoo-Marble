@@ -480,7 +480,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             if (photonView.IsMine)
             {
                 //쿨타임
-                //TODO: 테스트용 주석
                 StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType, this);
@@ -494,7 +493,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 if (photonView.IsMine)
                 {
                     //쿨타임
-                    //TODO: 테스트용 주석
                     StartCoroutine(cooltimedelay(second));
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType, this);
@@ -519,20 +517,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
 
-                    // 총 자산 확인
-                    //_view.RPC("TotalMoney", RpcTarget.All);
-
                     // 토지주인의 돈 증가 함수 실행
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
                     Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
 
-                    // 총 자산 확인
-                    //FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
-
                     if (currentTile._tileType == TileType.Ground)
                     {
-                        //TODO: 테스트용 주석
-                        StartCoroutine(cooltimedelay(5f));
+                        StartCoroutine(cooltimedelay(second));
                         if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
                         {
                             UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
@@ -552,8 +543,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 {
                     int _tileOwner = currentTile.GetOwner(0);
                     _view.RPC("AutomaticSale", RpcTarget.All, currentTileTollPrice - _money, currentTileTollPrice, _tileOwner);
-                    _view.RPC("TotalMoney", RpcTarget.All);
-                    FindPlayer(currentTile.GetOwner(0))._view.RPC("TotalMoney", RpcTarget.All);
                     Debug.Log("땅 주인 플레이어 돈 : " + FindPlayer(currentTile.GetOwner(0)).GetMoney());
                 }
             }
@@ -563,6 +552,41 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
         OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
     }
+
+    [PunRPC]
+    public void BonusCardMovePlayer()
+    {
+        StartCoroutine(BCMovePlayer());
+    }
+
+    IEnumerator BCMovePlayer()
+    {
+        int currentIndex = _playerPosIndex;
+
+        while (true)
+        {
+            // 1칸 이동
+            currentIndex++;
+
+            if (currentIndex >= _mapInfo._tiles.Length)
+            {
+                currentIndex = 0; // 보드판 루프
+            }
+
+            transform.position = _mapInfo._tiles[currentIndex].transform.position;
+
+            yield return new WaitForSeconds(0.01f);
+
+            // 도착 지점: 인덱스 0
+            if (currentIndex == 0)
+            {
+                break;
+            }
+        }
+
+        _playerPosIndex = currentIndex;
+    }
+
 
     public ServerIngamePlayer FindPlayer(int _actorNum)
     {
