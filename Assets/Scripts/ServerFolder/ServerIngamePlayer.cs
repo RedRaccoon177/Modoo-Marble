@@ -262,6 +262,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
+    //게임 오버를 위한 조건 (나를 제외한 모든 플레이어가 파산했나?)
     public void ALLPlayerBankruptcy()
     {
         // 살아있는 플레이어 수 체크
