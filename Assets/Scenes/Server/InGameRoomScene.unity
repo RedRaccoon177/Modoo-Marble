@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -297,6 +297,7 @@ MonoBehaviour:
   roomListPanel: {fileID: 2092034879}
   TestPlayerImage: {fileID: 6150835402650422251, guid: d88e8d5727f86bf4a805db30fc9b1bb4, type: 3}
   readyCount: 0
+  LodingPanel: {fileID: 971495902}
 --- !u!4 &277488021
 Transform:
   m_ObjectHideFlags: 0
