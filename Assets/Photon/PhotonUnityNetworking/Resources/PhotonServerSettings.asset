@@ -76,6 +76,17 @@ MonoBehaviour:
   - ShowSlider
   - UpdateSlider
   - stop
+  - cooltimedelay2
+  - Dicecooltime2
+  - stop2
+  - StartPopupCooldown
+  - sdsd
+  - sdsd2
+  - aa
+  - SetSliderActive
+  - Slider2Value
+  - StopCooldownSlider1
+  - StopCooldownSlider2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

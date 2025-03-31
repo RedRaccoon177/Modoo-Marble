@@ -29,6 +29,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     bool _isTurn = true;                 // 현재 턴 여부
     bool _isCoolFinish = false;          // 주사위 쿨타임 완료 여부
     Coroutine runningCoroutine;          // 주사위 쿨타임 코루틴 참조
+    Coroutine runningCoroutine2;          // 주사위 쿨타임 코루틴 참조
     float second = 5f;                   // 기본 쿨타임 시간
     public float currentDiceCooldown1 = 5f; // 주사위 쿨타임 (슬라이더용)
     [SerializeField] private float currentDiceCooldown2 = 5f; // UI 팝업창 쿨타임
@@ -58,6 +59,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [Header("UI 관련")]
     Slider mySlider;                     // 주사위 쿨타임 슬라이더
     GameObject mySliderobj;             // 슬라이더 오브젝트
+    Slider mySlider2;                     // 주사위 쿨타임 슬라이더
+    GameObject mySliderobj2;             // 슬라이더 오브젝트
 
     double _tempTotalMoney;
 
@@ -239,6 +242,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
+    /// <summary>
+    /// //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// </summary>
+
     #region Start문, Update문
     void Start()
     {
@@ -254,6 +261,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
+        mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
     }
 
     void Update()
@@ -264,22 +272,18 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
-                currentDiceCooldown1 = second;
                 //TODO: 테스트용 주석
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
             if (Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true)
             {
-                //StopCoroutine(runningCoroutine);
-                currentDiceCooldown1 = second;
-                //runningCoroutine = null;
-                
                 if (photonView.IsMine && _isTurn == true)
                 {
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
                     int _diceNum = _turnBasedManager.Dice();
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+
                 }
             }
 
@@ -291,6 +295,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             _isTurn = true;
             _isCoolFinish = false;
             currentDiceCooldown1 = second;
+            currentDiceCooldown2 = second;
         }
     }
     #endregion
@@ -300,8 +305,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     void HideSlider()
     {
-        mySlider.value = second;
-        currentDiceCooldown1 = second;
         mySlider.gameObject.SetActive(false);
     }
 
@@ -330,14 +333,23 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
+
+   
     #endregion
 
     [PunRPC]
-    void stop()
+    void StopCooldownSlider1()
     {
         StopCoroutine(runningCoroutine);
         runningCoroutine = null;
     }
+    [PunRPC]
+    void StopCooldownSlider2()
+    {
+        StopCoroutine(cooltimedelay(second));
+    }
+
+
 
     #region 주사위 쿨타임
     //주사위 쿨타임
@@ -355,8 +367,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                photonView.RPC("stop", RpcTarget.All);
-                //StopCoroutine(runningCoroutine);
+                photonView.RPC("StopCooldownSlider1", RpcTarget.All);
                 break;
             }
             currentDiceCooldown1 = (float)(targetTime - PhotonNetwork.Time);
@@ -371,18 +382,46 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         runningCoroutine = null;
     }
 
+    [PunRPC]
+    void Slider2Value(float cooldown)
+    {
+        currentDiceCooldown2 = cooldown;
+        mySlider2.value = currentDiceCooldown2;
+    }
+    [PunRPC]
+    void SetSliderActive(bool isActive)
+    {
+        mySlider2.gameObject.SetActive(isActive);
+    }
+
+
+
     //팝업창 쿨타임(구매, 취소등)
     IEnumerator cooltimedelay(float Second)
     {
-        while (currentDiceCooldown2 > 0f)
+        photonView.RPC("SetSliderActive", RpcTarget.All, true); 
+        double startTime = PhotonNetwork.Time;
+        double targetTime = startTime + Second;
+
+        currentDiceCooldown2 = Second;
+
+        while (PhotonNetwork.Time < targetTime)
         {
-            currentDiceCooldown2 -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.P)) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
+            {
+                photonView.RPC("StopCooldownSlider2", RpcTarget.All);
+                break;
+            }
+            currentDiceCooldown2 = (float)(targetTime - PhotonNetwork.Time);
+            photonView.RPC("Slider2Value", RpcTarget.All, (float)(targetTime - PhotonNetwork.Time));
             yield return null;
         }
-        //yield return new WaitForSeconds(Second);
         currentDiceCooldown2 = Second;
-        TurnMgr.Instance.endTurn();
+        photonView.RPC("SetSliderActive", RpcTarget.All, false); 
+        
+        TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
     }
+
     #endregion
 
     /// <summary>
@@ -502,7 +541,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 //쿨타임
                 //TODO: 테스트용 주석
-                //StartCoroutine(cooltimedelay(second));
+                StartCoroutine(cooltimedelay(second));
+                //photonView.RPC("aa", RpcTarget.All, second);
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
                 UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
             }
@@ -516,7 +556,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 {
                     //쿨타임
                     //TODO: 테스트용 주석
-                    //StartCoroutine(cooltimedelay(second));
+                    StartCoroutine(cooltimedelay(second));
+                    //photonView.RPC("aa", RpcTarget.All, second);
                     UIManagerP.instance.OnBuyUI(currentTile._tileType);
                     UIManagerP.instance.InvokeBuyUI(currentTile, currentTile._tileType);
                 }
@@ -553,7 +594,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     if (currentTile._tileType == TileType.Ground)
                     {
                         //TODO: 테스트용 주석
-                        //StartCoroutine(cooltimedelay(5f));
+                        StartCoroutine(cooltimedelay(second));
+                        //photonView.RPC("aa", RpcTarget.All, second);
                         if (_money >= currentTileBuyPrice) // 인수 가능 상태라면
                         {
                             UIManagerP.instance.OnFactorUI(currentTile, FindPlayer(_playerNum), FindPlayer(currentTile.GetOwner(0)));
