@@ -148,6 +148,10 @@ MonoBehaviour:
   _ranking: 0
   _money: 200
   _totalMoney: 0
+  _isTravel: 0
+  _travelClickTileNum: 0
+  _isTravelClickTile: 0
+  _travelMoveNum: 0
   currentDiceCooldown1: 5
   currentDiceCooldown2: 5
   _ownedSeaTiles: []
