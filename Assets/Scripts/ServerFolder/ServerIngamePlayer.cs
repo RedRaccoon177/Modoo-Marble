@@ -396,7 +396,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     public void RpcMovePlayer(int num)
     {
-        StartCoroutine(MovePlayer(num));
+        if (_playerMoveCor == null)
+        {
+            _playerMoveCor =StartCoroutine(MovePlayer(num));
+        }
     }
 
     /// <summary>

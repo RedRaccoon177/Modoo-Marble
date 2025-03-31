@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee6e42195bcff44283a8f9ffe8e7a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diceID: 0
   _photonView: {fileID: 0}
   _diceNum: 0
 --- !u!114 &2088546715729011205
