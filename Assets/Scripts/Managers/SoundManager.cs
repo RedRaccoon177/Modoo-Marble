@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
@@ -20,6 +19,7 @@ public class SoundManager : MonoBehaviour
     public Slider audioSlider1;
     public Slider audioSlider2;
     public Slider audioSlider3;
+    public List<AudioClip> soundList;
 
     //json
     SoundManager instance;
@@ -35,6 +35,7 @@ public class SoundManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -50,6 +51,8 @@ public class SoundManager : MonoBehaviour
         audioSlider2.value = soundData.bgm;
         audioSlider3.value = soundData.sfx;
 
+        gameObject.GetComponent<AudioSource>().clip = soundList[0];
+        gameObject.GetComponent<AudioSource>().Play();
     }
 
     void SaveData()
@@ -93,12 +96,9 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-
             audioMixer.SetFloat("BGM", volum);
-
         }
     }
-
 
     public void SFXAudioControl()
     {
@@ -114,9 +114,4 @@ public class SoundManager : MonoBehaviour
             audioMixer.SetFloat("SFX", volum);
         }
     }
-
-
-
-
-
 }
