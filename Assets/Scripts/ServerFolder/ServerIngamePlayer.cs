@@ -26,6 +26,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public int _travelClickTileNum; // 세계여행 중 클릭 타일 번호
     public bool _isTravelClickTile; // 세계여행 중 클릭 했는지
     public int _travelMoveNum; // 세계여행 몇 칸 이동할찌
+    public bool _waitTravelTurn; // 세계여행 이동 가능한 턴 왔는지
 
     [Header("플레이어 상태")]
     bool _isLoan;                        // 대출 여부
@@ -247,6 +248,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _waitTravelTurn = false;
         _money = 1100;
         _totalMoney = _money;
         _players[_playerNum] = this; 
@@ -259,6 +261,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
     }
 
+    private void FixedUpdate()
+    {
+    }
     void Update()
     {
         //내턴 and (쿨타임 or 주사위)
@@ -282,21 +287,31 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, 30);
                 }
             }
-            else if (_isTravel == true) // 여행 상태
+            if (_isTravel == true) // 여행 상태
             {
-                if (_isTravelClickTile == true) // 타일 클릭 했는지
+                if (_view.IsMine == true && _isTurn == true)
                 {
-                    if ((_travelClickTileNum-30) > 0)
+                    _waitTravelTurn = true;
+                    if (_waitTravelTurn == true) // 이동 가능?
                     {
-                        _travelMoveNum = _travelClickTileNum - 30;
+                        UIManagerP.instance.OnTravelUI();
+                        _waitTravelTurn = false;
                     }
-                    else
+                    if (_isTravelClickTile == true) // 타일 클릭 했는지
                     {
-                        _travelMoveNum = (_travelClickTileNum - 30) + 40;
+                        UIManagerP.instance.OffTravelUI();
+                        if ((_travelClickTileNum - 30) > 0) // 30 = 세계여행 위치
+                        {
+                            _travelMoveNum = _travelClickTileNum - 30;
+                        }
+                        else
+                        {
+                            _travelMoveNum = (_travelClickTileNum - 30) + 40;
+                        }
+                        photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
+                        _isTravel = false;
+                        _isTravelClickTile = false;
                     }
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
-                    _isTravel = false;
-                    _isTravelClickTile = false;
                 }
             }
         }
@@ -495,16 +510,17 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         _playerPosIndex += count;
 
         TileController currentTile = _mapInfo._tiles[_playerPosIndex].GetComponent<TileController>();
-        if (currentTile._tileType == TileType.Travel)
-        {
-            _isTravel = true;
-            TurnMgr.Instance.endTurn();
-        }
-        // 주인 없을때
+
         if (currentTile.GetOwner(0) == 0)
         {
             if (photonView.IsMine)
             {
+                if (currentTile._tileType == TileType.Travel)
+                {
+                    TurnMgr.Instance.endTurn();
+                    _isTravel = true;
+                    _waitTravelTurn = false;
+                }
                 //쿨타임
                 //TODO: 테스트용 주석
                 //StartCoroutine(cooltimedelay(second));

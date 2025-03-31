@@ -16,6 +16,9 @@ public class UIManagerP : MonoBehaviour
     [Header("인수 불가 안내 UI")]
     public GameObject _factorWarningUI;
 
+    [Header("세계 여행 안내 UI")]
+    public GameObject _travelUI;
+
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
     [SerializeField] Transform canvus;
@@ -45,6 +48,8 @@ public class UIManagerP : MonoBehaviour
         _factorUI.SetActive(false);
         _factorWarningUI = Instantiate(_factorWarningUI, canvus);
         _factorWarningUI.SetActive(false);
+        _travelUI = Instantiate(_travelUI, canvus);
+        _travelUI.SetActive(false);
     }
 
     /// <summary>
@@ -58,6 +63,14 @@ public class UIManagerP : MonoBehaviour
     public void OffFactorWarningUI()
     {
         _factorWarningUI.SetActive(false);
+    }
+    public void OnTravelUI()
+    {
+        _travelUI.SetActive(true);
+    }
+    public void OffTravelUI()
+    {
+        _travelUI.SetActive(false);
     }
 
     public void OnFactorUI(TileController currentTile, ServerIngamePlayer player, ServerIngamePlayer targetPlayer)

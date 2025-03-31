@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3802226835193206377}
   - component: {fileID: 1027335449151491376}
   - component: {fileID: 5390574088243771644}
+  - component: {fileID: 7840626317277621575}
   m_Layer: 5
   m_Name: TravelUI
   m_TagString: Untagged
@@ -78,6 +79,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7840626317277621575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344574436794949522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c45f0dac70e8fac418c94f1843c27111, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cancleBtn: {fileID: 3841456936468210322}
 --- !u!1 &2400963973190682580
 GameObject:
   m_ObjectHideFlags: 0

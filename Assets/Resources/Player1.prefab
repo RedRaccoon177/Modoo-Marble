@@ -152,6 +152,7 @@ MonoBehaviour:
   _travelClickTileNum: 0
   _isTravelClickTile: 0
   _travelMoveNum: 0
+  _waitTravelTurn: 0
   currentDiceCooldown1: 5
   currentDiceCooldown2: 5
   _ownedSeaTiles: []

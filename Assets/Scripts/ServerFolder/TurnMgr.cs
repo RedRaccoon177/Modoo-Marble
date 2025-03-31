@@ -88,6 +88,7 @@ public class TurnMgr : Singleton<TurnMgr>
         UIManagerP.instance.OffFactorUI();
         UIManagerP.instance.OffClickUI();
 
+
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {
