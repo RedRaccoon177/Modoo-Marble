@@ -47,16 +47,20 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
+        Debug.Log("JoinRoom");
         LodingPanel.gameObject.SetActive(true);
         StartCoroutine(FakeLodingWaitGameStart());
         //PhotonNetwork.JoinRoom(joinRoomInput.text);
+
     }
 
     public void JoinRandomRoom()
     {
+        Debug.Log("JoinRandomRoom");
         LodingPanel.gameObject.SetActive(true);
         StartCoroutine(FakeLodingWaitRandomRoom());
         //PhotonNetwork.JoinRandomRoom();
+
     }
 
     public void QuitRoom()
@@ -67,7 +71,9 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        Debug.Log("OnConnectedToMaster");
         StartCoroutine(FakeLodingWait());
+
     }
 
     public override void OnDisconnected(DisconnectCause cause)
@@ -83,8 +89,10 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        LodingPanel.gameObject.SetActive(true);
-        StartCoroutine(FakeLodingWaitJoinRoom());
+        Debug.Log("OnJoinedRoom");
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
+
     }
 
     public override void OnJoinedLobby()
@@ -149,14 +157,6 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         //PhotonNetworkMgr.Instance.changeScene("RoomScene");
         PhotonNetworkMgr.Instance.changeScene("RoomScene");
-    }
-
-    IEnumerator FakeLodingWaitJoinRoom()
-    {
-        yield return new WaitForSeconds(2f);
-        LodingPanel.gameObject.SetActive(false);
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
-        PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
     }
 
     IEnumerator FakeLodingWaitGameStart()

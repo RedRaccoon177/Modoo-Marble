@@ -14,6 +14,8 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     public GameObject TestPlayerImage;
     public int readyCount = 0;
 
+    public GameObject LodingPanel;
+
     int playerMoney;//돈을 담아줄것
 
     //겟차일드 찾고 
@@ -146,10 +148,23 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             if (readyCount >= PhotonNetwork.PlayerList.Length - 1)
             {
                 Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
+                //StartCoroutine(IngameGo());
                 PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
+
             }
         }
 
     }
+
+    IEnumerator IngameGo()
+    {
+        LodingPanel.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        LodingPanel.gameObject.SetActive(false);
+        PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
+    }
+
+
+
 
 }
