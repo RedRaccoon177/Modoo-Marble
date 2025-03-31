@@ -1,11 +1,8 @@
-// BonusCardUI.cs - UI 출력 전용
-using JetBrains.Annotations;
-using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BonusCardUI : MonoBehaviourPun
+public class BonusCardUI : MonoBehaviour
 {
     public TextMeshProUGUI _name;
     public TextMeshProUGUI _description;
@@ -13,21 +10,14 @@ public class BonusCardUI : MonoBehaviourPun
 
     private void Awake()
     {
-        UIManagerP.instance._bonusCardUI += SetData;
+        BonusCardManager.instance._bonusCardUI += ShowBonus;
         _closeButton.onClick.AddListener(() => UIManagerP.instance.OffClickUI());
         _closeButton.onClick.AddListener(() => TurnMgr.Instance.endTurn());
     }
 
-    public void SetData(TileController _data)
-    {
-        int randomOption = Random.Range(0, 4);
-        _name.text = _data._tileName;
-        photonView.RPC("ShowBonus", RpcTarget.All, randomOption);
-    }
-
-    [PunRPC]
     public void ShowBonus(int selectedOption)
     {
+        _name.text = "보너스 카드";
         Debug.Log("보너스 카드 선택지: " + selectedOption);
 
         switch (selectedOption)
