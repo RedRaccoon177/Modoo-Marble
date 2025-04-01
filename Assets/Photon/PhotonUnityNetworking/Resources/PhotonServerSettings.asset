@@ -86,6 +86,7 @@ MonoBehaviour:
   - DiceSatting
   - DiceStart
   - KK
+  - DiceUiRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
