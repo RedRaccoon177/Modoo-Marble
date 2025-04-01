@@ -32,6 +32,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     [Header("플레이어 상태")]
     bool _isLoan;                        // 대출 여부
+    bool _isInstantiate;                        // 대출 여부
     bool _isTurn = true;                 // 현재 턴 여부
     bool _isCoolFinish = false;          // 주사위 쿨타임 완료 여부
     Coroutine runningCoroutine;          // 주사위 쿨타임 코루틴 참조
@@ -115,8 +116,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
-                    int _diceNum = _turnBasedManager.Dice();
-                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+                    //int _diceNum = _turnBasedManager.Dice();
+                    //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                 }
             }
             if (_isTravel == true) // 여행 상태
@@ -754,6 +755,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             _playerNum = (int)data[0];
             _playerNickName = (string)data[1];
+            _isInstantiate = true;
         }
     }
 

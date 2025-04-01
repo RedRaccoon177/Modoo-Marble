@@ -16,6 +16,7 @@ public class UIManagerP : MonoBehaviour
 
     [Header("인수 불가 안내 UI")]
     public GameObject _factorWarningUI;
+    public GameObject _diceUI;
 
     [Header("세계 여행 안내 UI")]
     public GameObject _travelUI;
