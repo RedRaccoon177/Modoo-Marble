@@ -46,7 +46,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     Coroutine _playerMoveCor;            // 이동 중인 코루틴 참조
 
     [Header("소유 타일 정보")]
-    //List<TileController> _playerGroundLists = new List<TileController>(); // 일반 땅
     public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지
 
     int[] _playerOwnerTileViewArr;
@@ -96,6 +95,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     void Update()
     {
+        if (!TurnMgr.isGameStarted) return;
+
         //내턴 and (쿨타임 or 주사위)
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {

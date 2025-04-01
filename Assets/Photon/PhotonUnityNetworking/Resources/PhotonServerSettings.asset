@@ -80,6 +80,8 @@ MonoBehaviour:
   - Slider2Value
   - StopCooldownSlider1
   - StopCooldownSlider2
+  - NotifyLoadingDone
+  - NotifyMasterPlayerLoaded
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

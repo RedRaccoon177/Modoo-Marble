@@ -22,6 +22,9 @@ public class TurnMgr : Singleton<TurnMgr>
     static public bool leave4 = false;
     public int playerlist;
 
+    int loadedPlayers = 0;
+
+    public static bool isGameStarted = false;
 
     public GameObject[] playerfabs;
 
@@ -109,8 +112,6 @@ public class TurnMgr : Singleton<TurnMgr>
         }
     }
 
-   
-
     [PunRPC]
     void NextTurn()
     {
@@ -181,7 +182,33 @@ public class TurnMgr : Singleton<TurnMgr>
         leave3 = isStop;
     }
 
+    private HashSet<int> loadedPlayerActorNumbers = new HashSet<int>(); // 클래스 맨 위에 선언!
 
+    [PunRPC]
+    public void NotifyMasterPlayerLoaded(int actorNumber)
+    {
+        if (loadedPlayerActorNumbers.Contains(actorNumber))
+        {
+            Debug.LogWarning($"[마스터] {actorNumber} 중복 로딩 완료 신호 무시");
+            return;
+        }
 
+        loadedPlayerActorNumbers.Add(actorNumber);
+        loadedPlayers++;
 
+        Debug.Log($"[마스터] PlayerLoaded 호출됨 → {loadedPlayers}/{PhotonNetwork.PlayerList.Length}");
+
+        if (loadedPlayers >= PhotonNetwork.PlayerList.Length)
+        {
+            StartTurnSystem();
+        }
+    }
+
+    void StartTurnSystem()
+    {
+        Debug.Log("게임 시작됨! isGameStarted = true");
+        currentTurn = 1;
+        currentTurnText.text = currentTurn.ToString();
+        isGameStarted = true;
+    }
 }

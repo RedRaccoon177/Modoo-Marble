@@ -25,7 +25,7 @@ public class Singleton<T> : MonoBehaviourPunCallbacks where T : MonoBehaviourPun
                 instance = (T)FindObjectOfType(typeof(T));
 
                 // 못 찾았으면 새로 생성
-                if (instance != null)   // ← 이거 원래 if (instance == null) 이어야 맞음 (아래에서 설명)
+                if (instance == null)   // ← 이거 원래 if (instance == null) 이어야 맞음 (아래에서 설명)
                 {
                     GameObject obj = new GameObject(typeof(T).Name, typeof(T)); // 오브젝트 생성
                     instance = obj.GetComponent<T>(); // 컴포넌트 참조
@@ -68,13 +68,12 @@ public class Singleton2<T> : MonoBehaviour where T : MonoBehaviour
             {
                 instance = (T)FindObjectOfType(typeof(T));
 
-                if (instance != null)   // ← 이것도 원래는 instance == null 이어야 맞음
+                if (instance == null)   // ← 이것도 원래는 instance == null 이어야 맞음
                 {
                     GameObject obj = new GameObject(typeof(T).Name, typeof(T));
                     instance = obj.GetComponent<T>();
                 }
             }
-
             return instance;
         }
     }
