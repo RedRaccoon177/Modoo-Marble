@@ -16,6 +16,7 @@ public partial class TileController : MonoBehaviourPun
     [Header("보조 타일 타입")] public GameObject[] InGameTilePrefabs;
 
     [Header("건물 활성화를 위한 변수")]
+    public GameObject _tileOwnerColor;
     public GameObject _tileLandObj;
     public GameObject _tilePensionObj;
     public GameObject _tileCondoObj;
@@ -63,6 +64,7 @@ public partial class TileController : MonoBehaviourPun
 
     GameObject _cityname;
     GameObject _bonusStage;
+
 
     
     void Start()
