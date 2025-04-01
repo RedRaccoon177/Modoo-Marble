@@ -91,7 +91,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
     {
         Debug.Log("OnJoinedRoom");
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
-        PhotonNetworkMgr.Instance.changeScene("InGameRoomScene");
+        PhotonNetworkMgr.Instance.changeScene("RoomScene");
 
     }
 
@@ -181,7 +181,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
         PhotonNetwork.JoinLobby();
         //PhotonNetworkMgr.Instance.changeScene("RoomScene");
-        PhotonNetworkMgr.Instance.changeScene("RoomScene");
+        PhotonNetworkMgr.Instance.changeScene("LobbyScene");
     }
 
     IEnumerator FakeLodingWaitGameStart()

@@ -141,7 +141,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             {
                 Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
                 PhotonNetwork.CurrentRoom.IsOpen = false; //게임 시작 후 방 못들어옴
-                PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
+                PhotonNetworkMgr.Instance.changeScene("InGameScene");
             }
         }
     }
@@ -151,6 +151,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         LodingPanel.gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         LodingPanel.gameObject.SetActive(false);
-        PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
+        PhotonNetworkMgr.Instance.changeScene("InGameScene");
     }
 }

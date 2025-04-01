@@ -9,11 +9,11 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
     private void Start()
     {
         //애네를 기억하는 애를 만들어서 그거를 TRUE해야댈듯
-        int aa = PhotonNetwork.PlayerList.Length;
+        int StartPlayerLength = PhotonNetwork.PlayerList.Length;
         //플레이어가 없는 번호는 leave =true로
         for (int i = 1; i <= 4; i++)
         {
-            if (aa >= i)
+            if (StartPlayerLength >= i)
             {
 
             }
@@ -33,7 +33,7 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
         Debug.Log("방나가는버튼클릭햇음");
         PhotonNetwork.LeaveRoom();
         StartCoroutine(waitSecond());
-        SceneManager.LoadScene("RoomScene");
+        SceneManager.LoadScene("LobbyScene");
     }
 
     IEnumerator waitSecond()
