@@ -124,7 +124,7 @@ public partial class TileController : MonoBehaviourPun
 
     IEnumerator SetupTileIfNotMaster()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
 
         if (!PhotonNetwork.IsMasterClient)
         {
@@ -134,10 +134,10 @@ public partial class TileController : MonoBehaviourPun
             {
                 foreach (var data in map._tiledates)
                 {
-                    if (Vector3.Distance(transform.position, data._tilePos) < 0.2f)
+                    if (Vector3.Distance(transform.position, data._tilePos) < 0.1f)
                     {
                         SetTileData(data); // 참가자도 타일 정보 직접 설정
-                        //Debug.Log($"[참가자] SetTileData 직접 호출됨 → tileKey: {data._tileKey}");
+                        Debug.Log($"[참가자] SetTileData 직접 호출됨 → tileKey: {data._tileKey}");
 
                         // 타일 배열 등록
                         if (data._tileKey >= 0 && data._tileKey < map._tiles.Length)
@@ -145,7 +145,7 @@ public partial class TileController : MonoBehaviourPun
                             map._tiles[data._tileKey] = this.gameObject;
                             map.TileNameSetting(data._tileKey, this.gameObject);
                             map.TileSetting(this, this.gameObject);
-                            //Debug.Log($"[참가자] _tiles[{data._tileKey}] 등록 완료");
+                            Debug.Log($"[참가자] _tiles[{data._tileKey}] 등록 완료");
                         }
 
                         break;

@@ -15,6 +15,7 @@ public class UIManagerP : MonoBehaviour
 
     [Header("인수 불가 안내 UI")]
     public GameObject _factorWarningUI;
+    public GameObject _diceUI;
 
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;

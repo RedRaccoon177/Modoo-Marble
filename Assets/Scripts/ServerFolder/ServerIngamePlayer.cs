@@ -214,9 +214,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
 
-        //yield return new WaitUntil(() => _playerNum == PhotonNetwork.LocalPlayer.ActorNumber);
+        yield return new WaitUntil(() => _playerNum == PhotonNetwork.LocalPlayer.ActorNumber);
         //yield return new WaitUntil(() => _players.Count == PhotonNetwork.PlayerList.Length);
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         _view.RPC("PlayersSetting", RpcTarget.All);
     }
     [PunRPC]
