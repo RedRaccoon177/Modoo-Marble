@@ -21,6 +21,10 @@ public class SoundManager : MonoBehaviour
     public Slider audioSlider3;
     public List<AudioClip> soundList;
 
+    public float masterValue;
+    public float bgmValue;
+    public float sfxValue;
+
     //json
     SoundManager instance;
 
@@ -53,6 +57,8 @@ public class SoundManager : MonoBehaviour
 
         gameObject.GetComponent<AudioSource>().clip = soundList[0];
         gameObject.GetComponent<AudioSource>().Play();
+
+     
     }
 
     void SaveData()
@@ -60,7 +66,7 @@ public class SoundManager : MonoBehaviour
         string data = JsonUtility.ToJson(soundData);
         File.WriteAllText(path, data);
     }
-    void LoadData()
+    public void LoadData()
     {
         if (File.Exists(path) == false)
         {
@@ -70,9 +76,9 @@ public class SoundManager : MonoBehaviour
         soundData = JsonUtility.FromJson<SoundData>(data);
     }
 
-    public void MasterAudioControl()
+    public void MasterAudioControl(float volum)
     {
-        float volum = audioSlider1.value;
+        volum = audioSlider1.value;
         soundData.master = volum;
         SaveData();
         if (volum == -40)
@@ -85,9 +91,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void BGMAudioControl()
+    public void BGMAudioControl(float volum)
     {
-        float volum = audioSlider2.value;
+        volum = audioSlider2.value;
         soundData.bgm = volum;
         SaveData();
         if (volum == -40)
@@ -100,9 +106,9 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SFXAudioControl()
+    public void SFXAudioControl(float volum)
     {
-        float volum = audioSlider3.value;
+        volum = audioSlider3.value;
         soundData.sfx = volum;
         SaveData();
         if (volum == -40)
@@ -113,5 +119,16 @@ public class SoundManager : MonoBehaviour
         {
             audioMixer.SetFloat("SFX", volum);
         }
+    }
+
+    private void OnDisable()
+    {
+        masterValue = audioSlider1.value;
+        bgmValue = audioSlider2.value;
+        sfxValue = audioSlider3.value;
+
+        Debug.Log(masterValue);
+        Debug.Log(bgmValue);
+        Debug.Log(sfxValue);
     }
 }

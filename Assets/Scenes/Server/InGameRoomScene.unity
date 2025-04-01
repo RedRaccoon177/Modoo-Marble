@@ -720,6 +720,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8480530585755942045, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
   m_PrefabInstance: {fileID: 689446435}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &689446438 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2976401472634501470, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
+  m_PrefabInstance: {fileID: 689446435}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &689446439 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5798580908512743608, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
+  m_PrefabInstance: {fileID: 689446435}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &689446440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3786714891137260113, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
+  m_PrefabInstance: {fileID: 689446435}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &818031192
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,6 +1540,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   optionUi: {fileID: 689446437}
+  masterSound: {fileID: 689446440}
+  bgmSound: {fileID: 689446439}
+  sfxSound: {fileID: 689446438}
 --- !u!4 &1836658020
 Transform:
   m_ObjectHideFlags: 0

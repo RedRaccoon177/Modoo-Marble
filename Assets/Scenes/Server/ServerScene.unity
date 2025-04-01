@@ -475,6 +475,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   optionUi: {fileID: 613664429}
+  masterSound: {fileID: 613664432}
+  bgmSound: {fileID: 613664431}
+  sfxSound: {fileID: 613664430}
 --- !u!1 &501524684
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,6 +778,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 497345840232328470, guid: 1f23d4fb22f8bb048a527db9d18d2074, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3568338503181047759, guid: 1f23d4fb22f8bb048a527db9d18d2074, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4275190159219432594, guid: 1f23d4fb22f8bb048a527db9d18d2074, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7063212595926008815, guid: 1f23d4fb22f8bb048a527db9d18d2074, type: 3}
       propertyPath: m_Name
       value: LodingPanelDice
@@ -1053,6 +1068,21 @@ RectTransform:
 --- !u!1 &613664429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8480530585755942045, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
+  m_PrefabInstance: {fileID: 613664427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &613664430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2976401472634501470, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
+  m_PrefabInstance: {fileID: 613664427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &613664431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5798580908512743608, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
+  m_PrefabInstance: {fileID: 613664427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &613664432 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3786714891137260113, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
   m_PrefabInstance: {fileID: 613664427}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &680773574
@@ -2043,9 +2073,9 @@ RectTransform:
   m_Children:
   - {fileID: 5104813179240162193}
   - {fileID: 6187760868272228240}
-  - {fileID: 1331746704}
   - {fileID: 1213781645}
   - {fileID: 613664428}
+  - {fileID: 1331746704}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
