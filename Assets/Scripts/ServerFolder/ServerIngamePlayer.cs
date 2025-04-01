@@ -131,7 +131,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
-                //TODO: 테스트용 주석
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
@@ -145,6 +144,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     _turnBasedManager.Dice();
                 }
             }
+
             if (_isTravel == true) // 여행 상태
             {
                 _waitTravelTurn = true;
@@ -346,12 +346,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
+    #region 주사위 쿨타임
     [PunRPC]
     void HideSlider()
     {
         mySlider.gameObject.SetActive(false);
     }
-
 
     //각턴 위치값 변경, 주사위 쿨타임
     [PunRPC]
@@ -375,6 +375,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             mySliderobj.transform.localPosition = new Vector3(-720, -310, 0);
         }
+
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
 
@@ -390,9 +391,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         StopCoroutine(cooltimedelay(second));
     }
 
-
-
-    #region 주사위 쿨타임
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
@@ -435,8 +433,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider2.gameObject.SetActive(isActive);
     }
 
-
-
     //팝업창 쿨타임(구매, 취소등)
     IEnumerator cooltimedelay(float Second)
     {
@@ -462,7 +458,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         
         TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
     }
-
     #endregion
 
     /// <summary>
