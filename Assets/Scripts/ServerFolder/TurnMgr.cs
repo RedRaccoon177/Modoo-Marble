@@ -182,11 +182,22 @@ public class TurnMgr : Singleton<TurnMgr>
         leave3 = isStop;
     }
 
+    private HashSet<int> loadedPlayerActorNumbers = new HashSet<int>(); // 클래스 맨 위에 선언!
+
     [PunRPC]
-    public void NotifyMasterPlayerLoaded()
+    public void NotifyMasterPlayerLoaded(int actorNumber)
     {
+        if (loadedPlayerActorNumbers.Contains(actorNumber))
+        {
+            Debug.LogWarning($"[마스터] {actorNumber} 중복 로딩 완료 신호 무시");
+            return;
+        }
+
+        loadedPlayerActorNumbers.Add(actorNumber);
         loadedPlayers++;
+
         Debug.Log($"[마스터] PlayerLoaded 호출됨 → {loadedPlayers}/{PhotonNetwork.PlayerList.Length}");
+
         if (loadedPlayers >= PhotonNetwork.PlayerList.Length)
         {
             StartTurnSystem();

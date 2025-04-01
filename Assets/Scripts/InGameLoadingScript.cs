@@ -33,6 +33,6 @@ public class InGameLoadingScript : MonoBehaviourPun
             Debug.Log($"[{PhotonNetwork.LocalPlayer.ActorNumber}] 나는 마스터가 아님 → RPC 보낼 수 없음 → 마스터에게 알림 전송");
         }
 
-        turnMgrView.RPC("NotifyMasterPlayerLoaded", RpcTarget.MasterClient);
+        turnMgrView.RPC("NotifyMasterPlayerLoaded", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
     }
 }
