@@ -21,6 +21,9 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
     public GameObject roomPrefab;
     public GameObject LodingPanel;
 
+    List<string> names = new List<string>() { "점심내기 한판", "주사위 운빨 겜", "주사위의 신을 찾아라", "내 용돈 줄 사람 구함" };
+    static int nameCount;
+
     //서버연결
     public void isServer()
     {
@@ -29,13 +32,27 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         LodingPanel.gameObject.SetActive(true);
     }
 
+    string RanddomRoomName()
+    {
+        string roomname;
+
+        roomname = names[nameCount];
+        nameCount++;
+        if (names.Count-1 < nameCount)
+        {
+            nameCount = 0;
+        }
+        return roomname;
+    }
+
     public void CreateRoom()
     {
         if (PhotonNetwork.IsConnected)
         {
             Debug.Log("방만들기 버튼 클릭");
+
             //일단 인원 제한없음
-            PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions{ MaxPlayers =4, EmptyRoomTtl =0 ,IsOpen = true}); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
+            PhotonNetwork.CreateRoom(RanddomRoomName(), new RoomOptions{ MaxPlayers =4, EmptyRoomTtl =0 ,IsOpen = true}); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
         }
         else
         {

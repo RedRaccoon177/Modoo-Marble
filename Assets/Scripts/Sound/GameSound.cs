@@ -12,15 +12,6 @@ public class GameSound : MonoBehaviour
         gameObject.GetComponent<AudioSource>().clip = _soundMgr.soundList[2];
     }
 
-
-    private void LateUpdate()
-    {
-        //if( Input.GetMouseButtonDown(0))
-        //{
-        //    ClickSoundPlay();
-        //}
-    }
-
     public void ClickSoundPlay()
     {
         gameObject.GetComponent<AudioSource>().Play();
