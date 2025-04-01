@@ -74,7 +74,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [Header("게임 매니저 참조")]
     MapManager _mapInfo;                       // 맵 매니저
     TurnBasedManager _turnBasedManager;       // 턴 매니저
-    PlayerManager _playerManager;             // 플레이어 매니저
 
     // ========================= UI 요소 =========================
     [Header("UI 관련")]
@@ -116,10 +115,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
         mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
-        NotifyPlayerDataChanged(_playerNum);
 
         yield return new WaitUntil(() => _isInstantiate == true);
         _players[_playerNum] = this;
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     void Update()
