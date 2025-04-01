@@ -49,10 +49,9 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         if (collision.gameObject.tag == "DiceGround" && _isRolling == true)
         {
-            Debug.Log("¶¥ ´ê¾ÒÀ» ½Ã diceID : " + diceID);
-            Debug.Log("¶¥ ´ê¾ÒÀ» ½Ã _diceNum : " + _diceNum);
             _isRolling = false;
             StopCoroutine(RollingDice());
+            _rb.velocity = Vector3.zero;
             ChangeRotation(_diceNum);
             _dicePlayerMove?.Invoke(diceID, _diceNum);
         }

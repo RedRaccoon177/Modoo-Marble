@@ -35,11 +35,11 @@ public class TurnBasedManager : MonoBehaviourPun
             _blueDiceViewID = _blueDice.photonView.ViewID;
             _redDice._dicePlayerMove += PlayerMove;
             _blueDice._dicePlayerMove += PlayerMove;
-            photonView.RPC("testt",RpcTarget.Others, _redDiceViewID, _blueDiceViewID);
+            photonView.RPC("DiceSatting", RpcTarget.Others, _redDiceViewID, _blueDiceViewID);
         }
     }
     [PunRPC]
-    public void testt(int _redDiceView, int _blueView)
+    public void DiceSatting(int _redDiceView, int _blueView)
     {
         _redDice = PhotonView.Find(_redDiceView).GetComponent<DiceManager>();
         _blueDice = PhotonView.Find(_blueView).GetComponent<DiceManager>();

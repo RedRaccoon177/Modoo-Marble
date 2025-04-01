@@ -20,6 +20,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public int _playerNum; // 플레이어 고유 번호
     public string _playerNickName; // 닉네임 데이터
     public int _ranking;
+    static bool _isMyTurn;
 
     [Header("플레이어 자산 관련")]
     public double _money;         // 현재 현금 보유액
@@ -27,6 +28,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     [Header("플레이어 상태")]
     bool _isLoan;                        // 대출 여부
+    bool _isInstantiate;                        // 대출 여부
     bool _isTurn = true;                 // 현재 턴 여부
     bool _isCoolFinish = false;          // 주사위 쿨타임 완료 여부
     Coroutine runningCoroutine;          // 주사위 쿨타임 코루틴 참조
@@ -214,14 +216,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
 
-        yield return new WaitUntil(() => _playerNum == PhotonNetwork.LocalPlayer.ActorNumber);
-        //yield return new WaitUntil(() => _players.Count == PhotonNetwork.PlayerList.Length);
-        //yield return new WaitForSeconds(1f);
-        _view.RPC("PlayersSetting", RpcTarget.All);
-    }
-    [PunRPC]
-    public void PlayersSetting()
-    {
+        yield return new WaitUntil(() => _isInstantiate == true);
         _players[_playerNum] = this;
     }
 
@@ -315,6 +310,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         //yield return new WaitForSeconds(Second);
         _isCoolFinish = true;
         currentDiceCooldown1 = Second;
+        
         runningCoroutine = null; //코루틴 중복 방지
     }
 
@@ -590,6 +586,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             _playerNum = (int)data[0];
             _playerNickName = (string)data[1];
+            _isInstantiate = true;
         }
     }
 
