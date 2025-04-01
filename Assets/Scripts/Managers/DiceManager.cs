@@ -57,12 +57,6 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
     }
 
-    [PunRPC]
-    public void KK()
-    {
-        _dicePlayerMove?.Invoke(diceID, _diceNum);
-    }
-
     public void ChangeRotation(int num)
     {
         if (num == 1) { transform.rotation = one; }

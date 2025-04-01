@@ -19,10 +19,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     #region 플레이어 기본 정보
     // ========================= 플레이어 기본 정보 =========================
     [Header("플레이어 기본 정보")]
-    public int _playerNum;                     // 플레이어 고유 번호
-    public string _playerNickName;             // 닉네임
-    public int _ranking;                       // 현재 랭킹
-    public Coroutine _moveCor;                 // 이동 코루틴 참조
+    public int _playerNum;          // 플레이어 고유 번호
+    public string _playerNickName;  // 닉네임 데이터
+    public int _ranking;            // 플레이어 순위
+    public bool _isBtnClicked;            // 버튼 클릭했는지
+    public Coroutine _moveCor;            // 플레이어 순위
 
     // ========================= 자산 관련 정보 =========================
     [Header("플레이어 자산 관련")]
@@ -102,6 +103,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _isBtnClicked = false;
         _waitTravelTurn = false;
         _money = _startMoney;
         _totalMoney = _money;
@@ -115,7 +117,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
         NotifyPlayerDataChanged(_playerNum);
 
-        yield return null;
+        yield return new WaitUntil(() => _isInstantiate == true);
+        _players[_playerNum] = this;
     }
 
     void Update()
@@ -132,14 +135,15 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
-            if ((Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true) && _isTravel == false)
+            if ((_isBtnClicked == true || _isCoolFinish == true) && _isTravel == false)
             {
+                _isBtnClicked = false;
                 if (photonView.IsMine && _isTurn == true)
                 {
                     
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
-                    //int _diceNum = _turnBasedManager.Dice();
+                    _turnBasedManager.Dice();
                     //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                 }
             }
@@ -404,9 +408,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown1 = Second;
         mySlider.value = Second;
 
-        while (PhotonNetwork.Time < targetTime )
+        while (PhotonNetwork.Time < targetTime)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_isBtnClicked == true)
             {
                 photonView.RPC("StopCooldownSlider1", RpcTarget.All);
                 break;
