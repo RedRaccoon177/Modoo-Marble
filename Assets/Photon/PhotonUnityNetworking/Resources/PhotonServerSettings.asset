@@ -72,6 +72,8 @@ MonoBehaviour:
   - DiceStart
   - testt
   - KK
+  - tttt
+  - PlayersSetting
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

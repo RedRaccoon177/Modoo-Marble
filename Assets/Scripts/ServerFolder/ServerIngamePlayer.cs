@@ -198,14 +198,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice);
         }
     }
-    private void Awake()
-    {
-        Debug.Log("안녕11");
-        _players[_playerNum] = this; 
-    }
 
     #region Start문, Update문
-    void Start()
+    IEnumerator Start()
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
@@ -218,6 +213,16 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
+
+        //yield return new WaitUntil(() => _playerNum == PhotonNetwork.LocalPlayer.ActorNumber);
+        //yield return new WaitUntil(() => _players.Count == PhotonNetwork.PlayerList.Length);
+        yield return new WaitForSeconds(1f);
+        _view.RPC("PlayersSetting", RpcTarget.All);
+    }
+    [PunRPC]
+    public void PlayersSetting()
+    {
+        _players[_playerNum] = this;
     }
 
     void Update()
@@ -299,6 +304,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         while (currentDiceCooldown1 > 0f)
         {
             currentDiceCooldown1 -= Time.deltaTime;
+            //if(var aa == true){
+            //    aa = false;
+            //        break;
+            //}
             mySlider.value = currentDiceCooldown1;
             yield return null;
         }

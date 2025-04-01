@@ -49,28 +49,23 @@ public class TurnBasedManager : MonoBehaviourPun
 
     public void Dice()
     {
-        _redDice._diceNum = Random.Range(1,7);
-        _blueDice._diceNum = Random.Range(1,7);
-        _redDice._photonView.RPC("DiceStart", RpcTarget.All, _redDice._diceNum);
-        _blueDice._photonView.RPC("DiceStart", RpcTarget.All, _blueDice._diceNum);
+        var a = Random.Range(1,7);
+        var b = Random.Range(1,7);
+        _redDice._photonView.RPC("DiceStart", RpcTarget.All, a);
+        _blueDice._photonView.RPC("DiceStart", RpcTarget.All, b);
     }
 
     public void PlayerMove(int diceKey, int diceNum)
     {
         diceResults[diceKey] = diceNum;
     
-        if (diceResults[0] != null && diceResults[1] != null)
+        if ((diceResults[0] != null && diceResults[1] != null))
         {
-            if (ServerIngamePlayer._players.ContainsKey(1))
-            {
-                Debug.Log($"플레이어 찾음");
-            }
-            else
-            {
-                Debug.Log($"플레이어 못찾음");
-            }
             int total = diceResults[0].Value + diceResults[1].Value;
-            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(1);
+            Debug.Log("최종 주사위 결과!!!!!!!!!!!!!!!! : " + total);
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
+            diceResults[0] = null;
+            diceResults[1] = null;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
+    bool _isRolling;
     public event Action<int, int> _dicePlayerMove;
     public int diceID;
     bool isGroundOn;
@@ -21,13 +22,16 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private void Start()
     {
+        _isRolling = false;
         _photonView = GetComponent<PhotonView>();
         _rb = GetComponent<Rigidbody>();
     }
     [PunRPC]
     public void DiceStart(int _diceNum)
     {
+        this._diceNum = 0;
         this._diceNum = _diceNum;
+        _isRolling = true;
         Debug.Log(gameObject.name +"ÁÖ»çÀ§ ÇöÀç ¼ýÀÚ : " + this._diceNum);
         _rb.AddForce(0, 5, 0, ForceMode.Impulse);
         _diceCor = StartCoroutine(RollingDice());
@@ -35,8 +39,7 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     IEnumerator RollingDice()
     {
-        isGroundOn = true;
-        while (isGroundOn == true)
+        while (_isRolling == true)
         {
             transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
             yield return new WaitForSeconds(0.1f);
@@ -44,9 +47,11 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     }
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "DiceGround" && isGroundOn == true)
+        if (collision.gameObject.tag == "DiceGround" && _isRolling == true)
         {
-            isGroundOn = false;
+            Debug.Log("¶¥ ´ê¾ÒÀ» ½Ã diceID : " + diceID);
+            Debug.Log("¶¥ ´ê¾ÒÀ» ½Ã _diceNum : " + _diceNum);
+            _isRolling = false;
             StopCoroutine(RollingDice());
             ChangeRotation(_diceNum);
             photonView.RPC("KK",RpcTarget.All);
