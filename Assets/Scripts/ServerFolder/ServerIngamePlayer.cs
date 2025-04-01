@@ -93,7 +93,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
         mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
 
-        yield return new WaitUntil(() => _players.Count == PhotonNetwork.PlayerList.Count());
+        yield return new WaitUntil(() => _isInstantiate == true);
         _players[_playerNum] = this;
     }
 
