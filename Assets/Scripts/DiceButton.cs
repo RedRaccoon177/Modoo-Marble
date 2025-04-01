@@ -30,6 +30,7 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        ServerIngamePlayer._players[TurnMgr.currentTurn]._isBtnClicked = true;
         _isClicking = false;
         if (cor_ !=null)
         {

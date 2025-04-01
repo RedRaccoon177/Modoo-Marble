@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 
 public class UIManagerP : MonoBehaviour
@@ -53,6 +54,7 @@ public class UIManagerP : MonoBehaviour
         _factorWarningUI.SetActive(false);
         _travelUI = Instantiate(_travelUI, canvus);
         _travelUI.SetActive(false);
+        TurnMgr.Instance.photonView.RPC("DiceUiRPC", RpcTarget.All);
     }
     public void OnDiceUI()
     {
