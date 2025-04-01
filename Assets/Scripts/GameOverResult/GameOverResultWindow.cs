@@ -51,6 +51,11 @@ public class GameOverResultWindow : MonoBehaviour
             {
                 resultUI.Setup(i + 1, $"{player._playerNickName}", player._totalMoney);
             }
+
+            if (allPlayers[i]._playerNum == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+
+            }
         }
     }
 }

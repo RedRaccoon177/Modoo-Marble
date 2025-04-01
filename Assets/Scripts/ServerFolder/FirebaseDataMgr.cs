@@ -18,7 +18,6 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
     private DatabaseReference dbReference;
     public int userMoney = 0;
 
-
     private void Awake()
     {
         if (Instance == null)
@@ -31,8 +30,6 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
             Destroy(gameObject);
         }
     }
-   
-
 
     private void Start()
     {
@@ -44,7 +41,7 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
             if (FirebaseLoginMgr.user != null)
             {
                 //TODO:초기 저장 바꾸기 12000
-                SaveUserData(FirebaseLoginMgr.user.DisplayName, "money",12000);
+                //SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 12000);
                 userMoney = await LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", userMoney);
                 Debug.Log("유저 닉네임 : " + FirebaseLoginMgr.user.DisplayName);
                 Debug.Log("유저 돈 : " + userMoney);
@@ -55,9 +52,6 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
             }
         });
     }
-
-
-
 
     //데이터 저장 함수
     //SaveUserData(id,"level",5);
@@ -113,11 +107,6 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
         }
 
         return Tvalue;
-
     }
-
-   
-
-
 }
 
