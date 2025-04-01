@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class TurnBasedManager : MonoBehaviourPun
 {
     int _diceNumFirst;
     int _diceNumSecond;
-      private int?[] diceResults = new int?[2]; // 주사위 2개라고 가정
+    private int?[] diceResults = new int?[2]; // 주사위 2개라고 가정
     public GameObject _redDicePrefab;
     public GameObject _blueDicePrefab;
     DiceManager _redDice;
@@ -25,6 +26,7 @@ public class TurnBasedManager : MonoBehaviourPun
 
     private void Start()
     {
+        // 방장이 생성, 보내기
         if (PhotonNetwork.IsMasterClient == true)
         {
             _redDice = PhotonNetwork.Instantiate("DiceRed",new Vector3(7,0,-7), Quaternion.identity,0, new object[] { 0 }).GetComponent<DiceManager>();
@@ -51,7 +53,6 @@ public class TurnBasedManager : MonoBehaviourPun
         _blueDice._diceNum = Random.Range(1,7);
         _redDice._photonView.RPC("DiceStart", RpcTarget.All, _redDice._diceNum);
         _blueDice._photonView.RPC("DiceStart", RpcTarget.All, _blueDice._diceNum);
-        //return _redDice._diceNum + _blueDice._diceNum;  
     }
 
     public void PlayerMove(int diceKey, int diceNum)
@@ -60,8 +61,16 @@ public class TurnBasedManager : MonoBehaviourPun
     
         if (diceResults[0] != null && diceResults[1] != null)
         {
+            if (ServerIngamePlayer._players.ContainsKey(1))
+            {
+                Debug.Log($"플레이어 찾음");
+            }
+            else
+            {
+                Debug.Log($"플레이어 못찾음");
+            }
             int total = diceResults[0].Value + diceResults[1].Value;
-            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(1);
         }
     }
 }

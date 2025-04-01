@@ -38,7 +38,6 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
             StopCoroutine(cor_);
             cor_ = null;
             turnBasedManager.Dice();
-
         }
     }
 

@@ -44,13 +44,19 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
     }
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "DiceGround")
+        if (collision.gameObject.tag == "DiceGround" && isGroundOn == true)
         {
             isGroundOn = false;
             StopCoroutine(RollingDice());
             ChangeRotation(_diceNum);
-            _dicePlayerMove?.Invoke(diceID, _diceNum);
+            photonView.RPC("KK",RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    public void KK()
+    {
+        _dicePlayerMove?.Invoke(diceID, _diceNum);
     }
 
     public void ChangeRotation(int num)

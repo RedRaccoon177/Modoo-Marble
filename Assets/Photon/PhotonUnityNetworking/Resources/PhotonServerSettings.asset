@@ -71,6 +71,7 @@ MonoBehaviour:
   - RandomDiceNum
   - DiceStart
   - testt
+  - KK
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

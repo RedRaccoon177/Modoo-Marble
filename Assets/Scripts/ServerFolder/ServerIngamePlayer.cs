@@ -198,6 +198,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice);
         }
     }
+    private void Awake()
+    {
+        Debug.Log("안녕11");
+        _players[_playerNum] = this; 
+    }
 
     #region Start문, Update문
     void Start()
@@ -206,7 +211,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _money = 1100;
         _totalMoney = _money;
-        _players[_playerNum] = this; 
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
