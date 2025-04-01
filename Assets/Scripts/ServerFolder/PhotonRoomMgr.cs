@@ -128,23 +128,49 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
             TurnMgr.leave4 = true;
         }
     }
+    
+    private Dictionary<string, GameObject> roomDictionary = new Dictionary<string, GameObject>();
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("리스트들어옴");
-        foreach (Transform child in roomListPanel)
-        {
+        Debug.Log("리스트들어옴"); // 디버그 로그
 
-            Destroy(child.gameObject);
+        // 현재 딕셔너리에 등록된 방 이름들을 복사해서 리스트로 저장 (삭제할 때 사용)
+        List<string> removeRoom = new List<string>(roomDictionary.Keys);
 
-        }
         foreach (RoomInfo roomInfo in roomList)
         {
-            var roomBtn = Instantiate(roomPrefab, roomListPanel); //룸 리스트 패널 하에 버튼 하나 생성
-            roomBtn.GetComponentInChildren<TextMeshProUGUI>().text = roomInfo.Name; //룸 이름을 버튼 텍스트에 담음
-            roomBtn.GetComponent<Button>().onClick.AddListener(()=>PhotonNetwork.JoinRoom(roomInfo.Name));
+            // 방이 삭제된 경우
+            if (roomInfo.RemovedFromList == true)
+            {
+                // 해당 방이 딕셔너리에 있으면
+                if (roomDictionary.ContainsKey(roomInfo.Name) == true)
+                {
+                    // 버튼 오브젝트 삭제 후 딕셔너리에서도 제거
+                    Destroy(roomDictionary[roomInfo.Name]);
+                    roomDictionary.Remove(roomInfo.Name);
+                }
+            }
+            else // 새로 생성된 방이거나 기존 방
+            {
+                // 아직 버튼을 만들지 않은 새 방인 경우
+                if (roomDictionary.ContainsKey(roomInfo.Name) == false)
+                {
+                    // 방 버튼 프리팹을 생성하여 방 리스트 패널 아래에 붙임
+                    var roomBtn = Instantiate(roomPrefab, roomListPanel);
+                    roomBtn.GetComponentInChildren<TextMeshProUGUI>().text = roomInfo.Name;
+                    roomBtn.GetComponent<Button>().onClick.AddListener(() => PhotonNetwork.JoinRoom(roomInfo.Name));
+
+                    // 딕셔너리에 방 이름과 버튼 오브젝트 등록
+                    roomDictionary.Add(roomInfo.Name, roomBtn);
+                }
+            }
         }
     }
+
+
+
+
 
 
     IEnumerator FakeLodingWait()
