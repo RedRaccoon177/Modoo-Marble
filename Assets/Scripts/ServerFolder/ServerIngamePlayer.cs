@@ -7,6 +7,7 @@ using System.Linq;
 using System.ComponentModel;
 using System;
 using UnityEngine.SocialPlatforms;
+using JetBrains.Annotations;
 
 // 옵저버 인터페이스: 플레이어 정보가 바뀌면 이걸 통해 UI 등에 알림
 public interface IPlayerDataObserver
@@ -140,38 +141,34 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 _isBtnClicked = false;
                 if (photonView.IsMine && _isTurn == true)
                 {
-                    
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
                     _turnBasedManager.Dice();
-                    //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
                 }
             }
             if (_isTravel == true) // 여행 상태
             {
-                if (_view.IsMine == true && _isTurn == true)
+                _waitTravelTurn = true;
+                if (_waitTravelTurn == true) // 이동 가능?
                 {
-                    _waitTravelTurn = true;
-                    if (_waitTravelTurn == true) // 이동 가능?
+                    UIManagerP.instance.OnTravelUI();
+                    UIManagerP.instance.OffDiceUI();
+                    _waitTravelTurn = false;
+                }
+                if (_isTravelClickTile == true) // 타일 클릭 했는지
+                {
+                    UIManagerP.instance.OffTravelUI();
+                    if ((_travelClickTileNum - 30) > 0) // 30 = 세계여행 위치
                     {
-                        UIManagerP.instance.OnTravelUI();
-                        _waitTravelTurn = false;
+                        _travelMoveNum = _travelClickTileNum - 30;
                     }
-                    if (_isTravelClickTile == true) // 타일 클릭 했는지
+                    else
                     {
-                        UIManagerP.instance.OffTravelUI();
-                        if ((_travelClickTileNum - 30) > 0) // 30 = 세계여행 위치
-                        {
-                            _travelMoveNum = _travelClickTileNum - 30;
-                        }
-                        else
-                        {
-                            _travelMoveNum = (_travelClickTileNum - 30) + 40;
-                        }
-                        photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
-                        _isTravel = false;
-                        _isTravelClickTile = false;
+                        _travelMoveNum = (_travelClickTileNum - 30) + 40;
                     }
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
+                    _isTravel = false;
+                    _isTravelClickTile = false;
                 }
             }
         }
@@ -558,8 +555,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     /// </summary>
     IEnumerator MovePlayer(int num)
     {
+     
         int count = 0;
-
         while (count < num)
         {
             if ((_playerPosIndex + count) >= 39)
@@ -673,7 +670,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
 
         ALLPlayerBankruptcy();
-        _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
+        // 코루틴이 끝났으므로 null로 초기화
+        _playerMoveCor = null;
         OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
     }
 

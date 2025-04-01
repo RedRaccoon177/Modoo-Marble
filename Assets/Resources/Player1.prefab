@@ -146,6 +146,7 @@ MonoBehaviour:
   _playerNum: 0
   _playerNickName: 
   _ranking: 0
+  _isBtnClicked: 0
   _money: 200
   _totalMoney: 0
   _isTravel: 0
@@ -157,7 +158,7 @@ MonoBehaviour:
   currentDiceCooldown2: 5
   _ownedSeaTiles: []
   _SeaBuyCount: 0
-  _view: {fileID: 0}
-  _startMoney: 1000
   _playerOwnerTileList: []
   _playerOwnerTileViewList: 
+  _view: {fileID: 0}
+  _startMoney: 1000

@@ -116,7 +116,9 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     public void DiceUiRPC()
     {
-        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
+        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber //&&
+            //ServerIngamePlayer._players[currentTurn]._isTravel == false
+            )
         {
             UIManagerP.instance.OnDiceUI();
         }
