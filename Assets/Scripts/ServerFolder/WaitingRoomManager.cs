@@ -58,7 +58,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             //방장이냐
             if (PhotonNetwork.PlayerList[i].IsMasterClient)
             {
-                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "GameStart";
+                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "게임 시작";
 
                 var btn = dd.transform.GetChild(2).GetComponent<Button>();
 
@@ -75,28 +75,21 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             //방장아니냐
             else
             {
-                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "no ready";
+                dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "게임 준비";
 
                 var btn = dd.transform.GetChild(2).GetComponent<Button>();
                 if (isLocalPlayer)
                 {
                     btn.onClick.AddListener(ReadyCountBtn);
                     btn.onClick.AddListener(() => Destroy(dd.transform.GetChild(2).gameObject));
-                    btn.onClick.AddListener(() => dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "ready");
+                    btn.onClick.AddListener(() => dd.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "준비 완료");
                 }
                 else
                 {
                     Destroy(btn.gameObject);
                 }
-                 
-
             }
-
-
-
         }
-
-
     }
 
     //레디버튼 누를경우 전체의 readyCount가 오름
@@ -135,7 +128,6 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
                 break;
             }
         }
-
     }
 
     //전체 유저수가 레디를 누를경우 클릭가능하게
@@ -148,12 +140,10 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             if (readyCount >= PhotonNetwork.PlayerList.Length - 1)
             {
                 Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
-                //StartCoroutine(IngameGo());
+                PhotonNetwork.CurrentRoom.IsOpen = false; //게임 시작 후 방 못들어옴
                 PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
-
             }
         }
-
     }
 
     IEnumerator IngameGo()
@@ -163,8 +153,4 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         LodingPanel.gameObject.SetActive(false);
         PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
     }
-
-
-
-
 }
