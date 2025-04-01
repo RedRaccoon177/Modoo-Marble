@@ -53,6 +53,7 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     {
         bool _isIncrease = true;
         float _currentFill = 0;
+        float delta = Time.deltaTime;
         while (_isClicking == true)
         {
             if (_isIncrease == true)
@@ -61,7 +62,7 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
                 {
                     _isIncrease = false;
                 }
-                _currentFill += 0.01f;
+                _currentFill += delta;
             }
             else
             {
@@ -69,7 +70,7 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
                 {
                     _isIncrease = true;
                 }
-                _currentFill -= 0.01f;
+                _currentFill -= delta;
             }
             _gage.fillAmount = _currentFill;
             yield return null;
