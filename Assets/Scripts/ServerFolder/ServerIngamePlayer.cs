@@ -8,6 +8,12 @@ using System.ComponentModel;
 using System;
 using UnityEngine.SocialPlatforms;
 
+// 옵저버 인터페이스
+public interface IPlayerDataObserver
+{
+    void OnPlayerDataChanged(int actorNumber);
+}
+
 /// <summary>
 /// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
 /// </summary>
@@ -74,6 +80,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     //[Header("올림픽 관련")]
     public static event Action<int, int> OnPlayerPositionChanged;
     public static event Action<bool> OlympicCheck;  // 플레이어가 올림픽을 개최했으면 중복 안되게 해줄 이벤트
+
+    private static List<IPlayerDataObserver> _observers = new List<IPlayerDataObserver>();
+
+    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
+    public List<int> _playerOwnerTileViewList = new List<int>();
     #endregion
 
     #region Start문, Update문
@@ -93,6 +104,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
         mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     void Update()
@@ -159,18 +171,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
     #endregion
-
-    // 리스트에 추가, 중복체크
-    //[PunRPC]
-    //public void AddPlayerOwnerTileList(TileController _currentTile)
-    //{
-    //    if (_playerOwnerTileList.Contains(_currentTile) == false)
-    //    {
-    //        _playerOwnerTileList.Add(_currentTile);
-    //    }
-    //}
-    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
-    public List<int> _playerOwnerTileViewList = new List<int>();
 
     // 플레이어 소유 타일에 새 타일을 추가하는 RPC
     [PunRPC]
@@ -485,6 +485,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             _totalMoney = 0;
         }
+
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     /// <summary>
@@ -710,6 +712,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         _money += money;
         TotalMoney();
+
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     [PunRPC]
@@ -722,7 +726,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             _money = 0;
             Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
         }
+
         TotalMoney();
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     [PunRPC]
@@ -776,6 +782,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 _playerPosIndex = value;
             }
+        }
+    }
+
+    public static void RegisterObserver(IPlayerDataObserver observer)
+    {
+        if (!_observers.Contains(observer))
+            _observers.Add(observer);
+    }
+
+    public static void UnregisterObserver(IPlayerDataObserver observer)
+    {
+        if (_observers.Contains(observer))
+            _observers.Remove(observer);
+    }
+
+    public static void NotifyPlayerDataChanged(int actorNumber)
+    {
+        foreach (var observer in _observers)
+        {
+            observer.OnPlayerDataChanged(actorNumber);
         }
     }
 

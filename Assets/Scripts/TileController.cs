@@ -65,8 +65,6 @@ public partial class TileController : MonoBehaviourPun
 
     GameObject _cityname;
     GameObject _bonusStage;
-
-
     
     void Start()
     {
