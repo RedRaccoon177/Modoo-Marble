@@ -24,6 +24,7 @@ public partial class TileController : MonoBehaviourPun
 
     [Header("메터리얼 배열")] public Material[] materials;
     Material _currentMat;
+    MeshRenderer _tileOwnerColorMat;
     MeshRenderer _tileLandMat;
     MeshRenderer _tilePensionMat;
     MeshRenderer _tileCondoMat;
@@ -70,6 +71,8 @@ public partial class TileController : MonoBehaviourPun
     void Start()
     {
         StartCoroutine(SetupTileIfNotMaster());
+
+        _tileOwnerColorMat = _tileOwnerColor.GetComponent<MeshRenderer>();
         _tileLandMat = _tileLandObj.GetComponent<MeshRenderer>();
         _tilePensionMat = _tilePensionObj.GetComponent<MeshRenderer>();
         _tileCondoMat = _tileCondoObj.GetComponent<MeshRenderer>();
@@ -78,7 +81,11 @@ public partial class TileController : MonoBehaviourPun
 
     public void ChangeMat(int _index)
     {
-        if (_index == 0) { _tileLandMat.material = _currentMat; }
+        if (_index == 0)
+        {
+            _tileLandMat.material = _currentMat;
+            _tileOwnerColorMat.material = _currentMat;
+        }
         else if (_index == 1) { _tilePensionMat.material = _currentMat; }
         else if(_index == 2) { _tileCondoMat.material = _currentMat; }
         else if(_index == 3) { _tileHotelMat.material = _currentMat; }
@@ -193,6 +200,15 @@ public partial class TileController : MonoBehaviourPun
         _tileCondoToll = data._tileCondoToll;
         _tileHotelToll = data._tileHotelToll;
         _tileLandMarkToll = data._tileLandMarkToll;
+
+        if (data._tileType == TileType.Island || data._tileType == TileType.Start || data._tileType == TileType.Olympics || data._tileType == TileType.Travel)
+        {
+            _tileOwnerColor.SetActive(false);
+        }
+        else
+        {
+            _tileOwnerColor.SetActive(true);
+        }
     }
 
     /// <summary>
