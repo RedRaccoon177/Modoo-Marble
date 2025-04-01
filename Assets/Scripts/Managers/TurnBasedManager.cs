@@ -49,10 +49,10 @@ public class TurnBasedManager : MonoBehaviourPun
 
     public void Dice()
     {
-        var a = Random.Range(1,7);
-        var b = Random.Range(1,7);
-        _redDice._photonView.RPC("DiceStart", RpcTarget.All, a);
-        _blueDice._photonView.RPC("DiceStart", RpcTarget.All, b);
+        int _redDiceNum = Random.Range(1,7);
+        int _blueDiceNum = Random.Range(1,7);
+        _redDice._photonView.RPC("DiceStart", RpcTarget.All, _redDiceNum);
+        _blueDice._photonView.RPC("DiceStart", RpcTarget.All, _blueDiceNum);
     }
 
     public void PlayerMove(int diceKey, int diceNum)
