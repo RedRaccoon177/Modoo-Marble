@@ -28,11 +28,11 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
     //방 나가기
     public void LeaveRoom()
     {
+        Die();
         Debug.Log("방나가는버튼클릭햇음");
         PhotonNetwork.LeaveRoom();
         StartCoroutine(waitSecond());
         SceneManager.LoadScene("RoomScene");
-        //PhotonNetworkMgr.Instance.changeScene("RoomScene");
     }
 
     IEnumerator waitSecond()
