@@ -35,7 +35,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         {
             Debug.Log("방만들기 버튼 클릭");
             //일단 인원 제한없음
-            PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions()); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
+            PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions{ MaxPlayers =4, EmptyRoomTtl =0 ,IsOpen = true}); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
         }
         else
         {
@@ -134,10 +134,9 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         Debug.Log("리스트들어옴");
         foreach (Transform child in roomListPanel)
         {
-            if (PhotonNetwork.PlayerList.Length == 0)
-            {
-                Destroy(child.gameObject);
-            }
+
+            Destroy(child.gameObject);
+
         }
         foreach (RoomInfo roomInfo in roomList)
         {
