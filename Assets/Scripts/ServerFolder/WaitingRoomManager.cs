@@ -146,6 +146,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             if (readyCount >= PhotonNetwork.PlayerList.Length - 1)
             {
                 Debug.Log("게임시작 버튼 눌러서 인게임 씬으로 넘김 ");
+                PhotonNetwork.CurrentRoom.IsOpen = false; //게임 시작 후 방 못들어옴
                 PhotonNetworkMgr.Instance.changeScene("InGameTestScene");
             }
         }

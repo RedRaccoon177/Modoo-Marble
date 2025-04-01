@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LeaveRoomBtn : MonoBehaviourPunCallbacks
 {
@@ -28,7 +29,15 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         Debug.Log("방나가는버튼클릭햇음");
-        PhotonRoomMgr.Instance.QuitRoom();
+        PhotonNetwork.LeaveRoom();
+        StartCoroutine(waitSecond());
+        SceneManager.LoadScene("RoomScene");
+        //PhotonNetworkMgr.Instance.changeScene("RoomScene");
+    }
+
+    IEnumerator waitSecond()
+    {
+        yield return new WaitForSeconds(0.2f);
     }
 
     //턴 중단
