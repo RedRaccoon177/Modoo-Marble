@@ -54,7 +54,7 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
             _isRolling = false;
             StopCoroutine(RollingDice());
             ChangeRotation(_diceNum);
-            photonView.RPC("KK",RpcTarget.All);
+            _dicePlayerMove?.Invoke(diceID, _diceNum);
         }
     }
 
