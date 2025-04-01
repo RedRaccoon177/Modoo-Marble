@@ -77,14 +77,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     #endregion
 
     #region Start문, Update문
-    void Start()
+    IEnumerator Start()
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _waitTravelTurn = false;
         _money = _startMoney;
         _totalMoney = _money;
-        _players[_playerNum] = this;
         _view = GetComponent<PhotonView>();
         _mapInfo = FindObjectOfType<MapManager>();
         _turnBasedManager = FindObjectOfType<TurnBasedManager>();
@@ -93,6 +92,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySliderobj = GameObject.Find("CoolTimeGameObject");
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
         mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
+
+        yield return new WaitUntil(() => _players.Count == PhotonNetwork.PlayerList.Count());
+        _players[_playerNum] = this;
     }
 
     void Update()
