@@ -20,10 +20,13 @@ public class GameOverResultWindow : MonoBehaviour
     [Header("UI 간격 (Y축)")]
     public float _spacingY = -180f;
 
+    public static double _gameOverMoney;
+    public double _startMoney;
+
     /// <summary>
     /// 플레이어 수에 따라 결과 UI를 생성하고 순서대로 배치
     /// </summary>
-    public void CreateResultUIs()
+    public void CreateResultUIs(double _startmoney)
     {
         _gameOverPanel.SetActive(true);
 
@@ -54,7 +57,10 @@ public class GameOverResultWindow : MonoBehaviour
 
             if (allPlayers[i]._playerNum == PhotonNetwork.LocalPlayer.ActorNumber)
             {
-
+                _startMoney = _startmoney;
+                _gameOverMoney = FirebaseDataMgr.Instance.userMoney;
+                _gameOverMoney = _gameOverMoney - _startMoney;
+                _gameOverMoney = _gameOverMoney + allPlayers[i]._totalMoney;
             }
         }
     }

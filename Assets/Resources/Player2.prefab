@@ -158,5 +158,6 @@ MonoBehaviour:
   _ownedSeaTiles: []
   _SeaBuyCount: 0
   _view: {fileID: 0}
+  _startMoney: 1000
   _playerOwnerTileList: []
   _playerOwnerTileViewList: 

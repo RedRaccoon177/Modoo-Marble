@@ -68,6 +68,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     GameObject mySliderobj2;             // 슬라이더 오브젝트
 
     double _tempTotalMoney;
+    [Header("시작 돈")] [SerializeField] double _startMoney = 1000;
 
     //[Header("올림픽 관련")]
     public static event Action<int, int> OnPlayerPositionChanged;
@@ -80,7 +81,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
         _waitTravelTurn = false;
-        _money = 1100;
+        _money = _startMoney;
         _totalMoney = _money;
         _players[_playerNum] = this;
         _view = GetComponent<PhotonView>();
@@ -324,7 +325,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (aliveCount == 1)
         {
             GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
-            gameoverwindow.CreateResultUIs();
+            gameoverwindow.CreateResultUIs(_startMoney);
         }
         else
         {

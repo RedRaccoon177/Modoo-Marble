@@ -29,6 +29,7 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         Die();
+        FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 12000);
         Debug.Log("방나가는버튼클릭햇음");
         PhotonNetwork.LeaveRoom();
         StartCoroutine(waitSecond());

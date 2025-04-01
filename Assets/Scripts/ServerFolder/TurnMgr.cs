@@ -28,6 +28,8 @@ public class TurnMgr : Singleton<TurnMgr>
 
     public GameObject[] playerfabs;
 
+    private HashSet<int> loadedPlayerActorNumbers = new HashSet<int>();
+
     static public int CurrentTurn
     {
         get
@@ -182,8 +184,6 @@ public class TurnMgr : Singleton<TurnMgr>
         leave3 = isStop;
     }
 
-    private HashSet<int> loadedPlayerActorNumbers = new HashSet<int>(); // 클래스 맨 위에 선언!
-
     [PunRPC]
     public void NotifyMasterPlayerLoaded(int actorNumber)
     {
@@ -200,13 +200,15 @@ public class TurnMgr : Singleton<TurnMgr>
 
         if (loadedPlayers >= PhotonNetwork.PlayerList.Length)
         {
-            StartTurnSystem();
+            PhotonView.Get(this).RPC("StartTurnSystem", RpcTarget.All);
         }
+
+        Debug.Log(isGameStarted);
     }
 
+    [PunRPC]
     void StartTurnSystem()
     {
-        Debug.Log("게임 시작됨! isGameStarted = true");
         currentTurn = 1;
         currentTurnText.text = currentTurn.ToString();
         isGameStarted = true;
