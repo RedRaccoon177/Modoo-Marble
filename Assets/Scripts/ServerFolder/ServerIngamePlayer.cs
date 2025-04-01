@@ -362,19 +362,19 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         //임시 위치값 일일이 넣음
         if (TurnMgr.currentTurn == 1)
         {
-            mySliderobj.transform.localPosition = new Vector3(-720, 269, 0);
+            mySliderobj.transform.localPosition = new Vector3(-720, 310, 0);
         }
         else if (TurnMgr.currentTurn == 2)
         {
-            mySliderobj.transform.localPosition = new Vector3(720, 269, 0);
+            mySliderobj.transform.localPosition = new Vector3(720, 310, 0);
         }
         else if (TurnMgr.currentTurn == 3)
         {
-            mySliderobj.transform.localPosition = new Vector3(695, -269, 0);
+            mySliderobj.transform.localPosition = new Vector3(720, -310, 0);
         }
         else if (TurnMgr.currentTurn == 4)
         {
-            mySliderobj.transform.localPosition = new Vector3(687, -287, 0);
+            mySliderobj.transform.localPosition = new Vector3(-720, -310, 0);
         }
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
