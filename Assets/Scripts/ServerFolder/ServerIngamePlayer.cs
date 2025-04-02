@@ -129,14 +129,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {
             //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null && _isCoolFinish == false)
+            if (runningCoroutine == null && _isCoolFinish == false && photonView.IsMine)
             {
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if ((_isBtnClicked == true || _isCoolFinish == true) && _isTravel == false)
             {
-                _isBtnClicked = false;
+                
                 if (photonView.IsMine && _isTurn == true)
                 {
                     photonView.RPC("HideSlider", RpcTarget.All);
@@ -382,12 +382,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     void StopCooldownSlider1()
     {
+        _isBtnClicked = false;
         StopCoroutine(runningCoroutine);
         runningCoroutine = null;
     }
     [PunRPC]
     void StopCooldownSlider2()
     {
+        _isSecondCoolTimeG = false;
         StopCoroutine(cooltimedelay(second));
     }
 
@@ -417,7 +419,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         _isCoolFinish = true;
         currentDiceCooldown1 = Second;
         mySlider.gameObject.SetActive(false);
-
         runningCoroutine = null;
     }
 
@@ -448,7 +449,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             if (_isSecondCoolTimeG == true) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
             {
                 photonView.RPC("StopCooldownSlider2", RpcTarget.All);
-                _isSecondCoolTimeG = false;
+                //_isSecondCoolTimeG = false;
                 break;
             }
             currentDiceCooldown2 = (float)(targetTime - PhotonNetwork.Time);
@@ -458,7 +459,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown2 = Second;
         photonView.RPC("SetSliderActive", RpcTarget.All, false); 
         
-        //TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
+        TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
     }
     #endregion
 

@@ -21,6 +21,7 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         _gage.fillAmount = 0;
+        _isClicking = true;
         if (cor_ == null)
         {
             cor_ = StartCoroutine(DiceGageCor());
@@ -30,7 +31,6 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         ServerIngamePlayer._players[TurnMgr.currentTurn]._isBtnClicked = true;
-        _isClicking = true;
         if (cor_ !=null)
         {
             StopCoroutine(cor_);
@@ -50,9 +50,9 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     {
         bool _isIncrease = true;
         float _currentFill = 0;
-        float delta = Time.deltaTime;
         while (_isClicking == true)
         {
+            float delta = Time.deltaTime;
             if (_isIncrease == true)
             {
                 if (_currentFill >= 1)
