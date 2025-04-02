@@ -9,6 +9,7 @@ public class TravelUI : MonoBehaviour
     {
         _cancleBtn.onClick.AddListener(() => UIManagerP.instance.OffTravelUI());
         _cancleBtn.onClick.AddListener(() => TurnMgr.Instance.endTurn());
+        _cancleBtn.onClick.AddListener(() => ServerIngamePlayer._players[TurnMgr.currentTurn]._isTravel = false);
     }
 
 }

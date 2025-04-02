@@ -104,7 +104,8 @@ public class TurnMgr : Singleton<TurnMgr>
                     Debug.LogError("photonView가 null입니다!");
                     return;
                 }
-                ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
+                ServerIngamePlayer._players[currentTurn]. _isSecondCoolTimeG = true;
+                Debug.Log($"{ServerIngamePlayer._players[currentTurn]._playerNum} 에서 턴 넘겨! : " + ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG);
                 photonView.RPC("NextTurn", RpcTarget.All);
                 photonView.RPC("DiceUiRPC",RpcTarget.All);
             }
@@ -114,6 +115,12 @@ public class TurnMgr : Singleton<TurnMgr>
             }
         }
     }
+    //[PunRPC]
+    //public void qq()
+    //{
+    //    ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = tr
+    //}
+
     [PunRPC]
     public void DiceUiRPC()
     {

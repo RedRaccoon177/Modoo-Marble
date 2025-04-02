@@ -154,6 +154,7 @@ MonoBehaviour:
   _isTravelClickTile: 0
   _travelMoveNum: 0
   _waitTravelTurn: 0
+  _isBankruptcy: 0
   currentDiceCooldown1: 5
   currentDiceCooldown2: 5
   _isSecondCoolTimeG: 0

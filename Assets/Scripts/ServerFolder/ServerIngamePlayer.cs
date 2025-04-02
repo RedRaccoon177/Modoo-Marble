@@ -37,6 +37,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public bool _isTravelClickTile;            // 타일 클릭 여부
     public int _travelMoveNum;                 // 이동할 칸 수
     public bool _waitTravelTurn;               // 이동 가능 턴 여부
+    public bool _isBankruptcy;               // 이동 가능 턴 여부
 
     // ========================= 플레이어 상태 정보 =========================
     [Header("플레이어 상태")]
@@ -304,12 +305,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (_tempTotalMoney < _SaleAmount)
         {
             Debug.Log("파산");
+            _isBankruptcy = true;
             TurnMgr.Instance.StopTurn(_playerNum, true); // 플레이어 턴 정지
             TurnMgr.Instance.endTurn(); // 턴 넘김
             FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney); // 타일 주인에게 내가 가진 전 재산 지급
         }
         else
         {
+            _isBankruptcy = false;
             Debug.Log("파산 아닐 때");
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice); // 정상적으로 통행료 지급
         }
@@ -446,8 +449,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         while (PhotonNetwork.Time < targetTime)
         {
+            Debug.Log($"{_playerNum} 팝업 쿨타임 실행 : " + _isSecondCoolTimeG);
             if (_isSecondCoolTimeG == true) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
             {
+            Debug.Log($"{_playerNum}팝업 쿨타임 중지 : " + _isSecondCoolTimeG);
                 photonView.RPC("StopCooldownSlider2", RpcTarget.All);
                 //_isSecondCoolTimeG = false;
                 break;
@@ -660,7 +665,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     else
                     {
                         // 인수 불가 Ui 출력
-                        UIManagerP.instance.OnFactorWarningUI();
+                        if (_isBankruptcy == false)
+                        {
+                            UIManagerP.instance.OnFactorWarningUI();
+                        }
+                        else
+                        {
+                            TurnMgr.Instance.endTurn();
+                        }
                     }
                 }
             }
