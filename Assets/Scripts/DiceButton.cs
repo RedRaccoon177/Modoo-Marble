@@ -11,8 +11,6 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     public Button _diceBtn;
     Coroutine cor_;
     bool _isClicking;
-    float _test;
-    bool tt;
 
 
     private void Start()
@@ -22,7 +20,6 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        _isClicking = true;
         _gage.fillAmount = 0;
         if (cor_ == null)
         {
@@ -32,12 +29,12 @@ public class DiceButton : MonoBehaviour,IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        _isClicking = false;
+        ServerIngamePlayer._players[TurnMgr.currentTurn]._isBtnClicked = true;
+        _isClicking = true;
         if (cor_ !=null)
         {
             StopCoroutine(cor_);
             cor_ = null;
-            turnBasedManager.Dice();
         }
     }
 

@@ -30,8 +30,6 @@ public class TileClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
                 // 세계여행에서 또 세계여행으로 못가게
                 if (_tileController._tileType != TileType.Travel)
                 {
-                    Debug.Log("야ㅑㅑㅑㅑ");
-                    
                     a._isTravelClickTile = true;
                     a._travelClickTileNum = _tileController._tileKey;
                     _ClickEventType = 1;

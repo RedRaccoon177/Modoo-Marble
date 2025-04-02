@@ -7,73 +7,95 @@ using System.Linq;
 using System.ComponentModel;
 using System;
 using UnityEngine.SocialPlatforms;
+using JetBrains.Annotations;
 
-/// <summary>
-/// 게임 내 플레이어 상태 및 행동을 관리하는 클래스
-/// </summary>
+// 옵저버 인터페이스: 플레이어 정보가 바뀌면 이걸 통해 UI 등에 알림
+public interface IPlayerDataObserver
+{
+    void OnPlayerDataChanged(int actorNumber);
+}
+
 public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
     #region 플레이어 기본 정보
+    // ========================= 플레이어 기본 정보 =========================
     [Header("플레이어 기본 정보")]
     public int _playerNum;          // 플레이어 고유 번호
     public string _playerNickName;  // 닉네임 데이터
     public int _ranking;            // 플레이어 순위
+    public bool _isBtnClicked;            // 버튼 클릭했는지
     public Coroutine _moveCor;            // 플레이어 순위
 
+    // ========================= 자산 관련 정보 =========================
     [Header("플레이어 자산 관련")]
-    public double _money;         // 현재 현금 보유액
-    public double _totalMoney;           // 총 자산 (현금 + 소유 부동산 자산 포함)
+    public double _money;                      // 보유 현금
+    public double _totalMoney;                 // 총 자산 (현금 + 건물 자산)
 
-    public bool _isTravel; // 세계여행 중인지
-    public int _travelClickTileNum; // 세계여행 중 클릭 타일 번호
-    public bool _isTravelClickTile; // 세계여행 중 클릭 했는지
-    public int _travelMoveNum; // 세계여행 몇 칸 이동할찌
-    public bool _waitTravelTurn; // 세계여행 이동 가능한 턴 왔는지
+    // ========================= 세계여행 관련 상태 =========================
+    public bool _isTravel;                     // 세계여행 중인지
+    public int _travelClickTileNum;            // 클릭한 타일 번호
+    public bool _isTravelClickTile;            // 타일 클릭 여부
+    public int _travelMoveNum;                 // 이동할 칸 수
+    public bool _waitTravelTurn;               // 이동 가능 턴 여부
 
+    // ========================= 플레이어 상태 정보 =========================
     [Header("플레이어 상태")]
-    bool _isLoan;                        // 대출 여부
-    bool _isInstantiate;                        // 대출 여부
-    bool _isTurn = true;                 // 현재 턴 여부
-    bool _isCoolFinish = false;          // 주사위 쿨타임 완료 여부
-    Coroutine runningCoroutine;          // 주사위 쿨타임 코루틴 참조
-    Coroutine runningCoroutine2;          // 주사위 쿨타임 코루틴 참조
-    float second = 5f;                   // 기본 쿨타임 시간
-    public float currentDiceCooldown1 = 5f; // 주사위 쿨타임 (슬라이더용)
-    [SerializeField] private float currentDiceCooldown2 = 5f; // UI 팝업창 쿨타임
+    bool _isLoan;                              // 대출 여부
+    bool _isInstantiate;                       // 인스턴스화 여부
+    bool _isTurn = true;                       // 현재 턴 여부
+    bool _isCoolFinish = false;                // 주사위 쿨타임 완료 여부
 
+    Coroutine runningCoroutine;                // 주사위 쿨타임 코루틴
+    Coroutine runningCoroutine2;               // 팝업 쿨타임 코루틴
+    float second = 5f;                         // 기본 쿨타임 시간
+    public float currentDiceCooldown1 = 5f;    // 쿨타임 (슬라이더1)
+    [SerializeField] private float currentDiceCooldown2 = 5f; // 쿨타임 (슬라이더2)
+
+    // ========================= 맵 및 위치 정보 =========================
     [Header("맵 및 위치 정보")]
-    int _mapTurn;                        // 맵을 한 바퀴 돈 횟수
-    int _playerPosIndex = 0;             // 현재 위치 인덱스
-    Coroutine _playerMoveCor;            // 이동 중인 코루틴 참조
+    int _mapTurn;                              // 맵 순환 횟수
+    int _playerPosIndex = 0;                   // 현재 타일 인덱스
+    Coroutine _playerMoveCor;                  // 이동 코루틴 참조
 
+    // ========================= 타일 소유 정보 =========================
     [Header("소유 타일 정보")]
-    public List<TileController> _ownedSeaTiles = new List<TileController>(); // 관광지
+    public List<TileController> _ownedSeaTiles = new List<TileController>(); // 소유 관광지
+    public int _SeaBuyCount = 0;               // 관광지 보유 수
 
-    int[] _playerOwnerTileViewArr;
+    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 소유한 일반 타일들
+    public List<int> _playerOwnerTileViewList = new List<int>();                   // 해당 타일들의 ViewID
 
-    public int _SeaBuyCount = 0; // 관광지 보유 수
-
+    // ========================= 네트워크 관련 =========================
     [Header("Photon 관련")]
-    public PhotonView _view;             // PhotonView 참조
-    public static Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>(); // 전체 플레이어 관리 딕셔너리
+    public PhotonView _view;                   // PhotonView 참조
+    public static Dictionary<int, ServerIngamePlayer> _players = new Dictionary<int, ServerIngamePlayer>(); // 전체 플레이어 목록
 
+    // ========================= 매니저 참조 =========================
     [Header("게임 매니저 참조")]
-    MapManager _mapInfo;                 // 맵 정보 참조
-    TurnBasedManager _turnBasedManager; // 턴 관리 매니저
-    PlayerManager _playerManager;       // 플레이어 매니저
+    MapManager _mapInfo;                       // 맵 매니저
+    TurnBasedManager _turnBasedManager;       // 턴 매니저
 
+    // ========================= UI 요소 =========================
     [Header("UI 관련")]
-    Slider mySlider;                     // 주사위 쿨타임 슬라이더
-    GameObject mySliderobj;             // 슬라이더 오브젝트
-    Slider mySlider2;                     // 주사위 쿨타임 슬라이더
-    GameObject mySliderobj2;             // 슬라이더 오브젝트
+    Slider mySlider;                           // 쿨타임 슬라이더 1
+    GameObject mySliderobj;                    // 슬라이더 1 오브젝트
+    Slider mySlider2;                          // 쿨타임 슬라이더 2
+    GameObject mySliderobj2;                   // 슬라이더 2 오브젝트
 
-    double _tempTotalMoney;
-    [Header("시작 돈")] [SerializeField] double _startMoney = 1000;
+    double _tempTotalMoney;                   // 임시 자산 저장용
 
-    //[Header("올림픽 관련")]
+    [Header("시작 돈")]
+    [SerializeField] double _startMoney = 1000; // 초기 자금
+
+    // ========================= 이벤트 관련 =========================
+    // 플레이어 위치 변경시 호출됨 (플레이어 번호, 위치 인덱스)
     public static event Action<int, int> OnPlayerPositionChanged;
-    public static event Action<bool> OlympicCheck;  // 플레이어가 올림픽을 개최했으면 중복 안되게 해줄 이벤트
+
+    // 올림픽 개최 중복 방지 이벤트
+    public static event Action<bool> OlympicCheck;
+
+    // ========================= 옵저버 관련 =========================
+    private static List<IPlayerDataObserver> _observers = new List<IPlayerDataObserver>();
     #endregion
 
     #region Start문, Update문
@@ -81,6 +103,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
         //나중에  생각하면 싱글톤도 생각해봐야할듯
+        _isBtnClicked = false;
         _waitTravelTurn = false;
         _money = _startMoney;
         _totalMoney = _money;
@@ -93,8 +116,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider = GameObject.Find("CoolTimeGameObject").transform.GetChild(0).GetComponent<Slider>();
         mySlider2 = GameObject.Find("CoolTimeGameObject").transform.GetChild(1).GetComponent<Slider>();
 
-        yield return new WaitUntil(() => _players.Count == PhotonNetwork.PlayerList.Count());
+        yield return new WaitUntil(() => _isInstantiate == true);
         _players[_playerNum] = this;
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     void Update()
@@ -107,46 +131,43 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
-                //TODO: 테스트용 주석
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
-            if ((Input.GetKeyDown(KeyCode.Space) || _isCoolFinish == true) && _isTravel == false)
+            if ((_isBtnClicked == true || _isCoolFinish == true) && _isTravel == false)
             {
+                _isBtnClicked = false;
                 if (photonView.IsMine && _isTurn == true)
                 {
-                    
                     photonView.RPC("HideSlider", RpcTarget.All);
                     _isTurn = false;
-                    //int _diceNum = _turnBasedManager.Dice();
-                    //photonView.RPC("RpcMovePlayer", RpcTarget.All, _diceNum);
+                    _turnBasedManager.Dice();
                 }
             }
+
             if (_isTravel == true) // 여행 상태
             {
-                if (_view.IsMine == true && _isTurn == true)
+                _waitTravelTurn = true;
+                if (_waitTravelTurn == true) // 이동 가능?
                 {
-                    _waitTravelTurn = true;
-                    if (_waitTravelTurn == true) // 이동 가능?
+                    UIManagerP.instance.OnTravelUI();
+                    UIManagerP.instance.OffDiceUI();
+                    _waitTravelTurn = false;
+                }
+                if (_isTravelClickTile == true) // 타일 클릭 했는지
+                {
+                    UIManagerP.instance.OffTravelUI();
+                    if ((_travelClickTileNum - 30) > 0) // 30 = 세계여행 위치
                     {
-                        UIManagerP.instance.OnTravelUI();
-                        _waitTravelTurn = false;
+                        _travelMoveNum = _travelClickTileNum - 30;
                     }
-                    if (_isTravelClickTile == true) // 타일 클릭 했는지
+                    else
                     {
-                        UIManagerP.instance.OffTravelUI();
-                        if ((_travelClickTileNum - 30) > 0) // 30 = 세계여행 위치
-                        {
-                            _travelMoveNum = _travelClickTileNum - 30;
-                        }
-                        else
-                        {
-                            _travelMoveNum = (_travelClickTileNum - 30) + 40;
-                        }
-                        photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
-                        _isTravel = false;
-                        _isTravelClickTile = false;
+                        _travelMoveNum = (_travelClickTileNum - 30) + 40;
                     }
+                    photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
+                    _isTravel = false;
+                    _isTravelClickTile = false;
                 }
             }
         }
@@ -161,18 +182,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
     #endregion
-
-    // 리스트에 추가, 중복체크
-    //[PunRPC]
-    //public void AddPlayerOwnerTileList(TileController _currentTile)
-    //{
-    //    if (_playerOwnerTileList.Contains(_currentTile) == false)
-    //    {
-    //        _playerOwnerTileList.Add(_currentTile);
-    //    }
-    //}
-    public List<TileController> _playerOwnerTileList = new List<TileController>(); // 내 소유의 모든 타일 저장
-    public List<int> _playerOwnerTileViewList = new List<int>();
 
     // 플레이어 소유 타일에 새 타일을 추가하는 RPC
     [PunRPC]
@@ -337,12 +346,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
+    #region 주사위 쿨타임
     [PunRPC]
     void HideSlider()
     {
         mySlider.gameObject.SetActive(false);
     }
-
 
     //각턴 위치값 변경, 주사위 쿨타임
     [PunRPC]
@@ -352,20 +361,21 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         //임시 위치값 일일이 넣음
         if (TurnMgr.currentTurn == 1)
         {
-            mySliderobj.transform.localPosition = new Vector3(-720, 269, 0);
+            mySliderobj.transform.localPosition = new Vector3(-720, 310, 0);
         }
         else if (TurnMgr.currentTurn == 2)
         {
-            mySliderobj.transform.localPosition = new Vector3(720, 269, 0);
+            mySliderobj.transform.localPosition = new Vector3(720, 310, 0);
         }
         else if (TurnMgr.currentTurn == 3)
         {
-            mySliderobj.transform.localPosition = new Vector3(695, -269, 0);
+            mySliderobj.transform.localPosition = new Vector3(720, -310, 0);
         }
         else if (TurnMgr.currentTurn == 4)
         {
-            mySliderobj.transform.localPosition = new Vector3(687, -287, 0);
+            mySliderobj.transform.localPosition = new Vector3(-720, -310, 0);
         }
+
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
 
@@ -381,9 +391,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         StopCoroutine(cooltimedelay(second));
     }
 
-
-
-    #region 주사위 쿨타임
     //주사위 쿨타임
     IEnumerator Dicecooltimedelay(float Second)
     {
@@ -395,9 +402,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown1 = Second;
         mySlider.value = Second;
 
-        while (PhotonNetwork.Time < targetTime )
+        while (PhotonNetwork.Time < targetTime)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_isBtnClicked == true)
             {
                 photonView.RPC("StopCooldownSlider1", RpcTarget.All);
                 break;
@@ -426,8 +433,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider2.gameObject.SetActive(isActive);
     }
 
-
-
     //팝업창 쿨타임(구매, 취소등)
     IEnumerator cooltimedelay(float Second)
     {
@@ -453,7 +458,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         
         TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
     }
-
     #endregion
 
     /// <summary>
@@ -487,6 +491,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             _totalMoney = 0;
         }
+
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     /// <summary>
@@ -543,8 +549,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     /// </summary>
     IEnumerator MovePlayer(int num)
     {
+     
         int count = 0;
-
         while (count < num)
         {
             if ((_playerPosIndex + count) >= 39)
@@ -658,7 +664,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
 
         ALLPlayerBankruptcy();
-        _playerMoveCor = null; // 코루틴이 끝났으므로 null로 초기화
+        // 코루틴이 끝났으므로 null로 초기화
+        _playerMoveCor = null;
         OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
     }
 
@@ -712,6 +719,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         _money += money;
         TotalMoney();
+
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     [PunRPC]
@@ -724,7 +733,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             _money = 0;
             Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
         }
+
         TotalMoney();
+        NotifyPlayerDataChanged(_playerNum);
     }
 
     [PunRPC]
@@ -778,6 +789,26 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 _playerPosIndex = value;
             }
+        }
+    }
+
+    public static void RegisterObserver(IPlayerDataObserver observer)
+    {
+        if (!_observers.Contains(observer))
+            _observers.Add(observer);
+    }
+
+    public static void UnregisterObserver(IPlayerDataObserver observer)
+    {
+        if (_observers.Contains(observer))
+            _observers.Remove(observer);
+    }
+
+    public static void NotifyPlayerDataChanged(int actorNumber)
+    {
+        foreach (var observer in _observers)
+        {
+            observer.OnPlayerDataChanged(actorNumber);
         }
     }
 

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using TMPro;
 using System.Security.Cryptography;
+using System;
 
 //마스터 턴이있고
 //턴이 지나면 마스터가 턴을 +1함
@@ -93,7 +94,6 @@ public class TurnMgr : Singleton<TurnMgr>
         UIManagerP.instance.OffFactorUI();
         UIManagerP.instance.OffClickUI();
 
-
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {
@@ -105,12 +105,26 @@ public class TurnMgr : Singleton<TurnMgr>
                     return;
                 }
                 photonView.RPC("NextTurn", RpcTarget.All);
-
+                photonView.RPC("DiceUiRPC",RpcTarget.All);
             }
             catch (System.Exception error)
             {
                 Debug.Log(error);
             }
+        }
+    }
+    [PunRPC]
+    public void DiceUiRPC()
+    {
+        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber //&&
+            //ServerIngamePlayer._players[currentTurn]._isTravel == false
+            )
+        {
+            UIManagerP.instance.OnDiceUI();
+        }
+        else
+        {
+            UIManagerP.instance.OffDiceUI();
         }
     }
 

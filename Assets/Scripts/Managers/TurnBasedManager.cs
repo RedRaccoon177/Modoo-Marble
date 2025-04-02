@@ -9,8 +9,8 @@ public class TurnBasedManager : MonoBehaviourPun
     int _diceNumFirst;
     int _diceNumSecond;
     private int?[] diceResults = new int?[2]; // 주사위 2개라고 가정
-    public GameObject _redDicePrefab;
-    public GameObject _blueDicePrefab;
+    //public GameObject _redDicePrefab;
+    //public GameObject _blueDicePrefab;
     DiceManager _redDice;
     DiceManager _blueDice;
     int _redDiceViewID;
@@ -29,6 +29,7 @@ public class TurnBasedManager : MonoBehaviourPun
         // 방장이 생성, 보내기
         if (PhotonNetwork.IsMasterClient == true)
         {
+            Debug.Log("방장 주사위 생성");
             _redDice = PhotonNetwork.Instantiate("DiceRed",new Vector3(7,0,-7), Quaternion.identity,0, new object[] { 0 }).GetComponent<DiceManager>();
             _blueDice = PhotonNetwork.Instantiate("DiceBlue", new Vector3(8, 0, -8), Quaternion.identity, 0, new object[] { 1 }).GetComponent<DiceManager>();
             _redDiceViewID = _redDice.photonView.ViewID;
@@ -41,6 +42,7 @@ public class TurnBasedManager : MonoBehaviourPun
     [PunRPC]
     public void DiceSatting(int _redDiceView, int _blueView)
     {
+        Debug.Log("그 외 다른 사람 주사위 생성");
         _redDice = PhotonView.Find(_redDiceView).GetComponent<DiceManager>();
         _blueDice = PhotonView.Find(_blueView).GetComponent<DiceManager>();
         _redDice._dicePlayerMove += PlayerMove;
@@ -61,9 +63,9 @@ public class TurnBasedManager : MonoBehaviourPun
     
         if ((diceResults[0] != null && diceResults[1] != null))
         {
-            int total = diceResults[0].Value + diceResults[1].Value;
+            int total = diceResults[0].Value + diceResults[1].Value;    
             Debug.Log("최종 주사위 결과!!!!!!!!!!!!!!!! : " + total);
-            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(30);
             diceResults[0] = null;
             diceResults[1] = null;
         }

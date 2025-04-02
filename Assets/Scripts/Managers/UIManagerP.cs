@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 
 public class UIManagerP : MonoBehaviour
@@ -32,7 +33,6 @@ public class UIManagerP : MonoBehaviour
     public event Action<TileController> _buyChangeDataSea;          // 관광지 구매 UI 이벤트
     public event Action<ServerIngamePlayer> _bonusCard;               // 보너스 카드 UI 이벤트
 
-
     private void Awake()
     {
         if (instance == null) 
@@ -54,6 +54,15 @@ public class UIManagerP : MonoBehaviour
         _factorWarningUI.SetActive(false);
         _travelUI = Instantiate(_travelUI, canvus);
         _travelUI.SetActive(false);
+        TurnMgr.Instance.photonView.RPC("DiceUiRPC", RpcTarget.All);
+    }
+    public void OnDiceUI()
+    {
+        _diceUI.SetActive(true);
+    }
+    public void OffDiceUI()
+    {
+        _diceUI.SetActive(false);
     }
 
     /// <summary>
