@@ -452,7 +452,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             Debug.Log($"{_playerNum} 팝업 쿨타임 실행 : " + _isSecondCoolTimeG);
             if (_isSecondCoolTimeG == true) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
             {
-            Debug.Log($"{_playerNum}팝업 쿨타임 중지 : " + _isSecondCoolTimeG);
+            Debug.Log("팝업 쿨타임 중지 : " + _isSecondCoolTimeG);
                 photonView.RPC("StopCooldownSlider2", RpcTarget.All);
                 //_isSecondCoolTimeG = false;
                 break;
