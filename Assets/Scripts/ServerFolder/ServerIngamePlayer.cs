@@ -50,6 +50,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     float second = 5f;                         // 기본 쿨타임 시간
     public float currentDiceCooldown1 = 5f;    // 쿨타임 (슬라이더1)
     [SerializeField] private float currentDiceCooldown2 = 5f; // 쿨타임 (슬라이더2)
+    public bool _isSecondCoolTimeG = false;
 
     // ========================= 맵 및 위치 정보 =========================
     [Header("맵 및 위치 정보")]
@@ -96,13 +97,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     // ========================= 옵저버 관련 =========================
     private static List<IPlayerDataObserver> _observers = new List<IPlayerDataObserver>();
+
     #endregion
 
     #region Start문, Update문
     IEnumerator Start()
     {
-        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
-        //나중에  생각하면 싱글톤도 생각해봐야할듯
         _isBtnClicked = false;
         _waitTravelTurn = false;
         _money = _startMoney;
@@ -427,6 +427,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown2 = cooldown;
         mySlider2.value = currentDiceCooldown2;
     }
+
     [PunRPC]
     void SetSliderActive(bool isActive)
     {
@@ -444,9 +445,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         while (PhotonNetwork.Time < targetTime)
         {
-            if (Input.GetKeyDown(KeyCode.P)) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
+            if (_isSecondCoolTimeG == true) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
             {
                 photonView.RPC("StopCooldownSlider2", RpcTarget.All);
+                _isSecondCoolTimeG = false;
                 break;
             }
             currentDiceCooldown2 = (float)(targetTime - PhotonNetwork.Time);
@@ -456,7 +458,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown2 = Second;
         photonView.RPC("SetSliderActive", RpcTarget.All, false); 
         
-        TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
+        //TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
     }
     #endregion
 

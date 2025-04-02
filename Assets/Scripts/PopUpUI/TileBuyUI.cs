@@ -335,6 +335,8 @@ public class TileBuyUI : MonoBehaviour
         _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
 
+        _playerData.photonView.RPC("StopCooldownSlider2", RpcTarget.All);
+
         UIManagerP.instance.OffBuyUIPanel();
     }
 
@@ -344,12 +346,15 @@ public class TileBuyUI : MonoBehaviour
     void CancelBtnClick()
     {
         _currentMoney = _cancelRememberMoney;
-        UIManagerP.instance.OffBuyUIPanel();
 
         _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
 
+        _playerData.photonView.RPC("StopCooldownSlider2", RpcTarget.All);
+
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
+
+        UIManagerP.instance.OffBuyUIPanel();
     }
 
     /// <summary>

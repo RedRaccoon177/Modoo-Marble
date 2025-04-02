@@ -104,6 +104,7 @@ public class TurnMgr : Singleton<TurnMgr>
                     Debug.LogError("photonView가 null입니다!");
                     return;
                 }
+                ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
                 photonView.RPC("NextTurn", RpcTarget.All);
                 photonView.RPC("DiceUiRPC",RpcTarget.All);
             }
@@ -116,8 +117,7 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     public void DiceUiRPC()
     {
-        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber //&&
-            //ServerIngamePlayer._players[currentTurn]._isTravel == false
+        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber
             )
         {
             UIManagerP.instance.OnDiceUI();
@@ -203,21 +203,16 @@ public class TurnMgr : Singleton<TurnMgr>
     {
         if (loadedPlayerActorNumbers.Contains(actorNumber))
         {
-            Debug.LogWarning($"[마스터] {actorNumber} 중복 로딩 완료 신호 무시");
             return;
         }
 
         loadedPlayerActorNumbers.Add(actorNumber);
         loadedPlayers++;
 
-        Debug.Log($"[마스터] PlayerLoaded 호출됨 → {loadedPlayers}/{PhotonNetwork.PlayerList.Length}");
-
         if (loadedPlayers >= PhotonNetwork.PlayerList.Length)
         {
             PhotonView.Get(this).RPC("StartTurnSystem", RpcTarget.All);
         }
-
-        Debug.Log(isGameStarted);
     }
 
     [PunRPC]

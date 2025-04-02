@@ -65,7 +65,7 @@ public class TurnBasedManager : MonoBehaviourPun
         {
             int total = diceResults[0].Value + diceResults[1].Value;    
             Debug.Log("최종 주사위 결과!!!!!!!!!!!!!!!! : " + total);
-            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(30);
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
             diceResults[0] = null;
             diceResults[1] = null;
         }
