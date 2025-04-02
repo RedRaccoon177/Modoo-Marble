@@ -156,6 +156,7 @@ MonoBehaviour:
   _waitTravelTurn: 0
   currentDiceCooldown1: 5
   currentDiceCooldown2: 5
+  _isSecondCoolTimeG: 0
   _ownedSeaTiles: []
   _SeaBuyCount: 0
   _playerOwnerTileList: []

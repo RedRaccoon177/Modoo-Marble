@@ -48,10 +48,8 @@ public class Olympic : MonoBehaviour, IPointerClickHandler
         // 내 캐릭터가 아니면 무시
         if (actorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
 
-        Debug.Log("자신의 캐릭터 아님?");
         if (playerPosIndex == 20)
         {
-            Debug.Log("내가 올림픽 타일에 도착함!");
             isOlympicTileActive = true;
         }
         else

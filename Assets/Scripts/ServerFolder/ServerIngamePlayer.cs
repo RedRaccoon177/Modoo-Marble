@@ -131,6 +131,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
+                Debug.Log("이게 출력 되어야 되는거네.");
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
@@ -190,7 +191,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         // 중복이 아닐 경우에만 추가
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == false)
         {
-            Debug.Log(_playerNum + " 에게 땅 추가" + (_tileViewNum));
             _playerOwnerTileViewList.Add(_tileViewNum); // 뷰 ID 저장
         }
     }
@@ -201,7 +201,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == true)
         {
-            Debug.Log(_playerNum + " 의 땅 없애" + (_tileViewNum));
             _playerOwnerTileViewList.Remove(_tileViewNum); // 뷰 ID 제거
         }
     }
@@ -250,8 +249,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     public void AutomaticSale(double _SaleAmount, double currentTileTollPrice, int _tileOwner)
     {
-        Debug.Log("부족한 금액 : " + _SaleAmount);
-
         // 1. 현재 소유 타일들을 가격 기준으로 정렬 (저가순 → 고가순)
         LowPriceSorting(_playerOwnerTileViewList.ToArray());
 
@@ -291,8 +288,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             _playerOwnerTileViewList.Remove(viewID);
         }
 
-        Debug.Log("_TotalMyLandPrice : " + _TotalMyLandPrice);
-
         // 5. 소유 리스트 재갱신
         TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
 
@@ -303,14 +298,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         // 7. 매각 가능한 자산이 부족했을 경우 → 파산 처리
         if (_tempTotalMoney < _SaleAmount)
         {
-            Debug.Log("파산");
             TurnMgr.Instance.StopTurn(_playerNum, true); // 플레이어 턴 정지
             TurnMgr.Instance.endTurn(); // 턴 넘김
             FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney); // 타일 주인에게 내가 가진 전 재산 지급
         }
         else
         {
-            Debug.Log("파산 아닐 때");
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice); // 정상적으로 통행료 지급
         }
 
@@ -339,11 +332,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
             gameoverwindow.CreateResultUIs(_startMoney);
         }
-        else
-        {
-            Debug.Log("아직 게임 중!");
-            Debug.Log(aliveCount);
-        }
     }
 
     #region 주사위 쿨타임
@@ -357,6 +345,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     void Dicecooltime()
     {
+        Debug.Log("1누구의 차례" + TurnMgr.currentTurn);
+
         //함수 너무 많아지는거 같아서 안에 넣어둠
         //임시 위치값 일일이 넣음
         if (TurnMgr.currentTurn == 1)
@@ -377,6 +367,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
 
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
+
     }
 
     [PunRPC]
@@ -385,6 +376,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         StopCoroutine(runningCoroutine);
         runningCoroutine = null;
     }
+
     [PunRPC]
     void StopCooldownSlider2()
     {
@@ -419,6 +411,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider.gameObject.SetActive(false);
 
         runningCoroutine = null;
+
+        Debug.Log("2누구의 차례인가" + TurnMgr.currentTurn);
     }
 
     [PunRPC]
@@ -456,9 +450,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             yield return null;
         }
         currentDiceCooldown2 = Second;
-        photonView.RPC("SetSliderActive", RpcTarget.All, false); 
-        
-        //TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
+        photonView.RPC("SetSliderActive", RpcTarget.All, false);
+        Debug.Log("3누구의 차례인가" + TurnMgr.currentTurn);
     }
     #endregion
 
@@ -620,13 +613,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 // 통행료 지불 가능 상태라면
                 if (_money > currentTileTollPrice)
                 {
-                    Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
-
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
 
                     // 토지주인의 돈 증가 함수 실행
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
-                    Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
 
                     if (currentTile._tileType == TileType.Ground)
                     {
@@ -733,7 +723,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (_money < 0)
         {
             _money = 0;
-            Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
         }
 
         TotalMoney();
