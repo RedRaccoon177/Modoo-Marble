@@ -334,8 +334,6 @@ public class TileBuyUI : MonoBehaviour
 
         _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
-
-        UIManagerP.instance.OffBuyUIPanel();
     }
 
     /// <summary>
@@ -344,12 +342,11 @@ public class TileBuyUI : MonoBehaviour
     void CancelBtnClick()
     {
         _currentMoney = _cancelRememberMoney;
-        UIManagerP.instance.OffBuyUIPanel();
+
+        _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
 
         _playerMoveTest = FindObjectOfType<TurnMgr>();
         _playerMoveTest.endTurn();
-
-        _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
     }
 
     /// <summary>

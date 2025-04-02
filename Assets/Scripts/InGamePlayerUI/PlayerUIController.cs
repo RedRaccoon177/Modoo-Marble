@@ -64,6 +64,7 @@ public class PlayerUIController : MonoBehaviourPunCallbacks, IPlayerDataObserver
         _moneyText.text = $"{playerData._money:N0} G";
         _totalMoneyText.text = $"{playerData._totalMoney:N0} G";
 
+
         SetPlayerRanking();
     }
 

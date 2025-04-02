@@ -109,6 +109,7 @@ public class UIManagerP : MonoBehaviour
         {
             temp.SetActive(false);
         }
+
         _tileUIParent.gameObject.SetActive(false);
     }
 
