@@ -310,7 +310,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         TotalMoney();
     }
 
-    //게임 오버를 위한 조건 (나를 제외한 모든 플레이어가 파산했나?)
+    [PunRPC]
     public void ALLPlayerBankruptcy()
     {
         // 살아있는 플레이어 수 체크
@@ -331,6 +331,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
             gameoverwindow.CreateResultUIs(_startMoney);
+            UIManagerP.instance.OffBuyUIPanel();
+            UIManagerP.instance.OffClickUI();
+            UIManagerP.instance.OffDiceUI();
+            UIManagerP.instance.OffFactorUI();
+            UIManagerP.instance.OffFactorWarningUI();
+            UIManagerP.instance.OffTravelUI();
+            Time.timeScale = 0f;
         }
     }
 
@@ -367,7 +374,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
 
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
-
     }
 
     [PunRPC]
@@ -544,7 +550,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     /// </summary>
     IEnumerator MovePlayer(int num)
     {
-     
         int count = 0;
         while (count < num)
         {
@@ -552,9 +557,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 _playerPosIndex -= 40;
             }
-
-            // 도착 지점 처리 (필요 시 추가)
-            else if (_playerPosIndex + count == 0)
+            else if (_playerPosIndex + count == 0) // 도착 지점 처리 (필요 시 추가)
             {
                 // StartPointPass();
             }
@@ -655,7 +658,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             }
         }
 
-        ALLPlayerBankruptcy();
+        _view.RPC("ALLPlayerBankruptcy", RpcTarget.All);
+
         // 코루틴이 끝났으므로 null로 초기화
         _playerMoveCor = null;
         OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
@@ -694,7 +698,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         _playerPosIndex = currentIndex;
     }
-
 
     public ServerIngamePlayer FindPlayer(int _actorNum)
     {
