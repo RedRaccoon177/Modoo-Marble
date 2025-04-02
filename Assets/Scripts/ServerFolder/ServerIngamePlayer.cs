@@ -491,6 +491,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (_totalMoney < 0)
         {
             _totalMoney = 0;
+
+            //TODO: 캐릭터 비활성 및 파산UI 출력
         }
 
         NotifyPlayerDataChanged(_playerNum);
