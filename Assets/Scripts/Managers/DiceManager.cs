@@ -32,7 +32,6 @@ public class DiceManager : MonoBehaviourPun, IPunInstantiateMagicCallback
         this._diceNum = 0;
         this._diceNum = _diceNum;
         _isRolling = true;
-        Debug.Log(gameObject.name +"주사위 현재 숫자 : " + this._diceNum);
         _rb.AddForce(0, 5, 0, ForceMode.Impulse);
         _diceCor = StartCoroutine(RollingDice());
     }

@@ -332,12 +332,7 @@ public class TileBuyUI : MonoBehaviour
         _playerData.photonView.RPC("AddPlayerOwnerTileList", RpcTarget.All, _currentTile.photonView.ViewID);
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
 
-        _playerMoveTest = FindObjectOfType<TurnMgr>();
-        _playerMoveTest.endTurn();
-
-        _playerData.photonView.RPC("StopCooldownSlider2", RpcTarget.All);
-
-        UIManagerP.instance.OffBuyUIPanel();
+        TurnMgr.Instance.endTurn();
     }
 
     /// <summary>
@@ -347,14 +342,9 @@ public class TileBuyUI : MonoBehaviour
     {
         _currentMoney = _cancelRememberMoney;
 
-        _playerMoveTest = FindObjectOfType<TurnMgr>();
-        _playerMoveTest.endTurn();
-
-        _playerData.photonView.RPC("StopCooldownSlider2", RpcTarget.All);
-
         _playerData.photonView.RPC("TotalMoney", RpcTarget.All);
 
-        UIManagerP.instance.OffBuyUIPanel();
+        TurnMgr.Instance.endTurn();
     }
 
     /// <summary>

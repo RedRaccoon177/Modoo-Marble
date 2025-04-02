@@ -76,6 +76,11 @@ public class TurnMgr : Singleton<TurnMgr>
             PhotonNetwork.Instantiate(playerfabs[3].name, Vector3.zero, Quaternion.identity, 0, initData);
         }
 
+        if (actorNumber < 1 || actorNumber > 4)
+        {
+            return;
+        }
+
         playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
 
         //몇명인지 담음
@@ -93,6 +98,8 @@ public class TurnMgr : Singleton<TurnMgr>
         UIManagerP.instance.OffBuyUIPanel();
         UIManagerP.instance.OffFactorUI();
         UIManagerP.instance.OffClickUI();
+        UIManagerP.instance.OffFactorWarningUI();
+        UIManagerP.instance.OffTravelUI();
 
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
@@ -101,10 +108,8 @@ public class TurnMgr : Singleton<TurnMgr>
             {
                 if (photonView == null)
                 {
-                    Debug.LogError("photonView가 null입니다!");
                     return;
                 }
-                Debug.Log($"{ServerIngamePlayer._players[currentTurn]._playerNum} 에서 턴 넘겨! : " + ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG);
                 ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
                 photonView.RPC("NextTurn", RpcTarget.All); 
                 photonView.RPC("DiceUiRPC",RpcTarget.All);
@@ -138,38 +143,27 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     void NextTurn()
     {
+        int maxPlayer = PhotonNetwork.PlayerList.Length + leaveNum;
+        int loopSafe = 0;
 
-        CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1+ leaveNum);
-        //CurrentTurn += leaveNum;
-
-
-        //임시
-        if (leave1 == true && currentTurn == 1)
+        do
         {
-            CurrentTurn = 2;
+            CurrentTurn = (CurrentTurn % maxPlayer) + 1;
+            loopSafe++;
+            if (loopSafe > 10)
+            {
+                break;
+            }
         }
-        if (leave2 == true && currentTurn == 2)
-        {
-            CurrentTurn = 3;
-        }
-        if (leave3 == true && currentTurn == 3)
-        {
-            CurrentTurn = 4;
-            //if (PhotonNetwork.PlayerList.Length == 2) //이쪽만 바꾸면 됨
-            //{
-            //    Debug.Log("null뜸");
-            //    CurrentTurn = 1;
-            //}
-        }
-
-
-        if (leave4 == true && currentTurn == 4)
-        {
-            CurrentTurn = 1;
-        } 
-
-         
+        while (
+            (leave1 && CurrentTurn == 1) ||
+            (leave2 && CurrentTurn == 2) ||
+            (leave3 && CurrentTurn == 3) ||
+            (leave4 && CurrentTurn == 4)
+        );
     }
+
+
 
     //파산될때 호출**
     //StopTurn(MyActorNumber,true);
