@@ -1954,10 +1954,10 @@ MonoBehaviour:
   audioSlider2: {fileID: 4398674682174655835}
   audioSlider3: {fileID: 4398674682174655836}
   soundList:
-  - {fileID: 8300000, guid: 47f45ef7b5767674393cc401fc325705, type: 3}
+  - {fileID: 8300000, guid: 475f4837af487ce4a9e68bb227455e4c, type: 3}
   - {fileID: 8300000, guid: 10ea0c6ecdfbe594d85161c221bce875, type: 3}
   - {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: b3d1ca4c18c7cdc4484ae1e93f4dcc78, type: 3}
   masterValue: 0
   bgmValue: 0
   sfxValue: 0
@@ -4336,7 +4336,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 7985054545868715110, guid: e65170644d17e9640932add3448895d5, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -5183,7 +5183,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 7985054545868715110, guid: e65170644d17e9640932add3448895d5, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

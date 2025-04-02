@@ -55,10 +55,8 @@ public class SoundManager : MonoBehaviour
         audioSlider2.value = soundData.bgm;
         audioSlider3.value = soundData.sfx;
 
-        gameObject.GetComponent<AudioSource>().clip = soundList[0];
+        gameObject.GetComponent<AudioSource>().clip = soundList[1];
         gameObject.GetComponent<AudioSource>().Play();
-
-     
     }
 
     void SaveData()
