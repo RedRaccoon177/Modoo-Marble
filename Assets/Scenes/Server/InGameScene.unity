@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1565,6 +1565,10 @@ PrefabInstance:
     - target: {fileID: 5848990006447060067, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
       propertyPath: m_LocalPosition.y
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973997433142446308, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6168514528132485538, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
       propertyPath: m_Name
@@ -3299,6 +3303,10 @@ PrefabInstance:
     - target: {fileID: 6109663070269632822, guid: eb6c72739f00b154f9240a4b551c8ed1, type: 3}
       propertyPath: m_Name
       value: GameOverPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109663070269632822, guid: eb6c72739f00b154f9240a4b551c8ed1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
