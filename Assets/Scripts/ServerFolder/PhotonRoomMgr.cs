@@ -50,9 +50,10 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             Debug.Log("방만들기 버튼 클릭");
-
+            string tempname = RanddomRoomName();
+            Debug.Log(tempname);
             //일단 인원 제한없음
-            PhotonNetwork.CreateRoom(RanddomRoomName(), new RoomOptions{ MaxPlayers =4, EmptyRoomTtl =0 ,IsOpen = true}); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
+            PhotonNetwork.CreateRoom(tempname, new RoomOptions{ MaxPlayers =4, EmptyRoomTtl =0 ,IsOpen = true}); //방 만들어주는 메서드. 앞엔 방 이름, 뒤엔 옵션
         }
         else
         {
