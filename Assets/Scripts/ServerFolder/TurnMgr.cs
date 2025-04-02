@@ -120,6 +120,7 @@ public class TurnMgr : Singleton<TurnMgr>
             }
         }
     }
+
     [PunRPC]
     public void qq()
     {
@@ -129,8 +130,7 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     public void DiceUiRPC()
     {
-        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber
-            )
+        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             UIManagerP.instance.OnDiceUI();
         }
@@ -155,15 +155,14 @@ public class TurnMgr : Singleton<TurnMgr>
                 break;
             }
         }
-        while (
+        while 
+        (
             (leave1 && CurrentTurn == 1) ||
             (leave2 && CurrentTurn == 2) ||
             (leave3 && CurrentTurn == 3) ||
             (leave4 && CurrentTurn == 4)
         );
     }
-
-
 
     //파산될때 호출**
     //StopTurn(MyActorNumber,true);

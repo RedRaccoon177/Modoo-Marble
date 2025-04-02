@@ -82,7 +82,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     Slider mySlider;                           // 쿨타임 슬라이더 1
     GameObject mySliderobj;                    // 슬라이더 1 오브젝트
     Slider mySlider2;                          // 쿨타임 슬라이더 2
-    GameObject mySliderobj2;                   // 슬라이더 2 오브젝트
 
     double _tempTotalMoney;                   // 임시 자산 저장용
 
@@ -343,43 +342,30 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
-    #region 주사위 쿨타임
-    [PunRPC]
-    void HideSlider()
-    {
-        mySlider.gameObject.SetActive(false);
-    }
-
-    // 주사위 쿨타임 슬라이더 시작 + 위치 조정
+    #region 주사위 및 팝업 쿨타임 관련 함수
+    // 1. 주사위 쿨타임 시작
+    // 현재 턴 기준으로 슬라이더1 UI의 위치를 옮기고, 주사위 쿨타임 코루틴 시작
     [PunRPC]
     void Dicecooltime()
     {
-        //함수 너무 많아지는거 같아서 안에 넣어둠
-        //임시 위치값 일일이 넣음
         if (TurnMgr.currentTurn == 1)
-        {
             mySliderobj.transform.localPosition = new Vector3(-720, 310, 0);
-        }
         else if (TurnMgr.currentTurn == 2)
-        {
             mySliderobj.transform.localPosition = new Vector3(720, 310, 0);
-        }
         else if (TurnMgr.currentTurn == 3)
-        {
             mySliderobj.transform.localPosition = new Vector3(720, -310, 0);
-        }
         else if (TurnMgr.currentTurn == 4)
-        {
             mySliderobj.transform.localPosition = new Vector3(-720, -310, 0);
-        }
 
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
 
-    // 주사위 쿨타임 슬라이더를 점점 줄여가며 보여주는 코루틴
+    // 2. 주사위 쿨타임 진행
+    // 슬라이더1을 점점 줄여가며 쿨타임을 시각적으로 표현하고, 완료되면 _isCoolFinish 설정
     IEnumerator Dicecooltimedelay(float Second)
     {
-        mySlider.gameObject.SetActive(true); // 슬라이더 UI 켜기
+        mySlider.gameObject.SetActive(true); // 슬라이더 UI 보이기
+
         double startTime = PhotonNetwork.Time;
         double targetTime = startTime + Second;
 
@@ -389,25 +375,25 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         while (PhotonNetwork.Time < targetTime)
         {
-            if (_isBtnClicked == true) // 사용자가 클릭하면 중단
+            if (_isBtnClicked == true) // 사용자가 주사위 클릭한 경우
             {
                 photonView.RPC("StopCooldownSlider1", RpcTarget.All);
                 break;
             }
 
-            currentDiceCooldown1 = (float)(targetTime - PhotonNetwork.Time); // 남은 시간 계산
-            mySlider.value = currentDiceCooldown1; // 슬라이더에 반영
+            currentDiceCooldown1 = (float)(targetTime - PhotonNetwork.Time);
+            mySlider.value = currentDiceCooldown1;
             yield return null;
         }
 
-        // 쿨타임 종료 처리
-        _isCoolFinish = true;
+        _isCoolFinish = true; // 쿨타임 완료
         currentDiceCooldown1 = Second;
         mySlider.gameObject.SetActive(false);
         runningCoroutine = null;
     }
 
-    // 주사위 슬라이더 강제 중단 (사용자가 주사위 버튼 클릭했을 때 사용됨)
+    // 3. 주사위 쿨타임 중단
+    // 사용자가 주사위를 누른 경우 슬라이더1을 강제로 중단하고 숨김 처리
     [PunRPC]
     void StopCooldownSlider1()
     {
@@ -416,7 +402,58 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         runningCoroutine = null;
     }
 
-    // 팝업 쿨타임 슬라이더 강제 중단 처리 (구매, 취소 등 유저 행동으로 인해)
+    // 4. 팝업 쿨타임 시작
+    // 건물 구매 등 UI 팝업 시 슬라이더2가 시작됨. 시간이 다 되면 자동으로 턴 종료
+    IEnumerator cooltimedelay(float Second)
+    {
+        if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
+        {
+            Debug.LogWarning($"[cooltimedelay] 내 턴 아님 → 실행 안 함");
+            yield break;
+        }
+
+        _isSecondCoolTimeG = false; // 초기화
+        photonView.RPC("SetSliderActive", RpcTarget.All, true); // 슬라이더2 UI 보이기
+
+        double startTime = PhotonNetwork.Time;
+        double targetTime = startTime + Second;
+        currentDiceCooldown2 = Second;
+
+        while (PhotonNetwork.Time < targetTime)
+        {
+            if (_isSecondCoolTimeG) // 유저가 중간에 행동한 경우
+            {
+                Debug.Log($"[cooltimedelay] 사용자 행동 감지 → 쿨타임 중단 요청");
+                photonView.RPC("SetSliderActive", RpcTarget.All, false);
+                yield break;
+            }
+
+            float remainingTime = (float)(targetTime - PhotonNetwork.Time);
+            currentDiceCooldown2 = remainingTime;
+
+            photonView.RPC("Slider2Value", RpcTarget.All, remainingTime, _playerNum); // 슬라이더 값 전파
+            yield return null;
+        }
+
+        // 쿨타임 완료 시 턴 넘김
+        _isSecondCoolTimeG = false;
+        currentDiceCooldown2 = second;
+
+        photonView.RPC("Slider2Value", RpcTarget.All, second, _playerNum);
+        photonView.RPC("SetSliderActive", RpcTarget.All, false);
+
+        if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
+        {
+            TurnMgr.Instance.endTurn();
+        }
+        else
+        {
+            Debug.Log("내 턴 아님 → 턴 넘기기 스킵");
+        }
+    }
+
+    // 5. 팝업 쿨타임 중단
+    // 유저가 구매 or 취소 버튼을 눌렀을 때 슬라이더2를 중단하고 턴을 넘김
     [PunRPC]
     void StopCooldownSlider2()
     {
@@ -427,7 +464,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         _isSecondCoolTimeG = true;
 
-        // 코루틴 강제 종료
         if (runningCoroutine2 != null)
         {
             StopCoroutine(runningCoroutine2);
@@ -438,11 +474,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown2 = second;
         mySlider2.value = second;
 
-        TurnMgr.Instance.endTurn(); // 여기서만 턴 넘김
+        TurnMgr.Instance.endTurn(); // 직접 턴 넘김
     }
 
-
-    // 슬라이더2의 값을 모든 클라이언트에 실시간으로 동기화 (RPC 호출용)
+    // 6. 슬라이더2 동기화
+    // 모든 클라이언트에서 동일한 슬라이더2 값을 보이도록 RPC로 동기화
     [PunRPC]
     void Slider2Value(float cooldown, int targetActorNumber)
     {
@@ -453,76 +489,25 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         targetPlayer.mySlider2.value = cooldown;
     }
 
-    // 슬라이더2 활성화/비활성화 처리 (모든 클라이언트에서 UI 보이기/숨기기)
+    // 7. 슬라이더2 UI 활성화/비활성화
+    // 슬라이더2를 보이거나 숨길 때 사용하는 RPC
     [PunRPC]
     void SetSliderActive(bool isActive)
     {
         mySlider2.gameObject.SetActive(isActive);
     }
 
-    // 팝업 UI 쿨타임 슬라이더(슬라이더2) 시작 처리 (구매/인수 등)
-    // 팝업 UI 쿨타임 슬라이더(슬라이더2) 시작 처리 (구매/인수 등)
-    IEnumerator cooltimedelay(float Second)
+    // 8. 슬라이더1 숨김 처리
+    // 주사위 슬라이더를 강제로 숨길 때 사용됨
+    [PunRPC]
+    void HideSlider()
     {
-        // 내 턴이 아닐 경우 실행 금지
-        if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
-        {
-            Debug.LogWarning($"[cooltimedelay] 내 턴이 아님 → 실행 안 함. 내 Actor: {PhotonNetwork.LocalPlayer.ActorNumber}, 현재 턴: {TurnMgr.CurrentTurn}");
-            yield break;
-        }
-
-        _isSecondCoolTimeG = false;
-
-        Debug.Log($"[cooltimedelay] 쿨타임 시작. 내 턴: {TurnMgr.CurrentTurn}");
-
-        photonView.RPC("SetSliderActive", RpcTarget.All, true); // 슬라이더2 UI 켜기
-
-        // 쿨타임 시작 시간 재설정
-        double startTime = PhotonNetwork.Time;
-        double targetTime = startTime + Second;
-
-        currentDiceCooldown2 = Second;
-
-        while (PhotonNetwork.Time < targetTime)
-        {
-            if (_isSecondCoolTimeG)
-            {
-                Debug.Log($"[cooltimedelay] 사용자 행동 감지 → 쿨타임 중단 요청");
-
-                //슬라이더만 꺼주고, 코루틴 종료. 턴은 이미 endTurn()에서 처리됨
-                photonView.RPC("SetSliderActive", RpcTarget.All, false);
-                yield break;
-            }
-
-            // 남은 시간 계산
-            float remainingTime = (float)(targetTime - PhotonNetwork.Time);
-            currentDiceCooldown2 = remainingTime;
-
-            // 모든 클라에 슬라이더 값 전송
-            photonView.RPC("Slider2Value", RpcTarget.All, remainingTime, _playerNum);
-            yield return null;
-        }
-
-        // 쿨타임 종료 처리
-        Debug.Log($"[{_playerNum}] 쿨타임 완료. 턴 넘김 시도 (내 Actor: {PhotonNetwork.LocalPlayer.ActorNumber}, 현재 턴: {TurnMgr.CurrentTurn})");
-
-        _isSecondCoolTimeG = false;
-        currentDiceCooldown2 = second;
-
-        photonView.RPC("Slider2Value", RpcTarget.All, second, _playerNum);
-        photonView.RPC("SetSliderActive", RpcTarget.All, false);
-
-        if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
-        {
-            Debug.Log("내 턴 → 턴 넘김 실행");
-            TurnMgr.Instance.endTurn();
-        }
-        else
-        {
-            Debug.Log("내 턴 아님 → 턴 넘기기 스킵");
-        }
+        mySlider.gameObject.SetActive(false);
     }
+
     #endregion
+
+
 
     /// <summary>
     /// 플레이어의 총 자산(현금 + 보유 토지)
