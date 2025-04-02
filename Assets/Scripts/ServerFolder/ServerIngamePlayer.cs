@@ -50,6 +50,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     float second = 5f;                         // 기본 쿨타임 시간
     public float currentDiceCooldown1 = 5f;    // 쿨타임 (슬라이더1)
     [SerializeField] private float currentDiceCooldown2 = 5f; // 쿨타임 (슬라이더2)
+    public bool _isSecondCoolTimeG = false;
 
     // ========================= 맵 및 위치 정보 =========================
     [Header("맵 및 위치 정보")]
@@ -96,13 +97,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     // ========================= 옵저버 관련 =========================
     private static List<IPlayerDataObserver> _observers = new List<IPlayerDataObserver>();
+
     #endregion
 
     #region Start문, Update문
     IEnumerator Start()
     {
-        //여기에 돈 쓸거면 플레이어프리팹 안에 있는게 편함
-        //나중에  생각하면 싱글톤도 생각해봐야할듯
         _isBtnClicked = false;
         _waitTravelTurn = false;
         _money = _startMoney;
@@ -131,6 +131,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false)
             {
+                Debug.Log("이게 출력 되어야 되는거네.");
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
@@ -190,7 +191,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         // 중복이 아닐 경우에만 추가
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == false)
         {
-            Debug.Log(_playerNum + " 에게 땅 추가" + (_tileViewNum));
             _playerOwnerTileViewList.Add(_tileViewNum); // 뷰 ID 저장
         }
     }
@@ -201,7 +201,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         if (_playerOwnerTileViewList.Contains(_tileViewNum) == true)
         {
-            Debug.Log(_playerNum + " 의 땅 없애" + (_tileViewNum));
             _playerOwnerTileViewList.Remove(_tileViewNum); // 뷰 ID 제거
         }
     }
@@ -250,8 +249,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     public void AutomaticSale(double _SaleAmount, double currentTileTollPrice, int _tileOwner)
     {
-        Debug.Log("부족한 금액 : " + _SaleAmount);
-
         // 1. 현재 소유 타일들을 가격 기준으로 정렬 (저가순 → 고가순)
         LowPriceSorting(_playerOwnerTileViewList.ToArray());
 
@@ -291,8 +288,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             _playerOwnerTileViewList.Remove(viewID);
         }
 
-        Debug.Log("_TotalMyLandPrice : " + _TotalMyLandPrice);
-
         // 5. 소유 리스트 재갱신
         TileControllerListRecorder(_playerOwnerTileViewList.ToArray());
 
@@ -303,21 +298,19 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         // 7. 매각 가능한 자산이 부족했을 경우 → 파산 처리
         if (_tempTotalMoney < _SaleAmount)
         {
-            Debug.Log("파산");
             TurnMgr.Instance.StopTurn(_playerNum, true); // 플레이어 턴 정지
             TurnMgr.Instance.endTurn(); // 턴 넘김
             FindPlayer(_tileOwner).IncreaseMoney(_tempTotalMoney); // 타일 주인에게 내가 가진 전 재산 지급
         }
         else
         {
-            Debug.Log("파산 아닐 때");
             FindPlayer(_tileOwner).IncreaseMoney(currentTileTollPrice); // 정상적으로 통행료 지급
         }
 
         TotalMoney();
     }
 
-    //게임 오버를 위한 조건 (나를 제외한 모든 플레이어가 파산했나?)
+    [PunRPC]
     public void ALLPlayerBankruptcy()
     {
         // 살아있는 플레이어 수 체크
@@ -338,11 +331,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
             gameoverwindow.CreateResultUIs(_startMoney);
-        }
-        else
-        {
-            Debug.Log("아직 게임 중!");
-            Debug.Log(aliveCount);
+            UIManagerP.instance.OffBuyUIPanel();
+            UIManagerP.instance.OffClickUI();
+            UIManagerP.instance.OffDiceUI();
+            UIManagerP.instance.OffFactorUI();
+            UIManagerP.instance.OffFactorWarningUI();
+            UIManagerP.instance.OffTravelUI();
+            Time.timeScale = 0f;
         }
     }
 
@@ -357,6 +352,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     [PunRPC]
     void Dicecooltime()
     {
+        Debug.Log("1누구의 차례" + TurnMgr.currentTurn);
+
         //함수 너무 많아지는거 같아서 안에 넣어둠
         //임시 위치값 일일이 넣음
         if (TurnMgr.currentTurn == 1)
@@ -385,6 +382,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         StopCoroutine(runningCoroutine);
         runningCoroutine = null;
     }
+
     [PunRPC]
     void StopCooldownSlider2()
     {
@@ -419,6 +417,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         mySlider.gameObject.SetActive(false);
 
         runningCoroutine = null;
+
+        Debug.Log("2누구의 차례인가" + TurnMgr.currentTurn);
     }
 
     [PunRPC]
@@ -427,6 +427,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown2 = cooldown;
         mySlider2.value = currentDiceCooldown2;
     }
+
     [PunRPC]
     void SetSliderActive(bool isActive)
     {
@@ -444,9 +445,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
         while (PhotonNetwork.Time < targetTime)
         {
-            if (Input.GetKeyDown(KeyCode.P)) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
+            if (_isSecondCoolTimeG == true) //구매,취소 했을경우 정지 ***** 변수하나 넣어서 아래에 다시 바꾸면댐
             {
                 photonView.RPC("StopCooldownSlider2", RpcTarget.All);
+                _isSecondCoolTimeG = false;
                 break;
             }
             currentDiceCooldown2 = (float)(targetTime - PhotonNetwork.Time);
@@ -454,9 +456,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             yield return null;
         }
         currentDiceCooldown2 = Second;
-        photonView.RPC("SetSliderActive", RpcTarget.All, false); 
-        
-        TurnMgr.Instance.endTurn();//*** 중복되서 2개 턴날라감
+        photonView.RPC("SetSliderActive", RpcTarget.All, false);
+        Debug.Log("3누구의 차례인가" + TurnMgr.currentTurn);
     }
     #endregion
 
@@ -490,6 +491,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (_totalMoney < 0)
         {
             _totalMoney = 0;
+
+            //TODO: 캐릭터 비활성 및 파산UI 출력
         }
 
         NotifyPlayerDataChanged(_playerNum);
@@ -549,7 +552,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     /// </summary>
     IEnumerator MovePlayer(int num)
     {
-     
         int count = 0;
         while (count < num)
         {
@@ -557,9 +559,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             {
                 _playerPosIndex -= 40;
             }
-
-            // 도착 지점 처리 (필요 시 추가)
-            else if (_playerPosIndex + count == 0)
+            else if (_playerPosIndex + count == 0) // 도착 지점 처리 (필요 시 추가)
             {
                 // StartPointPass();
             }
@@ -618,13 +618,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 // 통행료 지불 가능 상태라면
                 if (_money > currentTileTollPrice)
                 {
-                    Debug.Log($"{_playerNum} 통행료 빠져 나간 돈 : " + currentTileTollPrice);
-
                     _view.RPC("DecreaseMoney", RpcTarget.All, currentTileTollPrice);
 
                     // 토지주인의 돈 증가 함수 실행
                     FindPlayer(currentTile.GetOwner(0))._view.RPC("IncreaseMoney", RpcTarget.All, currentTileTollPrice);
-                    Debug.Log($"{currentTile.GetOwner(0)}의 통행료 증가 된 돈 : " + currentTileTollPrice);
 
                     if (currentTile._tileType == TileType.Ground)
                     {
@@ -663,7 +660,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             }
         }
 
-        ALLPlayerBankruptcy();
+        _view.RPC("ALLPlayerBankruptcy", RpcTarget.All);
+
         // 코루틴이 끝났으므로 null로 초기화
         _playerMoveCor = null;
         OnPlayerPositionChanged?.Invoke(_playerNum, _playerPosIndex);
@@ -703,7 +701,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         _playerPosIndex = currentIndex;
     }
 
-
     public ServerIngamePlayer FindPlayer(int _actorNum)
     {
         return _players[_actorNum];
@@ -731,7 +728,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (_money < 0)
         {
             _money = 0;
-            Debug.Log("DecreaseMoney에서 실행됨: 파산됨.");
         }
 
         TotalMoney();

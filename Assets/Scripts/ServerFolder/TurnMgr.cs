@@ -97,28 +97,16 @@ public class TurnMgr : Singleton<TurnMgr>
         //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {
-            try
-            {
-                if (photonView == null)
-                {
-                    Debug.LogError("photonView가 null입니다!");
-                    return;
-                }
-                photonView.RPC("NextTurn", RpcTarget.All);
-                photonView.RPC("DiceUiRPC",RpcTarget.All);
-            }
-            catch (System.Exception error)
-            {
-                Debug.Log(error);
-            }
+            ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
+            photonView.RPC("NextTurn", RpcTarget.All);
+            photonView.RPC("DiceUiRPC", RpcTarget.All);
         }
     }
+
     [PunRPC]
     public void DiceUiRPC()
     {
-        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber //&&
-            //ServerIngamePlayer._players[currentTurn]._isTravel == false
-            )
+        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             UIManagerP.instance.OnDiceUI();
         }
@@ -131,10 +119,7 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     void NextTurn()
     {
-
         CurrentTurn = (CurrentTurn + 1) % (PhotonNetwork.PlayerList.Length + 1+ leaveNum);
-        //CurrentTurn += leaveNum;
-
 
         //임시
         if (leave1 == true && currentTurn == 1)
@@ -148,20 +133,11 @@ public class TurnMgr : Singleton<TurnMgr>
         if (leave3 == true && currentTurn == 3)
         {
             CurrentTurn = 4;
-            //if (PhotonNetwork.PlayerList.Length == 2) //이쪽만 바꾸면 됨
-            //{
-            //    Debug.Log("null뜸");
-            //    CurrentTurn = 1;
-            //}
         }
-
-
         if (leave4 == true && currentTurn == 4)
         {
             CurrentTurn = 1;
-        } 
-
-         
+        }
     }
 
     //파산될때 호출**
@@ -203,21 +179,16 @@ public class TurnMgr : Singleton<TurnMgr>
     {
         if (loadedPlayerActorNumbers.Contains(actorNumber))
         {
-            Debug.LogWarning($"[마스터] {actorNumber} 중복 로딩 완료 신호 무시");
             return;
         }
 
         loadedPlayerActorNumbers.Add(actorNumber);
         loadedPlayers++;
 
-        Debug.Log($"[마스터] PlayerLoaded 호출됨 → {loadedPlayers}/{PhotonNetwork.PlayerList.Length}");
-
         if (loadedPlayers >= PhotonNetwork.PlayerList.Length)
         {
             PhotonView.Get(this).RPC("StartTurnSystem", RpcTarget.All);
         }
-
-        Debug.Log(isGameStarted);
     }
 
     [PunRPC]

@@ -126,9 +126,5 @@ public class SoundManager : MonoBehaviour
         masterValue = audioSlider1.value;
         bgmValue = audioSlider2.value;
         sfxValue = audioSlider3.value;
-
-        Debug.Log(masterValue);
-        Debug.Log(bgmValue);
-        Debug.Log(sfxValue);
     }
 }
