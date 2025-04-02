@@ -86,7 +86,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     double _tempTotalMoney;                   // 임시 자산 저장용
 
     [Header("시작 돈")]
-    [SerializeField] double _startMoney = 1000; // 초기 자금
+    public double _startMoney = 1000; // 초기 자금
 
     // ========================= 이벤트 관련 =========================
     // 플레이어 위치 변경시 호출됨 (플레이어 번호, 위치 인덱스)
@@ -124,14 +124,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void Update()
     {
         if (!TurnMgr.isGameStarted) return;
-
+        
         //내턴 and (쿨타임 or 주사위)
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {
             //내턴 될때 쿹타임 10초 
             if (runningCoroutine == null && _isCoolFinish == false && photonView.IsMine)
             {
-                Debug.Log("이게 출력 되어야 되는거네.");
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
@@ -381,7 +380,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown1 = Second;
         mySlider.value = Second;
 
-        while (PhotonNetwork.Time < targetTime)
+        while (!TurnMgr._isGameOver && PhotonNetwork.Time < targetTime)
         {
             if (_isBtnClicked == true) // 사용자가 주사위 클릭한 경우
             {
@@ -398,8 +397,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         currentDiceCooldown1 = Second;
         mySlider.gameObject.SetActive(false);
         runningCoroutine = null;
-
-        Debug.Log("2누구의 차례인가" + TurnMgr.currentTurn);
     }
 
     // 3. 주사위 쿨타임 중단
@@ -418,7 +415,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
         {
-            Debug.LogWarning($"[cooltimedelay] 내 턴 아님 → 실행 안 함");
             yield break;
         }
 
@@ -429,11 +425,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         double targetTime = startTime + Second;
         currentDiceCooldown2 = Second;
 
-        while (PhotonNetwork.Time < targetTime)
+        while (!TurnMgr._isGameOver && PhotonNetwork.Time < targetTime)
         {
             if (_isSecondCoolTimeG) // 유저가 중간에 행동한 경우
             {
-                Debug.Log($"[cooltimedelay] 사용자 행동 감지 → 쿨타임 중단 요청");
                 photonView.RPC("SetSliderActive", RpcTarget.All, false);
                 yield break;
             }
@@ -456,10 +451,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             TurnMgr.Instance.endTurn();
         }
-        else
-        {
-            Debug.Log("내 턴 아님 → 턴 넘기기 스킵");
-        }
     }
 
     // 5. 팝업 쿨타임 중단
@@ -469,8 +460,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber != TurnMgr.CurrentTurn)
             return;
-
-        Debug.Log("중간 행동 → StopCooldownSlider2() 실행됨");
 
         _isSecondCoolTimeG = true;
 
@@ -611,7 +600,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     IEnumerator MovePlayer(int num)
     {
         int count = 0;
-        while (count < num)
+        while (!TurnMgr._isGameOver && count < num)
         {
             if ((_playerPosIndex + count) >= 39)
             {
@@ -743,7 +732,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         int currentIndex = _playerPosIndex;
 
-        while (true)
+        while (!TurnMgr._isGameOver && true)
         {
             // 1칸 이동
             currentIndex++;

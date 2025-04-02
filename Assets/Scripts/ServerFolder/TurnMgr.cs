@@ -15,84 +15,68 @@ using System;
 //내턴일때만 사용가능
 public class TurnMgr : Singleton<TurnMgr>
 {
-    static public int currentTurn = 1;
-    static public int leaveNum = 0;
-    static public bool leave1 = false;
-    static public bool leave2 = false;
-    static public bool leave3 = false;
-    static public bool leave4 = false;
-    public int playerlist;
+    // ===================== 상태 변수 =====================
+    public static int currentTurn = 1;                   // 현재 턴 주인 (ActorNumber 기준)
+    public static int leaveNum = 0;                      // 방에서 나간 플레이어 수
+    public static bool leave1 = false;
+    public static bool leave2 = false;
+    public static bool leave3 = false;
+    public static bool leave4 = false;
 
-    int loadedPlayers = 0;
+    public int playerlist;                               // 현재 방에 있는 플레이어 수
+    public static bool isGameStarted = false;            // 게임 시작 여부
 
-    public static bool isGameStarted = false;
+    public int currentRound = 1;                         // 현재 라운드 번호
+    int maxRound = 8;                                    // 최대 라운드 수
+    [SerializeField] private int turnCountInRound = 0;   // 현재 라운드에서 몇 명이 턴을 종료했는지
 
-    public GameObject[] playerfabs;
+    public TextMeshProUGUI _currentRound;
 
-    private HashSet<int> loadedPlayerActorNumbers = new HashSet<int>();
+    int loadedPlayers = 0;                               // 로딩 완료된 플레이어 수
+    private HashSet<int> loadedPlayerActorNumbers = new HashSet<int>(); // 로딩 완료된 플레이어 목록
 
-    static public int CurrentTurn
+    public GameObject[] playerfabs;                      // 플레이어 프리팹 배열 (1~4번)
+
+    public TextMeshProUGUI playerTurnText;               // 내 ActorNumber 표시용 UI
+    public TextMeshProUGUI currentTurnText;              // 현재 턴 ActorNumber 표시용 UI
+
+    public static bool _isGameOver = false;               // 모든 코루틴 정지
+
+    // 현재 턴을 관리하는 프로퍼티
+    public static int CurrentTurn
     {
-        get
-        {
-            return currentTurn;
-        }
-        set
-        {
-            if (value <= 0)
-            {
-                currentTurn = 1;
-            }
-            else
-            {
-                currentTurn = value;
-            }
-        }
+        get { return currentTurn; }
+        set { currentTurn = (value <= 0) ? 1 : value; }
     }
-
-    public TextMeshProUGUI playerTurnText;
-    public TextMeshProUGUI currentTurnText;
 
     private void Start()
     {
+        _isGameOver = false;
         int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
         string nickname = PhotonNetwork.LocalPlayer.NickName;
         object[] initData = new object[] { actorNumber, nickname };
 
-        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        // ActorNumber에 따라 각기 다른 프리팹 인스턴스화
+        if (actorNumber >= 1 && actorNumber <= 4)
         {
-            PhotonNetwork.Instantiate(playerfabs[0].name, Vector3.zero, Quaternion.identity, 0, initData);
-        }
-        else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
-        {
-            PhotonNetwork.Instantiate(playerfabs[1].name, Vector3.zero, Quaternion.identity, 0, initData);
-        }
-        else if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
-        {
-            PhotonNetwork.Instantiate(playerfabs[2].name, Vector3.zero, Quaternion.identity, 0, initData);
-        }
-        else if (PhotonNetwork.LocalPlayer.ActorNumber == 4)
-        {
-            PhotonNetwork.Instantiate(playerfabs[3].name, Vector3.zero, Quaternion.identity, 0, initData);
+            PhotonNetwork.Instantiate(playerfabs[actorNumber - 1].name, Vector3.zero, Quaternion.identity, 0, initData);
         }
 
-        if (actorNumber < 1 || actorNumber > 4)
-        {
-            return;
-        }
+        // 유효하지 않은 ActorNumber일 경우 중단
+        if (actorNumber < 1 || actorNumber > 4) return;
 
-        playerTurnText.text = PhotonNetwork.LocalPlayer.ActorNumber.ToString();
+        playerTurnText.text = actorNumber.ToString();             // 내 ActorNumber 표시
+        playerlist = PhotonNetwork.PlayerList.Length;            // 현재 방에 있는 플레이어 수 저장
 
-        //몇명인지 담음
-        playerlist = PhotonNetwork.PlayerList.Length;
+        _currentRound.text = $"현재 라운드: {currentRound} / {maxRound}";
     }
 
     private void Update()
     {
-        //지금 누구 턴?
-        currentTurnText.text = currentTurn.ToString();
+        currentTurnText.text = currentTurn.ToString();           // 현재 턴을 UI에 표시
     }
 
+    // 턴 종료 시 호출되는 함수 (내 턴일 경우에만 작동)
     public void endTurn()
     {
         UIManagerP.instance.OffBuyUIPanel();
@@ -101,36 +85,75 @@ public class TurnMgr : Singleton<TurnMgr>
         UIManagerP.instance.OffFactorWarningUI();
         UIManagerP.instance.OffTravelUI();
 
-        //내턴일때만 턴넘김 
         if (PhotonNetwork.LocalPlayer.ActorNumber == CurrentTurn)
         {
             try
             {
-                if (photonView == null)
-                {
-                    return;
-                }
+                if (photonView == null) return;
+
                 ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
-                photonView.RPC("NextTurn", RpcTarget.All); 
-                photonView.RPC("DiceUiRPC",RpcTarget.All);
+
+                photonView.RPC("IncreaseTurnCount", RpcTarget.All); // 모든 클라이언트에 turnCount 증가 및 라운드 처리
+
+                photonView.RPC("NextTurn", RpcTarget.All);
+                photonView.RPC("DiceUiRPC", RpcTarget.All);
             }
-            catch (System.Exception error)
+            catch (Exception error)
             {
                 Debug.Log(error);
             }
         }
     }
 
+    //턴 수 증가 함수
     [PunRPC]
-    public void qq()
+    void IncreaseTurnCount()
     {
-        ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
+        turnCountInRound++;
+
+        if (turnCountInRound >= PhotonNetwork.PlayerList.Length)
+        {
+            currentRound++;
+            turnCountInRound = 0;
+
+            _currentRound.text = $"현재 라운드: {currentRound} / {maxRound}";
+
+            if (currentRound > maxRound)
+            {
+                int myActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+                ServerIngamePlayer myPlayer = null;
+
+                if (ServerIngamePlayer._players.ContainsKey(myActorNumber))
+                {
+                    myPlayer = ServerIngamePlayer._players[myActorNumber];
+                }
+
+                // 내 플레이어에서 _startMoney 꺼내기
+                double resultStartMoney = (myPlayer != null) ? myPlayer._startMoney : 0;
+
+                // 게임 종료 처리
+                GameOverResultWindow gameoverwindow = FindObjectOfType<GameOverResultWindow>();
+                gameoverwindow.CreateResultUIs(resultStartMoney);
+
+                UIManagerP.instance.OffBuyUIPanel();
+                UIManagerP.instance.OffClickUI();
+                UIManagerP.instance.OffDiceUI();
+                UIManagerP.instance.OffFactorUI();
+                UIManagerP.instance.OffFactorWarningUI();
+                UIManagerP.instance.OffTravelUI();
+
+                Time.timeScale = 0f;
+                _isGameOver = true;
+                return;
+            }
+        }
     }
 
+    // 내 턴일 때 Dice UI 켜고, 아니면 끔
     [PunRPC]
     public void DiceUiRPC()
     {
-        if(currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
+        if (currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             UIManagerP.instance.OnDiceUI();
         }
@@ -140,6 +163,7 @@ public class TurnMgr : Singleton<TurnMgr>
         }
     }
 
+    // 다음 턴으로 넘기기 위한 순회 로직 (파산한 플레이어 제외)
     [PunRPC]
     void NextTurn()
     {
@@ -152,10 +176,10 @@ public class TurnMgr : Singleton<TurnMgr>
             loopSafe++;
             if (loopSafe > 10)
             {
-                break;
+                break; // 무한 루프 방지
             }
         }
-        while 
+        while
         (
             (leave1 && CurrentTurn == 1) ||
             (leave2 && CurrentTurn == 2) ||
@@ -164,57 +188,49 @@ public class TurnMgr : Singleton<TurnMgr>
         );
     }
 
-    //파산될때 호출**
-    //StopTurn(MyActorNumber,true);
-    //자기번호 정지시킴
-    //StopTurn(MyActorNumber,false);
-    //자기번호 정지풀음
-    //**endturn함수보다 먼저 수행해야댐
+
+
+    // 특정 플레이어 턴 정지 (예: 파산, 무인도 등)
     [PunRPC]
     public void StopTurn(int LocalPlayerActorNumber, bool isStop)
     {
         switch (LocalPlayerActorNumber)
         {
-            case 1:
-                leave1 = isStop; break;
-            case 2:
-                leave2 = isStop; break;
-            case 3:
-                leave3 = isStop; break;
-            case 4:
-                leave4 = isStop; break;
+            case 1: leave1 = isStop; break;
+            case 2: leave2 = isStop; break;
+            case 3: leave3 = isStop; break;
+            case 4: leave4 = isStop; break;
             default: break;
         }
     }
 
-    //모든 플레이 턴 정지 풀음
-    //명시적으로 false넣어 주게 시킴
+    // 모든 플레이어 턴 정지 초기화
     [PunRPC]
     public void ResetTurn(bool isStop)
     {
         leave1 = isStop;
-        leave2 = isStop;      
-        leave4 = isStop;
+        leave2 = isStop;
         leave3 = isStop;
+        leave4 = isStop;
     }
 
+    // 각 클라이언트가 로딩 완료되었음을 마스터에게 알림
     [PunRPC]
     public void NotifyMasterPlayerLoaded(int actorNumber)
     {
-        if (loadedPlayerActorNumbers.Contains(actorNumber))
-        {
-            return;
-        }
+        if (loadedPlayerActorNumbers.Contains(actorNumber)) return;
 
         loadedPlayerActorNumbers.Add(actorNumber);
         loadedPlayers++;
 
+        // 모든 플레이어가 준비되었으면 게임 시작 RPC 호출
         if (loadedPlayers >= PhotonNetwork.PlayerList.Length)
         {
             PhotonView.Get(this).RPC("StartTurnSystem", RpcTarget.All);
         }
     }
 
+    // 모든 플레이어가 준비 완료되었을 때 실행되는 턴 시스템 초기화
     [PunRPC]
     void StartTurnSystem()
     {

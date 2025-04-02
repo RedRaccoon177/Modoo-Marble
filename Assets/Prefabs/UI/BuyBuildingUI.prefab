@@ -2121,7 +2121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.754717, g: 0.71967196, b: 0.59451765, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2242,10 +2242,10 @@ MonoBehaviour:
   - {fileID: 912535915725009261}
   - {fileID: 7746184815601710086}
   _checkImages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 6376843381523964034}
+  - {fileID: 3904751786545706117}
+  - {fileID: 7236283613165755574}
+  - {fileID: 8202003601044638434}
   _buyBtn: {fileID: 682818754718960036}
   _cancelBtn: {fileID: 2166266912701654780}
   _tileName: {fileID: 512685250681404288}
