@@ -473,8 +473,6 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             TurnMgr.Instance.endTurn();
         }
-
-        _isTravel = false;
     }
 
     // 5. ÆË¾÷ ÄðÅ¸ÀÓ Áß´Ü
@@ -518,6 +516,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void SetSliderActive(bool isActive)
     {
         mySlider2.gameObject.SetActive(isActive);
+
+        if(isActive == false)
+        {
+            _isTravel = isActive;
+        }
     }
 
     // 8. ½½¶óÀÌ´õ1 ¼û±è Ã³¸®
