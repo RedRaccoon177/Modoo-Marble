@@ -50,9 +50,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     Coroutine runningCoroutine;                // 주사위 쿨타임 코루틴
     Coroutine runningCoroutine2;               // 팝업 쿨타임 코루틴
-    float second = 5f;                         // 기본 쿨타임 시간
-    public float currentDiceCooldown1 = 5f;    // 쿨타임 (슬라이더1)
-    [SerializeField] private float currentDiceCooldown2 = 5f; // 쿨타임 (슬라이더2)
+    float second = 15f;                         // 기본 쿨타임 시간
+    public float currentDiceCooldown1 = 15f;    // 쿨타임 (슬라이더1)
+    [SerializeField] private float currentDiceCooldown2 = 15f; // 쿨타임 (슬라이더2)
     public bool _isSecondCoolTimeG = false;
 
     // ========================= 맵 및 위치 정보 =========================
