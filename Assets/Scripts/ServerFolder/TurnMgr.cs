@@ -27,7 +27,7 @@ public class TurnMgr : Singleton<TurnMgr>
     public static bool isGameStarted = false;            // 게임 시작 여부
 
     public int currentRound = 1;                         // 현재 라운드 번호
-    int maxRound = 80;                                    // 최대 라운드 수
+    int maxRound = 20;                                    // 최대 라운드 수
     [SerializeField] private int turnCountInRound = 0;   // 현재 라운드에서 몇 명이 턴을 종료했는지
 
     public TextMeshProUGUI _currentRound;
