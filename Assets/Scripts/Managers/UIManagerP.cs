@@ -57,6 +57,7 @@ public class UIManagerP : MonoBehaviour
         _travelUI.SetActive(false);
         TurnMgr.Instance.photonView.RPC("DiceUiRPC", RpcTarget.All);
     }
+
     public void OnDiceUI()
     {
         _diceUI.SetActive(true);
@@ -151,6 +152,9 @@ public class UIManagerP : MonoBehaviour
                 break;
             case TileType.Island:
                 _tileBuyUI[4].SetActive(true);
+                break;
+            case TileType.Olympics:
+                _tileBuyUI[5].SetActive(true);
                 break;
             default:
                 _tileBuyUI[2].SetActive(true);
