@@ -24,7 +24,10 @@ public class PhotonNetworkMgr : Singleton<PhotonNetworkMgr>
 
         // 포톤 로그 레벨 설정 (로그가 너무 많이 출력되지 않도록 설정)
         // ErrorsOnly: 에러만 출력 (Debug.Log 같은 건 생략됨)
-        PhotonNetwork.LogLevel = PunLogLevel.ErrorsOnly;
+        PhotonNetwork.LogLevel = PunLogLevel.ErrorsOnly; 
+        //TODO : 추후 삭제해야댐 무조건
+        //Debug.unityLogger.logEnabled = false;
+
     }
 
     // 씬 전환 함수
