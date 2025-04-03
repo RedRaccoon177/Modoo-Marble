@@ -373,8 +373,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3, y: 424.50806}
-  m_SizeDelta: {x: 477, y: 113.0161}
+  m_AnchoredPosition: {x: 0, y: 402.16}
+  m_SizeDelta: {x: 672.8389, y: 222.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &298958597
 MonoBehaviour:
@@ -645,7 +645,7 @@ PrefabInstance:
     - target: {fileID: 6772925544364877133, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1836658021}
     - target: {fileID: 6772925544364877133, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -656,7 +656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6772925544364877133, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ServerUI, Assembly-CSharp
+      value: RoomUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6772925544364877133, guid: 21af8b626ec817f42b745fe292a5205f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -1685,11 +1685,11 @@ PrefabInstance:
     - target: {fileID: 5701876835390374289, guid: 54053441d9bbe304cbeff9f165e08da2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1836658021}
     - target: {fileID: 5701876835390374289, guid: 54053441d9bbe304cbeff9f165e08da2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1836658021}
     - target: {fileID: 5701876835390374289, guid: 54053441d9bbe304cbeff9f165e08da2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: onSoundOptionUI
@@ -1700,11 +1700,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5701876835390374289, guid: 54053441d9bbe304cbeff9f165e08da2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ServerUI, Assembly-CSharp
+      value: RoomUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5701876835390374289, guid: 54053441d9bbe304cbeff9f165e08da2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: ServerUI, Assembly-CSharp
+      value: RoomUI, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

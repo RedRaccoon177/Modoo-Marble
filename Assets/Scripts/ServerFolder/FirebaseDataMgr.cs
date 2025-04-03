@@ -16,7 +16,7 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
 {
     public static FirebaseDataMgr Instance { get; private set; }
     private DatabaseReference dbReference;
-    public int userMoney = 0;
+    public int userMoney = -1;
 
     private void Awake()
     {
@@ -43,6 +43,11 @@ public class FirebaseDataMgr : MonoBehaviourPunCallbacks
                 //TODO:초기 저장 바꾸기 12000
                 //SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 12000);
                 userMoney = await LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", userMoney);
+                if (userMoney == -1)
+                {
+                    SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 10000);
+                    userMoney = 10000;
+                }
                 Debug.Log("유저 닉네임 : " + FirebaseLoginMgr.user.DisplayName);
                 Debug.Log("유저 돈 : " + userMoney);
             }
