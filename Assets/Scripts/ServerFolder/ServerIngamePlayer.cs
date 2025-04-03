@@ -33,6 +33,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     // ========================= 세계여행 관련 상태 =========================
     public bool _isTravel;                     // 세계여행 중인지
+    public bool _isTravelEnd = true;                  // 세계여행 한번을 위해
     public int _travelClickTileNum;            // 클릭한 타일 번호
     public bool _isTravelClickTile;            // 타일 클릭 여부
     public int _travelMoveNum;                 // 이동할 칸 수
@@ -150,14 +151,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {
             //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null && _isCoolFinish == false && photonView.IsMine)
+            if (runningCoroutine == null && _isCoolFinish == false && photonView.IsMine &&_isTravel == false)
             {
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if ((_isBtnClicked == true || _isCoolFinish == true) && _isTravel == false)
             {
-                
                 if (photonView.IsMine && _isTurn == true)
                 {
                     photonView.RPC("HideSlider", RpcTarget.All);
@@ -166,7 +166,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 }
             }
 
-            if (_isTravel == true) // 여행 상태
+            if (_isTravel == true && _isTravelEnd == true) // 여행 상태
             {
                 _waitTravelTurn = true;
                 if (_waitTravelTurn == true) // 이동 가능?
@@ -187,7 +187,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                         _travelMoveNum = (_travelClickTileNum - 30) + 40;
                     }
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
-                    _isTravel = false;
+
+                    _isTravelEnd = false;
                     _isTravelClickTile = false;
                 }
             }
@@ -472,6 +473,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         {
             TurnMgr.Instance.endTurn();
         }
+
+        _isTravel = false;
     }
 
     // 5. 팝업 쿨타임 중단
