@@ -15,7 +15,7 @@ MonoBehaviour:
   _subTileType: 5
   subUnderTilePrefab: 0
   _tileKey: 5
-  _tileName: "\uB3C5\uB3C4"
+  _tileName: "\uBCA0\uB124\uCE58\uC544"
   _tilePos: {x: 6.5, y: 0, z: 0.3}
   _tileLocalScale: {x: 1.2, y: 0.18, z: 1.8}
   _tileType: 1
@@ -25,13 +25,13 @@ MonoBehaviour:
   _tileHotelOwner: 0
   _tileLandMarkOwner: 0
   _tilePriceColor: 0
-  _tileLandPrice: 500
+  _tileLandPrice: 50
   _tilePensionPrice: 0
   _tileCondoPrice: 0
   _tileHotelPrice: 0
   _tileLandMarkPrice: 0
-  _tileLandToll: 300
-  _tilePensionToll: 600
-  _tileCondoToll: 1200
-  _tileHotelToll: 2400
+  _tileLandToll: 30
+  _tilePensionToll: 60
+  _tileCondoToll: 120
+  _tileHotelToll: 240
   _tileLandMarkToll: 0
