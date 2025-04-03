@@ -152,10 +152,12 @@ MonoBehaviour:
   _money: 200
   _totalMoney: 0
   _isTravel: 0
+  _isTravelEnd: 1
   _travelClickTileNum: 0
   _isTravelClickTile: 0
   _travelMoveNum: 0
   _waitTravelTurn: 0
+  _isBankruptcy: 0
   currentDiceCooldown1: 5
   currentDiceCooldown2: 5
   _isSecondCoolTimeG: 0
@@ -165,6 +167,9 @@ MonoBehaviour:
   _playerOwnerTileViewList: 
   _view: {fileID: 0}
   _startMoney: 1000
+  _isInIsland: 0
+  _islandSkipCount: 0
+  _willEscapeIsland: 0
 --- !u!1001 &2540573389574069823
 PrefabInstance:
   m_ObjectHideFlags: 0

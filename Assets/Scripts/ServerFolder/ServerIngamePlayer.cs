@@ -166,16 +166,14 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     _turnBasedManager.Dice();
                 }
             }
-
+            Debug.Log("_isTravel1 : " + _isTravel);
+            Debug.Log("_isTravelEnd1 : " + _isTravelEnd);
             if (_isTravel == true && _isTravelEnd == true) // 여행 상태
             {
-                _waitTravelTurn = true;
-                if (_waitTravelTurn == true) // 이동 가능?
-                {
-                    UIManagerP.instance.OnTravelUI();
-                    UIManagerP.instance.OffDiceUI();
-                    _waitTravelTurn = false;
-                }
+                Debug.Log("_isTravel2 : " + _isTravel);
+                Debug.Log("_isTravelEnd2 : " + _isTravelEnd);
+                UIManagerP.instance.OnTravelUI();
+                UIManagerP.instance.OffDiceUI();
                 if (_isTravelClickTile == true) // 타일 클릭 했는지
                 {
                     UIManagerP.instance.OffTravelUI();
@@ -191,6 +189,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
                     _isTravelEnd = false;
                     _isTravelClickTile = false;
+                    Debug.Log("_isTravel3 : " + _isTravel);
+                    Debug.Log("_isTravelEnd3 : " + _isTravelEnd);
                 }
             }
         }
@@ -661,7 +661,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 {
                     TurnMgr.Instance.endTurn();
                     _isTravel = true;
-                    _waitTravelTurn = false;
+                    _isTravelEnd = true;
                 }
                 else if (currentTile._tileType == TileType.Island)
                 {
