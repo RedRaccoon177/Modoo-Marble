@@ -25,6 +25,7 @@ public class MapManager : MonoBehaviourPun
 
     Quaternion _rotation = Quaternion.identity;
     Vector3 _localScale = Vector3.zero;
+
     void Start()
     {
         _tiles = new GameObject[40]; // 모든 클라이언트가 배열 초기화
@@ -254,12 +255,4 @@ public class MapManager : MonoBehaviourPun
 
         }
     }
-
-    void BackGroundTileSetting()
-    {
-
-    }
-
-
-
 }

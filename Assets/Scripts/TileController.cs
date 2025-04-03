@@ -60,12 +60,6 @@ public partial class TileController : MonoBehaviourPun
     [Header("랜드마크 통행료")] public double _tileLandMarkToll;
     [Header("총 통행료")] public double _totalTollPrice;
 
-    GameObject _ground;
-    GameObject _Sea;
-
-    GameObject _cityname;
-    GameObject _bonusStage;
-    
     void Start()
     {
         StartCoroutine(SetupTileIfNotMaster());
@@ -147,7 +141,6 @@ public partial class TileController : MonoBehaviourPun
                     if (Vector3.Distance(transform.position, data._tilePos) < 0.1f)
                     {
                         SetTileData(data); // 참가자도 타일 정보 직접 설정
-                        Debug.Log($"[참가자] SetTileData 직접 호출됨 → tileKey: {data._tileKey}");
 
                         // 타일 배열 등록
                         if (data._tileKey >= 0 && data._tileKey < map._tiles.Length)
@@ -164,7 +157,6 @@ public partial class TileController : MonoBehaviourPun
             }
         }
     }
-
 
     /// <summary>
     /// 타일에 데이터 저장
@@ -226,6 +218,7 @@ public partial class TileController : MonoBehaviourPun
                 return 0;
         }
     }
+
     public double GetTollPrice(int index)
     {
         switch (index)
@@ -290,6 +283,7 @@ public partial class TileController : MonoBehaviourPun
         if (_tileHotelOwner != 0) { _totalTollPrice += _tileHotelToll; }
         return _totalTollPrice;
     }
+
     public double TotalBuyPrice(TileController _tileController)
     {
         _totalTollPrice = 0;

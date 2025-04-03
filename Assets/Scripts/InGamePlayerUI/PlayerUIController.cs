@@ -64,7 +64,6 @@ public class PlayerUIController : MonoBehaviourPunCallbacks, IPlayerDataObserver
         _moneyText.text = $"{playerData._money:N0} G";
         _totalMoneyText.text = $"{playerData._totalMoney:N0} G";
 
-
         SetPlayerRanking();
     }
 
@@ -106,7 +105,7 @@ public class PlayerUIController : MonoBehaviourPunCallbacks, IPlayerDataObserver
             }
 
             // 이 오브젝트가 맡은 플레이어라면 랭킹 저장
-            if (sortedPlayers[i]._playerNum == _targetActorNumber)
+            if (sortedPlayers[i].photonView.OwnerActorNr == _targetActorNumber)
             {
                 _ranking = sortedPlayers[i]._ranking;
             }
