@@ -1630,7 +1630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12485783, y: 0.8736185, z: -0.30382892, w: 0.35901162}
+  m_LocalRotation: {x: 0.12485784, y: 0.8736185, z: -0.30382892, w: 0.35901162}
   m_LocalPosition: {x: -4.3041153, y: 12.135622, z: 4.2551746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -2260,6 +2260,7 @@ MonoBehaviour:
   _factorWarningUI: {fileID: 8735657451695544505, guid: 608505c3b630a59438c3b4c2c3cae10a, type: 3}
   _diceUI: {fileID: 1213300923}
   _travelUI: {fileID: 1344574436794949522, guid: eb26a01cf67c2b646b556f177b657e45, type: 3}
+  _olympicUI: {fileID: 3905777688396090490, guid: 1eb0864d14dc39e42bfd131e2add80f7, type: 3}
   _tileUIParent: {fileID: 131538669}
   canvus: {fileID: 2004488151}
 --- !u!1 &1229561320
@@ -3097,7 +3098,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677056489}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12485783, y: 0.8736185, z: -0.30382892, w: 0.35901162}
+  m_LocalRotation: {x: 0.12485784, y: 0.8736185, z: -0.30382892, w: 0.35901162}
   m_LocalPosition: {x: -4.3041153, y: 12.135622, z: 4.2551746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
