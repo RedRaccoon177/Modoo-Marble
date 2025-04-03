@@ -640,7 +640,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             }
             else if (_playerPosIndex + count == 0) // 도착 지점 처리 (필요 시 추가)
             {
-                // StartPointPass();
+                StartPointPass();
             }
 
             count++;
@@ -799,10 +799,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         return _players[_actorNum];
     }
 
-    //public void StartPointPass()
-    //{
-    //    _playerManager.IncreaseMoney(1000);
-    //}
+    public void StartPointPass()
+    {
+        IncreaseMoney(50);
+    }
 
     [PunRPC]
     public void IncreaseMoney(double money)
