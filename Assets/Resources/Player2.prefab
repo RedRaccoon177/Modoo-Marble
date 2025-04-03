@@ -151,6 +151,7 @@ MonoBehaviour:
   _money: 200
   _totalMoney: 0
   _isTravel: 0
+  _isTravelEnd: 0
   _travelClickTileNum: 0
   _isTravelClickTile: 0
   _travelMoveNum: 0
@@ -165,6 +166,9 @@ MonoBehaviour:
   _playerOwnerTileViewList: 
   _view: {fileID: 0}
   _startMoney: 1000
+  _isInIsland: 0
+  _islandSkipCount: 0
+  _willEscapeIsland: 0
 --- !u!1001 &1186770590280204510
 PrefabInstance:
   m_ObjectHideFlags: 0

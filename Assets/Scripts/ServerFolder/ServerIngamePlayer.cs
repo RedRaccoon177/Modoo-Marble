@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System;
 using UnityEngine.SocialPlatforms;
 using JetBrains.Annotations;
+using Photon.Realtime;
 
 // 옵저버 인터페이스: 플레이어 정보가 바뀌면 이걸 통해 UI 등에 알림
 public interface IPlayerDataObserver
@@ -33,6 +34,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     // ========================= 세계여행 관련 상태 =========================
     public bool _isTravel;                     // 세계여행 중인지
+    public bool _isTravelEnd = true;                  // 세계여행 한번을 위해
     public int _travelClickTileNum;            // 클릭한 타일 번호
     public bool _isTravelClickTile;            // 타일 클릭 여부
     public int _travelMoveNum;                 // 이동할 칸 수
@@ -48,9 +50,9 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
 
     Coroutine runningCoroutine;                // 주사위 쿨타임 코루틴
     Coroutine runningCoroutine2;               // 팝업 쿨타임 코루틴
-    float second = 5f;                         // 기본 쿨타임 시간
-    public float currentDiceCooldown1 = 5f;    // 쿨타임 (슬라이더1)
-    [SerializeField] private float currentDiceCooldown2 = 5f; // 쿨타임 (슬라이더2)
+    float second = 15f;                         // 기본 쿨타임 시간
+    public float currentDiceCooldown1 = 15f;    // 쿨타임 (슬라이더1)
+    [SerializeField] private float currentDiceCooldown2 = 15f; // 쿨타임 (슬라이더2)
     public bool _isSecondCoolTimeG = false;
 
     // ========================= 맵 및 위치 정보 =========================
@@ -98,6 +100,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     // ========================= 옵저버 관련 =========================
     private static List<IPlayerDataObserver> _observers = new List<IPlayerDataObserver>();
 
+    // ========================= 무인도 관련 =========================
+    public bool _isInIsland = false;       // 무인도에 있는지 여부
+    public int _islandSkipCount = 0;       // 스킵할 턴 수
+    public bool _willEscapeIsland = false; // 다음 턴에 탈출 여부
     #endregion
 
     #region Start문, Update문
@@ -124,19 +130,35 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void Update()
     {
         if (!TurnMgr.isGameStarted) return;
-        
+
+        // 턴인데 무인도에 있는 상태라면
+        if (_isInIsland && PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
+        {
+            if (photonView.IsMine)
+            {
+                TurnMgr.Instance.endTurn();
+                _islandSkipCount--;
+
+                if (_islandSkipCount <= 0)
+                {
+                    _isInIsland = false;
+                }
+            }
+
+            return; // 이후 쿨타임 및 주사위 로직 전부 생략
+        }
+
         //내턴 and (쿨타임 or 주사위)
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {
             //내턴 될때 쿹타임 10초 
-            if (runningCoroutine == null && _isCoolFinish == false && photonView.IsMine)
+            if (runningCoroutine == null && _isCoolFinish == false && photonView.IsMine &&_isTravel == false)
             {
                 photonView.RPC("Dicecooltime", RpcTarget.All);
             }
 
             if ((_isBtnClicked == true || _isCoolFinish == true) && _isTravel == false)
             {
-                
                 if (photonView.IsMine && _isTurn == true)
                 {
                     photonView.RPC("HideSlider", RpcTarget.All);
@@ -145,7 +167,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                 }
             }
 
-            if (_isTravel == true) // 여행 상태
+            if (_isTravel == true && _isTravelEnd == true) // 여행 상태
             {
                 _waitTravelTurn = true;
                 if (_waitTravelTurn == true) // 이동 가능?
@@ -166,7 +188,8 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                         _travelMoveNum = (_travelClickTileNum - 30) + 40;
                     }
                     photonView.RPC("RpcMovePlayer", RpcTarget.All, _travelMoveNum);
-                    _isTravel = false;
+
+                    _isTravelEnd = false;
                     _isTravelClickTile = false;
                 }
             }
@@ -345,7 +368,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             UIManagerP.instance.OffFactorUI();
             UIManagerP.instance.OffFactorWarningUI();
             UIManagerP.instance.OffTravelUI();
-            Time.timeScale = 0f;
+            _isSecondCoolTimeG = true;
         }
     }
 
@@ -494,6 +517,11 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void SetSliderActive(bool isActive)
     {
         mySlider2.gameObject.SetActive(isActive);
+
+        if(isActive == false)
+        {
+            _isTravel = isActive;
+        }
     }
 
     // 8. 슬라이더1 숨김 처리
@@ -503,10 +531,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         mySlider.gameObject.SetActive(false);
     }
-
     #endregion
-
-
 
     /// <summary>
     /// 플레이어의 총 자산(현금 + 보유 토지)
@@ -594,6 +619,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
+    [PunRPC]
+    public void EnterIsland()
+    {
+        _isInIsland = true;
+        _islandSkipCount = 3; // 2턴 스킵
+    }
+
     /// <summary>
     /// 주사위 값(num)만큼 플레이어를 한 칸씩 이동시킨다
     /// </summary>
@@ -631,6 +663,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     _isTravel = true;
                     _waitTravelTurn = false;
                 }
+                else if (currentTile._tileType == TileType.Island)
+                {
+                    photonView.RPC("EnterIsland", RpcTarget.All); // 무인도 상태로 진입
+                    TurnMgr.Instance.endTurn();                   // 바로 턴 종료
+                }
+
                 //쿨타임
                 StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);
