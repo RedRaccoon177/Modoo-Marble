@@ -616,7 +616,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     public void EnterIsland()
     {
         _isInIsland = true;
-        _islandSkipCount = 2; // 2≈œ Ω∫≈µ
+        _islandSkipCount = 3; // 2≈œ Ω∫≈µ
     }
 
     /// <summary>

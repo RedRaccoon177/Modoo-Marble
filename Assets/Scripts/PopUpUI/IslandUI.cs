@@ -44,8 +44,8 @@ public class IslandUI : MonoBehaviour
         int myActor = PhotonNetwork.LocalPlayer.ActorNumber;
         if (ServerIngamePlayer._players.TryGetValue(myActor, out _myPlayer))
         {
-            _escapeButton.interactable = _myPlayer._totalMoney >= escapeCost;
-            _details.text = $"{_myPlayer._totalMoney} 중 {escapeCost} 지불 시 다음 턴에 탈출 가능합니다.";
+            _escapeButton.interactable = _myPlayer._money >= escapeCost;
+            _details.text = $"{_myPlayer._money} 중 {escapeCost} 지불 시 다음 턴에 탈출 가능합니다.";
         }
         else
         {
@@ -56,13 +56,13 @@ public class IslandUI : MonoBehaviour
 
     private void TryEscapeIsland()
     {
-        if (_myPlayer == null || _myPlayer._totalMoney < escapeCost)
+        if (_myPlayer == null || _myPlayer._money < escapeCost)
         {
             Debug.LogWarning("[무인도] 탈출 불가 조건"); // 확인용
             return;
         }
 
-        _myPlayer._totalMoney -= escapeCost;
+        _myPlayer.DecreaseMoney(escapeCost);
         _myPlayer._willEscapeIsland = true;
 
         UIManagerP.instance.OffClickUI();
