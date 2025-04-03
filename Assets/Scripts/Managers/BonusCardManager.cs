@@ -8,8 +8,8 @@ public class BonusCardManager : MonoBehaviourPun
     public event Action<int, double> _bonusCardUI;
     public ServerIngamePlayer _player;
 
-    double _increaseMoney = 500;
-    double _decreaseMoney = 300;
+    double _increaseMoney = 300;
+    double _decreaseMoney = 200;
     double _noting = 0;
 
 
@@ -53,11 +53,6 @@ public class BonusCardManager : MonoBehaviourPun
                 player.photonView.RPC("BonusCardMovePlayer", RpcTarget.All);
                 _bonusCardUI.Invoke(selectedOption, _noting);
 
-                break;
-            case 3:
-                //
-
-                _bonusCardUI.Invoke(selectedOption, _noting);
                 break;
         }
     }

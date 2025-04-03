@@ -15,10 +15,10 @@ MonoBehaviour:
   _subTileType: 4
   subUnderTilePrefab: 0
   _tileKey: 4
-  _tileName: "\uB9C8\uCE74\uC624"
+  _tileName: "\uBCF4\uB108\uC2A4 \uAC8C\uC784"
   _tilePos: {x: 5.2, y: 0, z: 0.3}
   _tileLocalScale: {x: 1.2, y: 0.18, z: 1.8}
-  _tileType: 8
+  _tileType: 2
   _tileLandOwner: 0
   _tilePensionOwner: 0
   _tileCondoOwner: 0
