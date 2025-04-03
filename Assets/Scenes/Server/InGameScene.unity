@@ -1376,6 +1376,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerInformationPanel RD
       objectReference: {fileID: 0}
+    - target: {fileID: 1072957360224577856, guid: d5490097087618e44aeea09979fe3893, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 414.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072957360224577856, guid: d5490097087618e44aeea09979fe3893, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -26.236
+      objectReference: {fileID: 0}
     - target: {fileID: 2277908624453567619, guid: d5490097087618e44aeea09979fe3893, type: 3}
       propertyPath: m_LocalPosition.x
       value: -367
@@ -1840,6 +1848,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1159862252}
     m_Modifications:
+    - target: {fileID: 5650055068337941057, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 413.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 5650055068337941057, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 35.106
+      objectReference: {fileID: 0}
     - target: {fileID: 5848990006447060067, guid: e20d65c064dfb454fa4f9f7ed6fd04ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 350
@@ -2476,6 +2492,14 @@ PrefabInstance:
     - target: {fileID: 2554186104438837076, guid: daaec478c3f3d2b49b19b30b7be45762, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3214229266516911616, guid: daaec478c3f3d2b49b19b30b7be45762, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 413.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 3214229266516911616, guid: daaec478c3f3d2b49b19b30b7be45762, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 35.108
       objectReference: {fileID: 0}
     - target: {fileID: 3295414835533417199, guid: daaec478c3f3d2b49b19b30b7be45762, type: 3}
       propertyPath: m_IsActive
@@ -3773,6 +3797,14 @@ PrefabInstance:
     - target: {fileID: 6611293119296173296, guid: 9257945d9c7d29d44abe54f156e02618, type: 3}
       propertyPath: m_fontStyle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6773913890775834579, guid: 9257945d9c7d29d44abe54f156e02618, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 414.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 6773913890775834579, guid: 9257945d9c7d29d44abe54f156e02618, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -26.234009
       objectReference: {fileID: 0}
     - target: {fileID: 8191529511395549086, guid: 9257945d9c7d29d44abe54f156e02618, type: 3}
       propertyPath: m_Pivot.x
