@@ -56,7 +56,7 @@ public class TurnBasedManager : MonoBehaviourPun
         if ((diceResults[0] != null && diceResults[1] != null))
         {
             int total = diceResults[0].Value + diceResults[1].Value;
-            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(30);
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
             diceResults[0] = null;
             diceResults[1] = null;
         }
