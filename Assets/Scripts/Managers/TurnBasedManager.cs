@@ -56,7 +56,11 @@ public class TurnBasedManager : MonoBehaviourPun
         if ((diceResults[0] != null && diceResults[1] != null))
         {
             int total = diceResults[0].Value + diceResults[1].Value;
+<<<<<<< Updated upstream
             ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(total);
+=======
+            ServerIngamePlayer._players[TurnMgr.currentTurn].RpcMovePlayer(20);
+>>>>>>> Stashed changes
             diceResults[0] = null;
             diceResults[1] = null;
         }
