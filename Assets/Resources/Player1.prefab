@@ -165,6 +165,9 @@ MonoBehaviour:
   _playerOwnerTileViewList: 
   _view: {fileID: 0}
   _startMoney: 1000
+  _isInIsland: 0
+  _islandSkipCount: 0
+  _willEscapeIsland: 0
 --- !u!1001 &3135020475751006184
 PrefabInstance:
   m_ObjectHideFlags: 0

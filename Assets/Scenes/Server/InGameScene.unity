@@ -721,7 +721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerlist: 0
   currentRound: 1
-  maxRound: 12
+  turnCountInRound: 0
   _currentRound: {fileID: 1687386043}
   playerfabs:
   - {fileID: 2251393183922970900, guid: d09971626ac887942bb3bfa6af682e20, type: 3}
@@ -1492,7 +1492,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12485784, y: 0.8736185, z: -0.30382892, w: 0.35901162}
+  m_LocalRotation: {x: 0.12485783, y: 0.8736185, z: -0.30382892, w: 0.35901162}
   m_LocalPosition: {x: -4.3041153, y: 12.135622, z: 4.2551746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -2010,6 +2010,7 @@ MonoBehaviour:
   - {fileID: 8886160249979617007, guid: bf315e79811f7cf4a903f8dfcfefaf84, type: 3}
   - {fileID: 2981705093667156229, guid: 4d20f7b1a41c58b4c817c7d0fc81a8ed, type: 3}
   - {fileID: 2981705093667156229, guid: 1555fa9a09c13e2418a8a7a6982c0ad6, type: 3}
+  - {fileID: 2981705093667156229, guid: d7b3372a8f0d8be4999c7fa5b490030e, type: 3}
   _clickTileUI:
   - {fileID: 4188171647600667817, guid: c142aa39862cc174a8b516598dc943e9, type: 3}
   - {fileID: 1081851401116152791, guid: d136d49cdf712a044a43dcb8ae77fcf2, type: 3}
@@ -2633,7 +2634,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677056489}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12485784, y: 0.8736185, z: -0.30382892, w: 0.35901162}
+  m_LocalRotation: {x: 0.12485783, y: 0.8736185, z: -0.30382892, w: 0.35901162}
   m_LocalPosition: {x: -4.3041153, y: 12.135622, z: 4.2551746}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

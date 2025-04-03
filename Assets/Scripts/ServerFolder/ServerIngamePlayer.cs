@@ -98,6 +98,10 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     // ========================= 옵저버 관련 =========================
     private static List<IPlayerDataObserver> _observers = new List<IPlayerDataObserver>();
 
+    // ========================= 무인도 관련 =========================
+    public bool _isInIsland = false;       // 무인도에 있는지 여부
+    public int _islandSkipCount = 0;       // 스킵할 턴 수
+    public bool _willEscapeIsland = false; // 다음 턴에 탈출 여부
     #endregion
 
     #region Start문, Update문
@@ -124,7 +128,24 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void Update()
     {
         if (!TurnMgr.isGameStarted) return;
-        
+
+        // 턴인데 무인도에 있는 상태라면
+        if (_isInIsland && PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
+        {
+            if (photonView.IsMine)
+            {
+                TurnMgr.Instance.endTurn();
+                _islandSkipCount--;
+
+                if (_islandSkipCount <= 0)
+                {
+                    _isInIsland = false;
+                }
+            }
+
+            return; // 이후 쿨타임 및 주사위 로직 전부 생략
+        }
+
         //내턴 and (쿨타임 or 주사위)
         if (PhotonNetwork.LocalPlayer.ActorNumber == TurnMgr.CurrentTurn)
         {
@@ -503,10 +524,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     {
         mySlider.gameObject.SetActive(false);
     }
-
     #endregion
-
-
 
     /// <summary>
     /// 플레이어의 총 자산(현금 + 보유 토지)
@@ -594,6 +612,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
         }
     }
 
+    [PunRPC]
+    public void EnterIsland()
+    {
+        _isInIsland = true;
+        _islandSkipCount = 2; // 2턴 스킵
+    }
+
     /// <summary>
     /// 주사위 값(num)만큼 플레이어를 한 칸씩 이동시킨다
     /// </summary>
@@ -631,6 +656,12 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
                     _isTravel = true;
                     _waitTravelTurn = false;
                 }
+                else if (currentTile._tileType == TileType.Island)
+                {
+                    photonView.RPC("EnterIsland", RpcTarget.All); // 무인도 상태로 진입
+                    TurnMgr.Instance.endTurn();                   // 바로 턴 종료
+                }
+
                 //쿨타임
                 StartCoroutine(cooltimedelay(second));
                 UIManagerP.instance.OnBuyUI(currentTile._tileType);

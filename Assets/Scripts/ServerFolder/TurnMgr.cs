@@ -27,7 +27,7 @@ public class TurnMgr : Singleton<TurnMgr>
     public static bool isGameStarted = false;            // 게임 시작 여부
 
     public int currentRound = 1;                         // 현재 라운드 번호
-    int maxRound = 8;                                    // 최대 라운드 수
+    int maxRound = 80;                                    // 최대 라운드 수
     [SerializeField] private int turnCountInRound = 0;   // 현재 라운드에서 몇 명이 턴을 종료했는지
 
     public TextMeshProUGUI _currentRound;
@@ -74,6 +74,8 @@ public class TurnMgr : Singleton<TurnMgr>
     private void Update()
     {
         currentTurnText.text = currentTurn.ToString();           // 현재 턴을 UI에 표시
+
+
     }
 
     // 턴 종료 시 호출되는 함수 (내 턴일 경우에만 작동)
@@ -91,10 +93,34 @@ public class TurnMgr : Singleton<TurnMgr>
             {
                 if (photonView == null) return;
 
-                ServerIngamePlayer._players[currentTurn]._isSecondCoolTimeG = true;
+                var player = ServerIngamePlayer._players[currentTurn];
 
-                photonView.RPC("IncreaseTurnCount", RpcTarget.All); // 모든 클라이언트에 turnCount 증가 및 라운드 처리
+                // 무인도 상태일 경우 턴 스킵
+                if (player._isInIsland)
+                {
+                    if (player._willEscapeIsland)
+                    {
+                        player._isInIsland = false;
+                        player._willEscapeIsland = false;
+                    }
+                    else
+                    {
+                        player._islandSkipCount--;
+                        if (player._islandSkipCount <= 0)
+                            player._isInIsland = false;
+                        else
+                        {
+                            photonView.RPC("IncreaseTurnCount", RpcTarget.All);
+                            photonView.RPC("NextTurn", RpcTarget.All);
+                            photonView.RPC("DiceUiRPC", RpcTarget.All);
+                            return;
+                        }
+                    }
+                }
 
+                player._isSecondCoolTimeG = true;
+
+                photonView.RPC("IncreaseTurnCount", RpcTarget.All);
                 photonView.RPC("NextTurn", RpcTarget.All);
                 photonView.RPC("DiceUiRPC", RpcTarget.All);
             }
@@ -104,6 +130,7 @@ public class TurnMgr : Singleton<TurnMgr>
             }
         }
     }
+
 
     //턴 수 증가 함수
     [PunRPC]
@@ -153,15 +180,29 @@ public class TurnMgr : Singleton<TurnMgr>
     [PunRPC]
     public void DiceUiRPC()
     {
-        if (currentTurn == PhotonNetwork.LocalPlayer.ActorNumber)
+        int myActorNum = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        if (currentTurn == myActorNum)
         {
-            UIManagerP.instance.OnDiceUI();
+            // Dictionary에 키가 존재할 경우에만 처리
+            if (ServerIngamePlayer._players.TryGetValue(myActorNum, out var me))
+            {
+                if (!me._isInIsland)
+                    UIManagerP.instance.OnDiceUI();
+                else
+                    UIManagerP.instance.OffDiceUI(); // 무인도 상태면 끄기
+            }
+            else
+            {
+                Debug.LogWarning($"[DiceUiRPC] 아직 내 플레이어가 등록되지 않음");
+            }
         }
         else
         {
             UIManagerP.instance.OffDiceUI();
         }
     }
+
 
     // 다음 턴으로 넘기기 위한 순회 로직 (파산한 플레이어 제외)
     [PunRPC]

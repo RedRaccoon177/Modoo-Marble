@@ -31,7 +31,8 @@ public class UIManagerP : MonoBehaviour
     public event Action<int,int> _diceNumEvent;                     // 주사위 텍스트 변화 이벤트
     public event Action<TileController> _buyChangeDataGround;       // 토지 구매 UI 이벤트
     public event Action<TileController> _buyChangeDataSea;          // 관광지 구매 UI 이벤트
-    public event Action<ServerIngamePlayer> _bonusCard;               // 보너스 카드 UI 이벤트
+    public event Action<ServerIngamePlayer> _bonusCard;             // 보너스 카드 UI 이벤트
+    public event Action<TileController> _islandData;                // 무인도 UI 이벤트
 
     private void Awake()
     {
@@ -136,26 +137,27 @@ public class UIManagerP : MonoBehaviour
     {
         OffBuyUIPanel();
         _tileUIParent.gameObject.SetActive(true);
-        for (int i = 0; i < _clickTileUI.Length; i++)
+
+        switch (_tileType)
         {
-            if (_tileType == TileType.Ground)
-            {
+            case TileType.Ground:
                 _tileBuyUI[0].SetActive(true);
-            }
-            else if (_tileType == TileType.Sea)
-            {
+                break;
+            case TileType.Sea:
                 _tileBuyUI[1].SetActive(true);
-            }
-            else if (_tileType == TileType.Item)
-            {
+                break;
+            case TileType.Item:
                 _tileBuyUI[3].SetActive(true);
-            }
-            else
-            {
+                break;
+            case TileType.Island:
+                _tileBuyUI[4].SetActive(true);
+                break;
+            default:
                 _tileBuyUI[2].SetActive(true);
-            }
+                break;
         }
     }
+
 
     /// <summary>
     /// 타입에 알맞은 이벤트 실행
@@ -175,6 +177,10 @@ public class UIManagerP : MonoBehaviour
         else if (_tileType == TileType.Item)
         {
             _bonusCard.Invoke(_serverIngamePlayer);
+        }
+        else if (_tileType == TileType.Island)
+        {
+            _islandData?.Invoke(_currentTile);  // null-safe 호출
         }
         else
         {
