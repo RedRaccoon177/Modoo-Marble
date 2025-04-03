@@ -151,7 +151,7 @@ MonoBehaviour:
   _money: 200
   _totalMoney: 0
   _isTravel: 0
-  _isTravelEnd: 0
+  _isTravelEnd: 1
   _travelClickTileNum: 0
   _isTravelClickTile: 0
   _travelMoveNum: 0

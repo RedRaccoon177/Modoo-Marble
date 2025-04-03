@@ -37,10 +37,11 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
 
     IEnumerator waitSecond()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+        //yield return new WaitForSeconds(0.2f);
         SceneManager.LoadScene("LobbyScene");
-
     }
+
     public void Die()
     {
         photonView.RPC("die", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, true);
