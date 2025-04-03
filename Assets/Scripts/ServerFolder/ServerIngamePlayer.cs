@@ -379,13 +379,13 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
     void Dicecooltime()
     {
         if (TurnMgr.currentTurn == 1)
-            mySliderobj.transform.localPosition = new Vector3(-515, 310, 0);
+            mySliderobj.transform.localPosition = new Vector3(-700, 275, 0);
         else if (TurnMgr.currentTurn == 2)
-            mySliderobj.transform.localPosition = new Vector3(515, 310, 0);
+            mySliderobj.transform.localPosition = new Vector3(720, 275, 0);
         else if (TurnMgr.currentTurn == 3)
             mySliderobj.transform.localPosition = new Vector3(720, -310, 0);
         else if (TurnMgr.currentTurn == 4)
-            mySliderobj.transform.localPosition = new Vector3(-720, -310, 0);
+            mySliderobj.transform.localPosition = new Vector3(-700, -310, 0);
 
         runningCoroutine = StartCoroutine(Dicecooltimedelay(second));
     }
