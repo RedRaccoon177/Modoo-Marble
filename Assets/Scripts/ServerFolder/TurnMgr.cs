@@ -169,7 +169,6 @@ public class TurnMgr : Singleton<TurnMgr>
                 UIManagerP.instance.OffFactorWarningUI();
                 UIManagerP.instance.OffTravelUI();
 
-                Time.timeScale = 0f;
                 _isGameOver = true;
                 return;
             }

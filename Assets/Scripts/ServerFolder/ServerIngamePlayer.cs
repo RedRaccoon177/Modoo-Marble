@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System;
 using UnityEngine.SocialPlatforms;
 using JetBrains.Annotations;
+using Photon.Realtime;
 
 // 옵저버 인터페이스: 플레이어 정보가 바뀌면 이걸 통해 UI 등에 알림
 public interface IPlayerDataObserver
@@ -367,7 +368,7 @@ public class ServerIngamePlayer : MonoBehaviourPunCallbacks, IPunInstantiateMagi
             UIManagerP.instance.OffFactorUI();
             UIManagerP.instance.OffFactorWarningUI();
             UIManagerP.instance.OffTravelUI();
-            Time.timeScale = 0f;
+            _isSecondCoolTimeG = true;
         }
     }
 

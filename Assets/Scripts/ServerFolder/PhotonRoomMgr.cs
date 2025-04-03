@@ -194,7 +194,7 @@ public class PhotonRoomMgr : MonoBehaviourPunCallbacks
     IEnumerator FakeLodingWait()
     {
         yield return new WaitForSeconds(2f);
-        LodingPanel.gameObject.SetActive(false);
+        //LodingPanel.gameObject.SetActive(false);
         Debug.Log("서버 연결 완료");
         PhotonNetwork.NickName = FirebaseLoginMgr.user.DisplayName;
         PhotonNetwork.JoinLobby();

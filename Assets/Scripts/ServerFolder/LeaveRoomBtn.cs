@@ -33,13 +33,15 @@ public class LeaveRoomBtn : MonoBehaviourPunCallbacks
         Debug.Log("방나가는버튼클릭햇음");
         PhotonNetwork.LeaveRoom();
         StartCoroutine(waitSecond());
-        SceneManager.LoadScene("LobbyScene");
     }
 
     IEnumerator waitSecond()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady);
+        //yield return new WaitForSeconds(0.2f);
+        SceneManager.LoadScene("LobbyScene");
     }
+
     public void Die()
     {
         photonView.RPC("die", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, true);
