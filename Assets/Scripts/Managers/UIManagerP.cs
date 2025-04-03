@@ -22,6 +22,8 @@ public class UIManagerP : MonoBehaviour
     [Header("세계 여행 안내 UI")]
     public GameObject _travelUI;
 
+    public GameObject _olympicUI;
+
     [Header("타일 UI 생성 될 곳")]
     [SerializeField] Transform _tileUIParent;
     [SerializeField] Transform canvus;
@@ -56,6 +58,8 @@ public class UIManagerP : MonoBehaviour
         _travelUI = Instantiate(_travelUI, canvus);
         _travelUI.SetActive(false);
         TurnMgr.Instance.photonView.RPC("DiceUiRPC", RpcTarget.All);
+        _olympicUI = Instantiate(_olympicUI, canvus);
+        _olympicUI.SetActive(false);
     }
 
     public void OnDiceUI()
@@ -88,6 +92,14 @@ public class UIManagerP : MonoBehaviour
         _travelUI.SetActive(false);
     }
 
+    public void OnOlympicUI()
+    {
+        _olympicUI.SetActive(true);
+    }
+    public void OffOlympicUI()
+    {
+        _olympicUI.SetActive(false);
+    }
     public void OnFactorUI(TileController currentTile, ServerIngamePlayer player, ServerIngamePlayer targetPlayer)
     {
         //_factorUI.transform.position = _target;
@@ -137,7 +149,10 @@ public class UIManagerP : MonoBehaviour
     public void OnBuyUI(TileType _tileType)
     {
         OffBuyUIPanel();
-        _tileUIParent.gameObject.SetActive(true);
+        if(_tileType != TileType.Olympics)
+        {
+            _tileUIParent.gameObject.SetActive(true);
+        }
 
         switch (_tileType)
         {
@@ -154,7 +169,7 @@ public class UIManagerP : MonoBehaviour
                 _tileBuyUI[4].SetActive(true);
                 break;
             case TileType.Olympics:
-                _tileBuyUI[5].SetActive(true);
+                _olympicUI.SetActive(true);
                 break;
             default:
                 _tileBuyUI[2].SetActive(true);

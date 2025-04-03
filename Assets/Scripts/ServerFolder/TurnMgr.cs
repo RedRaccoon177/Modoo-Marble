@@ -82,6 +82,7 @@ public class TurnMgr : Singleton<TurnMgr>
     public void endTurn()
     {
         UIManagerP.instance.OffBuyUIPanel();
+        UIManagerP.instance.OffOlympicUI();
         UIManagerP.instance.OffFactorUI();
         UIManagerP.instance.OffClickUI();
         UIManagerP.instance.OffFactorWarningUI();

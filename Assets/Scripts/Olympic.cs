@@ -75,6 +75,7 @@ public class Olympic : MonoBehaviour, IPointerClickHandler
 
             // 클릭 중복 방지를 위해 이벤트를 통해 상태 전달
             AlreadyCheck?.Invoke(false);
+            TurnMgr.Instance.endTurn();
         }
     }
 
@@ -88,7 +89,6 @@ public class Olympic : MonoBehaviour, IPointerClickHandler
         _tileController._tileCondoToll *= 2;
         _tileController._tileHotelToll *= 2;
         _tileController._tileLandMarkToll *= 2;
-
         Debug.Log("모든 유저에게 올림픽 효과 적용됨");
     }
 }

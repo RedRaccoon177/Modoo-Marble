@@ -8,11 +8,14 @@ public class TileClickSea : MonoBehaviour
 
     [Header("관광지 가격")] public TextMeshProUGUI GroundPrice;
 
-    [Header("방문횟수")]
+    [Header("소유 갯수 통행료")]
     public TextMeshProUGUI Visit1;
     public TextMeshProUGUI Visit2;
     public TextMeshProUGUI Visit3;
     public TextMeshProUGUI Visit4;
+
+    [Header("총 통행료")]
+    public TextMeshProUGUI Visit5;
 
     public TextMeshProUGUI VisitNumber;
     public TextMeshProUGUI CurrentToll;
@@ -29,10 +32,12 @@ public class TileClickSea : MonoBehaviour
         AreaName.text = data._tileName;
         GroundPrice.text = data._tileLandPrice.ToString();
 
-        //Visit1.text = data._tileLandToll.ToString();
-        //Visit2.text = data._tilePensionToll.ToString();
-        //Visit3.text = data._tileCondoToll.ToString();
-        //Visit4.text = data._tileHotelToll.ToString();
+        Visit1.text = data._tileLandToll.ToString();
+        Visit2.text = data._tilePensionToll.ToString();
+        Visit3.text = data._tileCondoToll.ToString();
+        Visit4.text = data._tileHotelToll.ToString();
+
+        Visit5.text = (data._tileLandToll + data._tilePensionToll + data._tileCondoToll + data._tileHotelToll).ToString();
 
         //VisitNumber.text = data.< 방문횟수 >.ToString();
         //CurrentToll.text = data.< 통행료 >.ToString();

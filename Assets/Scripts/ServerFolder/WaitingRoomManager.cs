@@ -21,15 +21,9 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
     //겟차일드 찾고 
     //그거에 텍스를 찾아서 변경
 
-    public async Task LoadPlayerMoney()
-    {
-        //FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 2000000);//일단 돈을 넣어준거임
-        playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);
-    }
 
     private async void Start()
     {
-        await LoadPlayerMoney();
         UpdatePlayerList();
     }
 
@@ -38,7 +32,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
-    public void UpdatePlayerList()
+    async public void UpdatePlayerList()
     {
         for (int i = 0; i < roomListPanel.childCount; i++)
         {
@@ -49,7 +43,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
         {
             var dd = Instantiate(TestPlayerImage, roomListPanel); //룸 리스트 패널 하에 하나 생성
             dd.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.PlayerList[i].NickName;
-
+            playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(PhotonNetwork.PlayerList[i].NickName, "money", playerMoney);
             dd.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = playerMoney.ToString();
 
             var player = PhotonNetwork.PlayerList[i];
@@ -124,7 +118,7 @@ public class WaitingRoomManager : MonoBehaviourPunCallbacks
             //Player player = PhotonNetwork.PlayerList.FirstOrDefault(p => p.ActorNumber == playerID);
             if (player != null && player.NickName == playerNameText.text)
             {
-                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "ready"; // 모든 클라이언트에서 UI 변경
+                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "준비 완료"; // 모든 클라이언트에서 UI 변경
                 break;
             }
         }

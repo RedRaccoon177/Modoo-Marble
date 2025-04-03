@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "2\uD68C \uBC29\uBB38"
+  m_text: "2\uAC1C \uC18C\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -842,9 +842,10 @@ MonoBehaviour:
   AreaName: {fileID: 5843548292724568244}
   GroundPrice: {fileID: 2530831311732338170}
   Visit1: {fileID: 3199106127487986107}
-  Visit2: {fileID: 0}
-  Visit3: {fileID: 0}
-  Visit4: {fileID: 0}
+  Visit2: {fileID: 3121180419594887001}
+  Visit3: {fileID: 6232423489922258237}
+  Visit4: {fileID: 386805189534993263}
+  Visit5: {fileID: 624871656236401092}
   VisitNumber: {fileID: 1732017229177602010}
   CurrentToll: {fileID: 624871656236401092}
   closeButton: {fileID: 4293737242463489942}
@@ -1047,7 +1048,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "44\uD68C \uBC29\uBB38"
+  m_text: "4\uAC1C \uC18C\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -1714,7 +1715,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "3\uD68C \uBC29\uBB38"
+  m_text: "3\uAC1C \uC18C\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -1982,7 +1983,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD604\uC7AC \uBC29\uBB38 \uD69F\uC218"
+  m_text: "\uCD1D \uBCF4\uC720 \uAC2F\uC218"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
@@ -2619,7 +2620,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1\uD68C \uBC29\uBB38"
+  m_text: "1\uAC1C \uC18C\uC720"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
   m_sharedMaterial: {fileID: -1106389098396747595, guid: 3662f7d7bed001f44aefb3892bf6c793, type: 2}
