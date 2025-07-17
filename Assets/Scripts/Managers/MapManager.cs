@@ -254,5 +254,6 @@ public class MapManager : MonoBehaviourPun
 
 
         }
+        //¤¾¤·
     }
 }
