@@ -1,22 +1,21 @@
 {
   "project_info": {
-    "project_number": "633456337494",
-    "firebase_url": "https://test-9fa08-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "test-9fa08",
-    "storage_bucket": "test-9fa08.firebasestorage.app"
+    "project_number": "113531503541",
+    "project_id": "fantasy-marvel",
+    "storage_bucket": "fantasy-marvel.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:633456337494:android:3510829677be3fb55291f7",
+        "mobilesdk_app_id": "1:113531503541:android:fc1ce9bf787fd5a7fc8ffc",
         "android_client_info": {
-          "package_name": "com.shy.firebasedb"
+          "package_name": "com.LEE.Fantasy_Marvel"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAKGatAJjlRrM-wz4AxlFBEFX1FP4_0blU"
+          "current_key": "AIzaSyClIgKAE6X3OVDRpgpGH9-bXIFOpeCVMZM"
         }
       ],
       "services": {
