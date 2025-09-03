@@ -1,11 +1,6 @@
 //ÃÖµ¿¿À
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using Photon;
 using Photon.Pun;
-using Photon.Realtime;
 using Firebase;
 using Firebase.Database;
 using Firebase.Extensions;

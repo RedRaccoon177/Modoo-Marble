@@ -17,7 +17,7 @@ public class LobbyProfileUI : MonoBehaviour
 
     public async Task LoadPlayerMoney()
     {
-        //FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 2000000);//일단 돈을 넣어준거임
+        FirebaseDataMgr.Instance.SaveUserData(FirebaseLoginMgr.user.DisplayName, "money", 2000000);//일단 돈을 넣어준거임
         playerNickNameText.text = FirebaseLoginMgr.user.DisplayName;
         playerMoney = await FirebaseDataMgr.Instance.LoadUserDataAsync(FirebaseLoginMgr.user.DisplayName, "money", playerMoney);//playerMoney에 서버에 가지고있는 돈을 넣어줌
 
