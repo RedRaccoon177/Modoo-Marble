@@ -74,8 +74,6 @@ public class TurnMgr : Singleton<TurnMgr>
     private void Update()
     {
         currentTurnText.text = currentTurn.ToString();           // 현재 턴을 UI에 표시
-
-
     }
 
     // 턴 종료 시 호출되는 함수 (내 턴일 경우에만 작동)
@@ -131,7 +129,6 @@ public class TurnMgr : Singleton<TurnMgr>
             }
         }
     }
-
 
     //턴 수 증가 함수
     [PunRPC]
@@ -203,7 +200,6 @@ public class TurnMgr : Singleton<TurnMgr>
         }
     }
 
-
     // 다음 턴으로 넘기기 위한 순회 로직 (파산한 플레이어 제외)
     [PunRPC]
     void NextTurn()
@@ -228,8 +224,6 @@ public class TurnMgr : Singleton<TurnMgr>
             (leave4 && CurrentTurn == 4)
         );
     }
-
-
 
     // 특정 플레이어 턴 정지 (예: 파산, 무인도 등)
     [PunRPC]
