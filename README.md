@@ -389,11 +389,10 @@ UI가 커질수록 “직접 참조”는 유지보수를 급격히 어렵게 �
 
 <a name="tech-stack"></a>
 ## 🛠️ 기술 스택
-- 엔진: Unity 3D
+- 엔진: Unity 3D (2022.3.21f1)
 - 언어: C#
 - 네트워크: Photon PUN2 (RPC 기반 동기화)
 - 백엔드: Firebase Authentication, Firebase Realtime Database
-- UI: Unity UI
 - 데이터/구조: ScriptableObject 기반 타일 데이터, partial 클래스 확장 구조
 
 <br>
@@ -404,4 +403,10 @@ UI가 커질수록 “직접 참조”는 유지보수를 급격히 어렵게 �
 
 <a name="developer"></a>
 ## 👨‍💻 개발자 소개
-- TODO: GitHub / Blog / YouTube / Portfolio 링크 추가
+- GitHub: [https://github.com/RedRaccoon177]
+- Tistory: [https://wearelast99.tistory.com/]
+- YouTube: [유튜브 채널](https://www.youtube.com/@%EC%9D%B4%EC%9C%A0-z9c)
+- Canva 포트폴리오: [포트폴리오](https://www.canva.com/design/DAGusJR6Rj8/BOtICI6F1raShPyHHewjxg/view?utm_content=DAGusJR6Rj8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h691958bd9a)
+- Canva 이력서: [이력서](https://www.canva.com/design/DAGj7YKBoc8/YPk_CLe8B1taKTE-nneUJA/view?utm_content=DAGj7YKBoc8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha914d97458)
+
+<br>
