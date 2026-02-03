@@ -195,9 +195,6 @@ Fantasy Marble은 보드 위에서 <strong>주사위(2개)</strong>로 이동하
   - 타일 단위 합계: `TotalTollPrice()` / `TotalBuyPrice()`
   - 플레이어 단위 총 자산: `ServerIngamePlayer.TotalMoney()`에서 “현금 + 부동산 가치” 합산
 
-> 참고: 자동 매각/정렬 기반 비용 충당 로직은 `ServerIngamePlayer` 쪽에서 확인된 바 있습니다(정렬/리스트 관리 포함).  
-> 다만 세부 매각 기준을 README에 더 “근거 코드 중심”으로 박으려면 관련 파일이 전부 열려 있어야 해서, 필요 시 해당 파일만 재업로드 받으면 더 강화 가능합니다.
-
 <br>
 
 ### 5) UI 입력 이벤트/데이터 바인딩 구조
@@ -245,11 +242,11 @@ UI가 커질수록 “직접 참조”는 유지보수를 급격히 어렵게 �
 
 <a name="my-role"></a>
 ## 👤 내 역할
-- 네트워크(Photon PUN2, RPC 동기화): **참여**
-- 턴/주사위/이동 시스템: **참여**
-- 맵/타일 시스템(데이터, 생성, 상태/소유/통행료 계산): **전담**
-- UI/입력/이벤트 구조(타일 클릭/정보/구매/건설 UI 포함): **전담**
-- Firebase(Auth/Realtime Database) 로그인 및 유저 데이터 저장/로드: **참여**
+- 네트워크(Photon PUN2, RPC 동기화)
+- 턴/주사위/이동 시스템
+- 맵/타일 시스템(데이터, 생성, 상태/소유/통행료 계산)
+- UI/입력/이벤트 구조(타일 클릭/정보/구매/건설 UI 포함)
+- Firebase(Auth/Realtime Database) 로그인 및 유저 데이터 저장/로드
 
 <br>
 
@@ -258,114 +255,131 @@ UI가 커질수록 “직접 참조”는 유지보수를 급격히 어렵게 �
 <br>
 
 <a name="what-i-built"></a>
-## ✅ 구현 시스템 (코드 기준)
+## ✅ 구현 시스템
 
 <a name="network-flow"></a>
 ### 1) 멀티플레이 로비/룸 흐름 (Photon)
-- 접속/초기 진입: `PhotonNetworkMgr`
-- 룸 생성/입장/나가기 및 씬 전환: `PhotonRoomMgr`, `LeaveRoomBtn`
-- 대기실 Ready/Start 흐름: `WaitingRoomManager`
-- 로비/룸 UI: `LobbyUI`, `RoomUI`, `LobbyProfileUI`, `PlayerRoomNickname`, `TitleUI`
-
-핵심 포인트
-- 룸 상태 변화와 UI 전환이 분리되어 있어, 네트워크 이벤트가 UI에 직접 하드코딩되지 않게 구성되어 있습니다.
-- 마스터 기준 흐름을 토대로 인게임 시스템(턴/맵)이 동작하도록 연결됩니다.
+- `PhotonNetworkMgr`
+  - Photon 마스터 서버 접속, 로비 진입/초기 네트워크 상태 세팅
+- `PhotonRoomMgr`
+  - 방 생성/입장/나가기, 룸 상태 관리, 게임 씬 전환 트리거
+- `LeaveRoomBtn`
+  - 룸 나가기 UI 버튼 처리(룸 이탈 및 관련 UI 복귀 흐름)
+- `WaitingRoomManager`
+  - 대기실 Ready/Start 처리 및 대기실 UI 흐름 제어
+- `LobbyUI`, `RoomUI`, `LobbyProfileUI`, `PlayerRoomNickname`, `TitleUI`
+  - 로비/룸/대기실 화면 구성 및 UI 표시/전환
 
 <br>
 
 <a name="turn-dice-move"></a>
 ### 2) 턴/주사위/이동
-- 턴 시스템 동기화: `TurnMgr`, `TurnBasedManager`
-- 주사위 생성/결과 처리/표시: `DiceManager`, `DiceButton`, `DiceNumText`
-- 플레이어 인게임 상태(머니/자산/파산 포함): `ServerIngamePlayer`
-
-강화 포인트(포트폴리오 관점)
-- UI 입력(버튼) → 턴 로직 → 이동/도착 처리 → 턴 종료로 이어지는 “턴제 보드게임” 기본 파이프라인이 구성되어 있습니다.
-- 플레이어 머니 증감/정산/파산 체크가 `ServerIngamePlayer` 중심으로 동작해,
-  보드게임에서 흔한 “누적 계산 오류”를 줄이도록 설계되어 있습니다.
+- `TurnMgr`
+  - 턴 진행의 중심 로직(턴 시작/종료, 다음 턴 처리, 턴 상태 동기화)
+- `TurnBasedManager`
+  - 턴제 진행 보조(턴 상태 분기, 라운드/턴 흐름 보조 관리)
+- `DiceManager`
+  - 주사위 2개 생성/결과 계산/처리(이동 값 산출 및 턴 로직과 연동)
+- `DiceButton`
+  - 주사위 굴리기 UI 입력 처리(턴 상태에 따른 버튼 동작)
+- `DiceNumText`
+  - 주사위 결과 UI 텍스트 표시/갱신
+- `ServerIngamePlayer`
+  - 플레이어 인게임 상태(이동, 머니, 자산, 파산/정산 관련 상태) 관리 및 네트워크 동기화 연동
 
 <br>
 
 <a name="map-tile"></a>
 ### 3) 맵/타일 데이터 및 생성 (데이터 기반)
-- 타일 데이터: `TileInfoData(ScriptableObject)`
-- 보드 생성/배치(마스터): `MapManager` (PhotonNetwork.Instantiate + SetTileData)
-- 타일 상태/소유/가격/통행료: `TileController` (partial + RPC SetOwner)
-
-강화 포인트
-- 맵은 “코드에 하드코딩된 타일 나열”이 아니라, 데이터 배열(`_tiledates`)을 바탕으로 생성됩니다.
-- `SubTileType`에 따라 프리팹을 활성화하는 방식이라, 타일 종류가 늘어나도 유지보수가 쉽습니다.
+- `TileInfoData` (ScriptableObject)
+  - 타일 규칙 데이터(타입/서브타입/가격/통행료/기본 설정값 등) 보관
+- `MapManager`
+  - 보드 타일 생성/배치 흐름 관리
+  - 마스터 기준으로 타일 생성 후 데이터 주입 및 타일 외형/타입 세팅
+- `TileController` (partial)
+  - 타일 상태/소유/가격/통행료/건물 단계 상태 관리
+  - 소유권 변경(RPC) 및 소유자에 따른 시각 반영(오브젝트 활성/머티리얼 변경 등)
 
 <br>
 
 <a name="real-estate"></a>
-### 4) 부동산(땅/건물) 구매 및 자산/통행료 계산 (가장 집중한 파트)
-관련 스크립트
-- 구매 UI/거래 UX: `TileBuyUI`, `TileSeaBuyUI`
-- 타일 소유권/가격/통행료/시각 반영: `TileController`
-- 플레이어 자산/정산: `ServerIngamePlayer`
-
-구현 상세(강화)
-- **단계별 소유/가격/통행료 모델**
-  - `TileController`는 건물 단계를 인덱스로 관리합니다.  
-    `GetPrice(index)`, `GetOwner(index)`, `GetTollPrice(index)`로 동일한 방식으로 접근합니다.
-  - 단계가 올라갈수록 타일 가치/통행료가 자연스럽게 누적되도록 합계 계산 함수가 준비되어 있습니다.  
-    (`TotalBuyPrice`, `TotalTollPrice`)
-
-- **구매 UX: 프리뷰(선택) 단계와 확정(커밋) 단계 분리**
-  - `TileBuyUI`에서 건물 버튼(땅/펜션/콘도/호텔)을 선택하면,
-    플레이어 소지금 기준으로 즉시 가능 여부를 판단하고 체크 상태/색상/UI 합계를 갱신합니다.
-  - 확정 시 `BuyButtonClick()`에서 선택된 슬롯만 `SetOwner` RPC로 커밋하여
-    “네트워크 소유권 동기화”까지 한 번에 완료됩니다.
-  - 취소 흐름이 존재하여, 실수로 선택한 거래를 되돌리는 UX도 제공합니다.
-
-- **소유권 동기화와 화면 반영을 한 함수로 묶음**
-  - `TileController.SetOwner(index, owner)`는 값만 바꾸지 않고,
-    머티리얼/오브젝트 활성화까지 연쇄 적용해 멀티 환경에서 시각 불일치를 줄입니다.
-
-- **플레이어 총 자산(현금 + 부동산 가치) 산출**
-  - `ServerIngamePlayer.TotalMoney()`에서 보드 전체 타일을 순회하며
-    본인 소유 단계(0~3)의 가격을 합산해 총 자산을 계산합니다.
-  - 보드게임 특성상 “통행료/파산” 판단의 기준이 되는 값이므로,
-    자산 산출 루틴을 분리해 재사용 가능하게 구성한 점이 포인트입니다.
+### 4) 부동산(땅/건물) 구매 및 자산/통행료 계산
+- `TileBuyUI`
+  - Ground 타일의 땅/건물 구매 UI 및 구매 처리(선택/확정/취소)
+  - 건물 단계별 구매 처리와 비용 계산, 구매 가능 여부 판단
+- `TileBulidingScript`
+  - Ground 타일 건물(단계) 관련 표현/처리 보조
+- `TileSeaBuyUI`
+  - Sea(관광지) 타일 구매 UI 및 구매 처리
+- `TileController`
+  - 건물 단계별 소유/가격/통행료 제공(`GetPrice`, `GetOwner`, `GetTollPrice` 계열)
+  - 타일 단위 합계 계산(단계 누적 가격/통행료 합계 처리)
+  - 소유권 확정 시 타일 외형(건물 활성/머티리얼) 반영
+- `ServerIngamePlayer`
+  - 플레이어 총 자산(현금 + 보유 타일/건물 가치) 계산 및 정산/파산 판단에 활용
 
 <br>
 
 <a name="ui-system"></a>
 ### 5) 타일 클릭 UI / 구매 UI / 이벤트 UI (입력 이벤트 기반)
-- 타일 클릭/정보 UI: `TileClick`, `TileClickGroundUI`, `TileClickSeaUI`, `PropertyPanel`, `AreaUI`
-- UI 이벤트 허브: `UIManagerP`
-- 구매 UI: `TileBuyUI`, `TileSeaBuyUI`
-- 임시/예외 처리: `UnFinishedTileClick`
-
-강화 포인트
-- 타일 클릭(정보 열람)과 구매(거래)를 분리해서 UI 복잡도를 낮췄습니다.
-- `UIManagerP`의 이벤트(클릭 변경/구매 변경/주사위 이벤트 등)를 통해
-  UI 갱신이 “직접 참조 난사”로 커지지 않도록 구성되어 있습니다.
+- `UIManagerP`
+  - 인게임 UI 이벤트 허브(타일 클릭/구매 UI 전환/표시 갱신 트리거 등)
+- `TileClick`
+  - 타일 클릭 입력 처리 및 클릭 타일 식별/전달
+- `TileClickGroundUI`
+  - Ground 타일 클릭 시 정보 패널 표시/갱신
+- `TileClickSeaUI`
+  - Sea 타일 클릭 시 정보 패널 표시/갱신
+- `TileClickGroundUI`, `TileClickSeaUI` (연동 UI)
+  - 클릭 대상 타일의 가격/소유/통행료/건물 단계 등 표시
+- `PropertyPanel`
+  - 타일(부동산) 정보 표시 패널(소유/가격/통행료 등 UI 출력)
+- `AreaUI`
+  - 지역/타일 관련 정보 표시 UI(타일 정보/상태 표시 보조)
+- `UnFinishedTileClick`
+  - 미완/예외 타일 클릭 처리(임시 처리/방어 로직)
 
 <br>
 
 <a name="special"></a>
 ### 6) 특수 타일/이벤트
-- 올림픽: `Olympic` (통행료 2배 처리 포함)
-- 무인도: `IslandUI`
-- 보너스 카드: `BonusCardManager`, `BonusCardUI`
+- `Olympic`
+  - 올림픽 이벤트 처리(통행료 배수 등 이벤트 효과 적용 및 동기화)
+- `IslandUI`
+  - 무인도 관련 UI/상태 표시(턴 스킵 등 규칙과 연결되는 UI 처리)
+- `BonusCardManager`
+  - 보너스 카드 이벤트 관리(카드 효과 선택/적용 흐름)
+- `BonusCardUI`
+  - 보너스 카드 UI 표시 및 선택 입력 처리
+- `FactorUI`, `FactorWarningUI`
+  - 이벤트/경고/상태 안내 UI(상황별 안내 패널 표시)
 
 <br>
 
 <a name="player-result"></a>
 ### 7) 결과/게임 종료
-- 게임오버/결과 UI: `GameOverUIScript`, `GameOverResultWindow`, `PlayerResult`
-- 플레이어 UI 관리: `PlayerUIManager`, `PlayerUIController`
-- 인게임 UI/서버 UI: `InGameUI`, `ServerUI`
-- 파산/생존자 체크 흐름: `ServerIngamePlayer` 내 파산 관련 RPC 및 집계 로직
+- `GameOverUIScript`
+  - 게임 종료 UI 출력 및 종료 흐름 처리
+- `GameOverResultWindow`
+  - 게임 결과 창 표시 및 결과 데이터 출력
+- `PlayerResult`
+  - 플레이어별 결과 데이터 정리/표시 처리
+- `PlayerUIManager`
+  - 플레이어 UI 묶음 관리(인원수/상태에 따른 UI 활성/표시)
+- `PlayerUIController`
+  - 개별 플레이어 UI 표시(닉네임/머니/상태 등) 갱신
+- `InGameUI`, `ServerUI`
+  - 인게임 공통 UI 및 서버/상태 표기 UI 구성
 
 <br>
 
 <a name="firebase"></a>
 ### 8) Firebase 로그인/유저데이터
-- Auth 로그인/회원가입/닉네임 플로우: `FirebaseLoginMgr`
-- Realtime Database 저장/로드(제네릭): `FirebaseDataMgr`
+- `FirebaseLoginMgr`
+  - Firebase Auth 기반 로그인/회원가입/닉네임 설정 흐름
+- `FirebaseDataMgr`
+  - Firebase Realtime Database 저장/로드 처리(제네릭 기반 데이터 입출력 구조)
+
 
 <br>
 
