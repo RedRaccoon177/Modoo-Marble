@@ -116,7 +116,7 @@ Fantasy Marble은 보드 위에서 <strong>주사위(2개)</strong>로 이동하
     네트워크 이벤트가 인게임 규칙 코드에 직접 얽히지 않도록 구성했습니다.
   - 결과적으로 룸 UI 변경/추가가 생겨도 인게임 규칙 영향이 최소화됩니다.
 
-- **대표 책임 스크립트**
+- **핵심 스크립트**
   - 접속/초기 진입: `PhotonNetworkMgr`
   - 룸 생성/입장/나가기/씬 전환: `PhotonRoomMgr`, `LeaveRoomBtn`
   - 대기실 Ready/Start: `WaitingRoomManager`
@@ -141,7 +141,7 @@ Fantasy Marble은 보드 위에서 <strong>주사위(2개)</strong>로 이동하
   - 보드게임 특성상 “돈이 바뀌는 경로”가 여러 곳으로 퍼지면 버그가 급증하는데,
     이를 한 축으로 모으는 방식으로 설계 포인트를 잡았습니다.
 
-- **대표 책임 스크립트**
+- **핵심 스크립트**
   - 턴: `TurnMgr`, `TurnBasedManager`
   - 주사위: `DiceManager`, `DiceButton`, `DiceNumText`
   - 플레이어 상태/정산: `ServerIngamePlayer`
@@ -166,7 +166,7 @@ Fantasy Marble은 보드 위에서 <strong>주사위(2개)</strong>로 이동하
   - `MapManager.TileSetting()`에서 `SubTileType`에 따라 타일 내부 오브젝트를 켜는 방식으로,
     새 타일 타입이 늘어나도 **로직 수정 범위를 최소화**하도록 구성했습니다.
 
-- **대표 책임 스크립트**
+- **핵심 스크립트**
   - 데이터: `TileInfoData`
   - 생성/배치: `MapManager`
   - 타일 상태/소유/가격/통행료: `TileController` (partial 구조 포함)
